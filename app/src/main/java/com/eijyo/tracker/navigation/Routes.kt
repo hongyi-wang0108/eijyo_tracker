@@ -7,6 +7,7 @@ object Routes {
     const val ONBOARDING_COMPLETE = "onboarding_complete"
     const val MAIN = "main"
     const val PREDICTION_DETAIL = "prediction_detail"
+    const val RISK_DETAIL = "risk_detail"
 }
 
 /** Bottom-tab destinations inside the main app shell. */

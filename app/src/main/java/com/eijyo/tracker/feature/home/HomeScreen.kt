@@ -53,6 +53,7 @@ private const val MOCK_PREVIEW = false
 @Composable
 fun HomeScreen(
     onOpenPredictionDetail: () -> Unit = {},
+    onOpenRiskDetail: () -> Unit = {},
     viewModel: HomeViewModel = hiltViewModel(),
 ) {
     val realState by viewModel.state.collectAsStateWithLifecycle()
@@ -87,7 +88,7 @@ fun HomeScreen(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.spacedBy(13.dp),
             ) {
-                RiskMiniCard(modifier = Modifier.weight(1f), level = state.riskLevel)
+                RiskMiniCard(modifier = Modifier.weight(1f), level = state.riskLevel, onClick = onOpenRiskDetail)
                 MaterialMiniCard(
                     modifier = Modifier.weight(1f),
                     prepared = state.documentsPrepared,
@@ -407,7 +408,7 @@ private fun TimelineCard(state: HomeUiState) {
 }
 
 @Composable
-private fun RiskMiniCard(modifier: Modifier, level: RiskLevel?) {
+private fun RiskMiniCard(modifier: Modifier, level: RiskLevel?, onClick: () -> Unit = {}) {
     val colors = EijyoTheme.colors
     val (badgeBg, badgeMark, badgeColor, title) = when (level) {
         RiskLevel.LOW -> Quad(colors.mintWash, "✓", colors.mint, "暂无明显风险")
@@ -415,7 +416,7 @@ private fun RiskMiniCard(modifier: Modifier, level: RiskLevel?) {
         RiskLevel.HIGH -> Quad(colors.peach, "!", colors.coral, "风险较高")
         null -> Quad(colors.mintWash, "·", colors.inkMuted, "风险自检")
     }
-    HomeCard(modifier = modifier, radius = 24.dp, padding = 14.dp) {
+    HomeCard(modifier = modifier, radius = 24.dp, padding = 14.dp, onClick = onClick) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             Badge(badgeBg, badgeMark, badgeColor)
             Spacer(Modifier.width(10.dp))
