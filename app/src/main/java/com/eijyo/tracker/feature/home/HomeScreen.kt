@@ -2,6 +2,7 @@ package com.eijyo.tracker.feature.home
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -50,7 +51,10 @@ private val CandyTrack = Color(0xFFFCE2EA)
 private const val MOCK_PREVIEW = false
 
 @Composable
-fun HomeScreen(viewModel: HomeViewModel = hiltViewModel()) {
+fun HomeScreen(
+    onOpenPredictionDetail: () -> Unit = {},
+    viewModel: HomeViewModel = hiltViewModel(),
+) {
     val realState by viewModel.state.collectAsStateWithLifecycle()
     val state = if (!MOCK_PREVIEW) realState else realState.copy(
         status = ApplicationStatus.REVIEWING,
@@ -76,7 +80,7 @@ fun HomeScreen(viewModel: HomeViewModel = hiltViewModel()) {
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
             Header(state)
-            PredictionCard(state)
+            PredictionCard(state, onClick = onOpenPredictionDetail)
             PublicDataCard(office = officeName(state))
             TimelineCard(state)
             Row(
@@ -95,15 +99,22 @@ fun HomeScreen(viewModel: HomeViewModel = hiltViewModel()) {
     }
 }
 
-/** Best-effort office name out of the "东京入管 · 审查中" status summary; falls back gracefully. */
-private fun officeName(state: HomeUiState): String =
-    state.statusSummary.substringBefore(" ·").substringBefore("·").ifBlank { "入管" }
+/**
+ * Best-effort office name out of the "东京入管 · 审查中" status summary. Only treats the
+ * prefix as an office when it actually names one; otherwise (e.g. "准备中") falls back to a
+ * generic label so the card never reads "准备中数据".
+ */
+private fun officeName(state: HomeUiState): String {
+    val prefix = state.statusSummary.substringBefore(" ·").substringBefore("·").trim()
+    return if (prefix.contains("入管")) prefix else "入管处理"
+}
 
 @Composable
 private fun HomeCard(
     modifier: Modifier = Modifier,
     radius: Dp = 24.dp,
     padding: Dp = 18.dp,
+    onClick: (() -> Unit)? = null,
     content: @Composable ColumnScope.() -> Unit,
 ) {
     val colors = EijyoTheme.colors
@@ -112,6 +123,7 @@ private fun HomeCard(
             .shadow(8.dp, RoundedCornerShape(radius), spotColor = ShadowTint, ambientColor = ShadowTint)
             .clip(RoundedCornerShape(radius))
             .background(colors.card)
+            .then(if (onClick != null) Modifier.clickable(onClick = onClick) else Modifier)
             .padding(padding),
         content = content,
     )
@@ -192,10 +204,10 @@ private fun AssistantDog(boxSize: Dp = 46.dp) {
 }
 
 @Composable
-private fun PredictionCard(state: HomeUiState) {
+private fun PredictionCard(state: HomeUiState, onClick: () -> Unit) {
     val colors = EijyoTheme.colors
     val reviewing = state.status == ApplicationStatus.REVIEWING && state.predictionRange != null
-    HomeCard(modifier = Modifier.fillMaxWidth(), radius = 28.dp, padding = 22.dp) {
+    HomeCard(modifier = Modifier.fillMaxWidth(), radius = 28.dp, padding = 22.dp, onClick = onClick) {
         Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
             Column(modifier = Modifier.weight(1f)) {
                 Text("预计结果区间", style = EijyoTheme.typography.labelMedium.copy(fontSize = 14.sp), color = colors.inkMuted)

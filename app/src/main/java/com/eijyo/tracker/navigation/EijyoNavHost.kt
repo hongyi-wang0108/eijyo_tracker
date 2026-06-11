@@ -14,6 +14,7 @@ import androidx.navigation.compose.rememberNavController
 import com.eijyo.tracker.feature.home.MainScaffold
 import com.eijyo.tracker.feature.onboarding.OnboardingCompleteScreen
 import com.eijyo.tracker.feature.onboarding.OnboardingScreen
+import com.eijyo.tracker.feature.prediction.PredictionDetailScreen
 import com.eijyo.tracker.feature.welcome.WelcomeScreen
 
 /**
@@ -61,7 +62,12 @@ fun EijyoNavHost(rootViewModel: RootViewModel = hiltViewModel()) {
             )
         }
         composable(Routes.MAIN) {
-            MainScaffold()
+            MainScaffold(
+                onOpenPredictionDetail = { navController.navigate(Routes.PREDICTION_DETAIL) },
+            )
+        }
+        composable(Routes.PREDICTION_DETAIL) {
+            PredictionDetailScreen(onBack = { navController.popBackStack() })
         }
     }
 }

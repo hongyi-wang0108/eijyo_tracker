@@ -32,7 +32,7 @@ import com.eijyo.tracker.navigation.MainTab
  * end-to-end.
  */
 @Composable
-fun MainScaffold() {
+fun MainScaffold(onOpenPredictionDetail: () -> Unit = {}) {
     var selected by remember { mutableStateOf(MainTab.HOME) }
     val colors = EijyoTheme.colors
 
@@ -60,7 +60,7 @@ fun MainScaffold() {
     ) { innerPadding ->
         Box(modifier = Modifier.fillMaxSize().padding(innerPadding)) {
             when (selected) {
-                MainTab.HOME -> HomeScreen()
+                MainTab.HOME -> HomeScreen(onOpenPredictionDetail = onOpenPredictionDetail)
                 MainTab.APPLICATION -> PlaceholderScreen(title = "申请", subtitle = "申请时间线与状态记录，下一里程碑实现。")
                 MainTab.DOCUMENTS -> PlaceholderScreen(title = "材料", subtitle = "材料清单与状态更新，下一里程碑实现。")
                 MainTab.DATA -> PlaceholderScreen(title = "数据", subtitle = "官方处理期间与公开数据，下一里程碑实现。")
