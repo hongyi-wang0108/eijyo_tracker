@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Macaron base palette mirrored from the Compose theme for the XML window background. -->
+    <color name="cream">#FFFDF8F2</color>
+    <color name="mint">#FFA8E0C5</color>
+    <color name="peach">#FFFFD2C2</color>
+    <color name="ink">#FF4A3F38</color>
+</resources>
