@@ -27,7 +27,6 @@ Debug 包名：`com.eijyo.tracker.debug` · 远端：https://github.com/hongyi-w
 | 风险自检页 | §10 | ✅ UI 完成 | **MOCK_PREVIEW=true，待接真实数据** |
 | 申请 Tab | §8 | ⬜ Placeholder | |
 | 材料 Tab / 材料清单 | §9(材料) | ⬜ Placeholder | |
-| 风险自检页 | §10 | ⬜ 未做 | |
 | 数据页 | §11 | ⬜ Placeholder | |
 | 我的 / 设置 | — | ⬜ Placeholder | |
 
@@ -47,8 +46,7 @@ Debug 包名：`com.eijyo.tracker.debug` · 远端：https://github.com/hongyi-w
 2. 申请 Tab（§8，时间线 + 添加事件 Bottom Sheet）
 3. 材料 Tab（§9 材料清单）
 4. 数据页（§11）
-5. 风险自检页（§10）
-6. 真实数据贯通：时间线日期(CaseRecord)、公开数据卡数值(PublicData)
+5. 真实数据贯通：时间线日期(CaseRecord)、公开数据卡数值(PublicData)
 7. 上架准备：Inter 字体、暗色模式、release 签名
 
 ---
