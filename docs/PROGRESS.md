@@ -24,6 +24,7 @@ Debug 包名：`com.eijyo.tracker.debug` · 远端：https://github.com/hongyi-w
 | Onboarding 完成页 | §6.3 | ✅ 完成 | generated 态；跳过 bug 已修 |
 | 首页 Dashboard | §7 | ✅ 完成 | 审查中态按设计稿；准备中/已结束态未做 |
 | 预测详情页 | §9 | ✅ UI 完成 | **MOCK_PREVIEW=true，待接真实数据** |
+| 风险自检页 | §10 | ✅ UI 完成 | **MOCK_PREVIEW=true，待接真实数据** |
 | 申请 Tab | §8 | ⬜ Placeholder | |
 | 材料 Tab / 材料清单 | §9(材料) | ⬜ Placeholder | |
 | 风险自检页 | §10 | ⬜ 未做 | |
@@ -34,8 +35,10 @@ Debug 包名：`com.eijyo.tracker.debug` · 远端：https://github.com/hongyi-w
 
 ## 进行中
 
-- **预测详情页收尾**：UI 已对齐设计稿
+- **预测详情页**：UI 完成
   - [x] 三参考区间卡片等高（`IntrinsicSize.Max`，以最高的「正常」为准）— 2026-06-11
+  - [ ] 关掉 `MOCK_PREVIEW`，接 ViewModel 真实数据
+- **风险自检页**：UI 完成 — 2026-06-11
   - [ ] 关掉 `MOCK_PREVIEW`，接 ViewModel 真实数据
 
 ## 下一步（按优先级）
@@ -57,6 +60,7 @@ Debug 包名：`com.eijyo.tracker.debug` · 远端：https://github.com/hongyi-w
 | 位置 | 开关 | 当前值 | 含义 |
 |------|------|--------|------|
 | `feature/prediction/PredictionDetailScreen.kt` | `MOCK_PREVIEW` | `true` ⚠️ | UI 验收用假数据，验收完须改 `false` |
+| `feature/risk/RiskDetailScreen.kt` | `MOCK_PREVIEW` | `true` ⚠️ | UI 验收用假数据，验收完须改 `false` |
 | `feature/home/HomeScreen.kt` | `MOCK_PREVIEW` | `false` ✅ | 真实数据；保留 `.copy()` 补缺字段逻辑 |
 | 首页 申请时间线卡 | — | 占位日期 | 待接 CaseRecord |
 | 首页 公开数据卡 | — | 占位数值 | 待接 PublicData 真实值 |

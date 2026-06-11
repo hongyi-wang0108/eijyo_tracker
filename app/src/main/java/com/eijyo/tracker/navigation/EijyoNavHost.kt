@@ -15,6 +15,7 @@ import com.eijyo.tracker.feature.home.MainScaffold
 import com.eijyo.tracker.feature.onboarding.OnboardingCompleteScreen
 import com.eijyo.tracker.feature.onboarding.OnboardingScreen
 import com.eijyo.tracker.feature.prediction.PredictionDetailScreen
+import com.eijyo.tracker.feature.risk.RiskDetailScreen
 import com.eijyo.tracker.feature.welcome.WelcomeScreen
 
 /**
@@ -64,10 +65,14 @@ fun EijyoNavHost(rootViewModel: RootViewModel = hiltViewModel()) {
         composable(Routes.MAIN) {
             MainScaffold(
                 onOpenPredictionDetail = { navController.navigate(Routes.PREDICTION_DETAIL) },
+                onOpenRiskDetail = { navController.navigate(Routes.RISK_DETAIL) },
             )
         }
         composable(Routes.PREDICTION_DETAIL) {
             PredictionDetailScreen(onBack = { navController.popBackStack() })
+        }
+        composable(Routes.RISK_DETAIL) {
+            RiskDetailScreen(onBack = { navController.popBackStack() })
         }
     }
 }
