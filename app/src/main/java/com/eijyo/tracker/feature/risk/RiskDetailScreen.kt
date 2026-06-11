@@ -241,7 +241,8 @@ private fun SectionRow(item: RiskSectionItem) {
             modifier = Modifier
                 .clip(RoundedCornerShape(12.dp))
                 .background(pillBg)
-                .size(width = 58.dp, height = 24.dp),
+                .height(24.dp)
+                .padding(horizontal = 10.dp),
         ) {
             Text(item.statusLabel, style = EijyoTheme.typography.labelSmall.copy(fontSize = 12.sp), color = pillText)
         }
