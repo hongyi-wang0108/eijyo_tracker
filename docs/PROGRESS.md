@@ -66,7 +66,7 @@ Debug 包名：`com.eijyo.tracker.debug` · 远端：https://github.com/hongyi-w
 | 首页 申请时间线卡 | — | 占位日期 | 待接 CaseRecord |
 | 首页 公开数据卡 | — | 占位数值 | 待接 PublicData 真实值 |
 | 材料 Tab | — | 真实数据 ✅ | 已实现，内联更新 + 筛选 |
-| 数据 Tab | — | 真实数据 ✅ | 已实现；数据详情页（§11.5）待做 |
+| 数据 Tab | — | 真实数据 ✅ | 已实现；§11.5 数据详情页已删除 |
 
 ---
 

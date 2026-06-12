@@ -2595,14 +2595,7 @@ RiskAssessment.recommendations[]
 
 交互：
 
-- 整张卡片可点击。
-- 点击后进入数据详情页，展示官方处理期间说明和来源链接。
-
-目标：
-
-```text
-DataDetailScreen(type = standard_processing)
-```
+- 不可点击。
 
 #### 11.4.3 处理参考趋势卡
 
@@ -2638,14 +2631,7 @@ DataDetailScreen(type = standard_processing)
 
 交互：
 
-- 整张卡片可点击。
-- 点击后进入数据详情页，解释曲线图来源和统计口径。
-
-目标：
-
-```text
-DataDetailScreen(type = trend)
-```
+- 不可点击。
 
 #### 11.4.4 地区信息卡
 
@@ -2667,14 +2653,7 @@ DataDetailScreen(type = trend)
 
 交互：
 
-- 整张卡片可点击。
-- 点击后进入数据详情页，展示地区说明、管辖范围和来源。
-
-目标：
-
-```text
-DataDetailScreen(type = region)
-```
+- 不可点击。
 
 #### 11.4.5 来源卡片
 
@@ -2708,15 +2687,7 @@ type
 
 交互：
 
-- 每张来源卡可点击。
-- 点击后进入数据详情页。
-- 数据详情页里可以再点击「打开官方链接」。
-
-目标：
-
-```text
-DataDetailScreen(sourceId)
-```
+- 不可点击。
 
 #### 11.4.6 底部 Tab
 
@@ -2742,163 +2713,7 @@ DataDetailScreen(sourceId)
 
 ### 11.5 数据详情页
 
-从数据页任意数据卡进入。
-
-数据详情页是只读页面，用于解释某一条公开资料。
-
-当前 Figma 示例页面是：
-
-```text
-DataDetailScreen(type = standard_processing)
-```
-
-也就是「官方标准处理期间」详情页。
-
-#### 11.5.1 页面控件和数据来源
-
-页面显示：
-
-```text
-返回按钮
-官方标准处理期间
-
-标准处理期间
-4 - 6 个月
-出入国在留管理庁
-官方资料
-
-资料信息
-更新时间：2026年5月
-
-这是什么意思？
-这是官方公布的标准处理期间。实际结果可能因为提交入管、申请路径、补资料情况和审查量而变化。
-
-对你的预测影响
-你的申请已等待 128 天，目前仍处于官方标准处理期间内。
-预测仍会结合提交地区和补资料状态调整。
-
-打开官方资料
-本页只读，信息修改请前往申请页。
-```
-
-字段映射：
-
-| 控件 | 数据来源 |
-| --- | --- |
-| 页面标题 `官方标准处理期间` | `PublicDataDetail.title` |
-| 分类文案 `标准处理期间` | `PublicDataDetail.categoryLabel` |
-| 核心值 `4 - 6 个月` | `PublicDataDetail.primaryValue` 或 `PublicData.standardProcessingRange` |
-| 来源 `出入国在留管理庁` | `PublicDataDetail.sourceName` |
-| 标签 `官方资料` | `PublicDataDetail.sourceType` |
-| 更新时间 `2026年5月` | `PublicDataDetail.sourceUpdatedAt` |
-| 说明标题 `这是什么意思？` | 固定文案 |
-| 说明正文 | `PublicDataDetail.explanation` |
-| 影响标题 `对你的预测影响` | 固定文案 |
-| 影响正文 | `PublicDataDetail.predictionImpactText`，可结合用户申请档案生成 |
-| `你的申请已等待 128 天` | `today - ApplicationProfile.submittedDate` |
-| `提交地区` | `ApplicationProfile.submittedOffice` |
-| `补资料状态` | `SupplementRequest.status` |
-| 官方资料按钮 | `PublicDataDetail.officialUrl` |
-| 只读提示 | 固定文案 |
-
-#### 11.5.2 数据结构
-
-```text
-PublicDataDetail
-  id
-  type: standard_processing | trend | region | source
-  title
-  categoryLabel
-  primaryValue
-  sourceName
-  sourceType
-  sourceUpdatedAt
-  explanation
-  predictionImpactText
-  officialUrl
-  chartData[]
-```
-
-用户相关输入：
-
-```text
-ApplicationProfile.submittedDate
-ApplicationProfile.submittedOffice
-ApplicationProfile.visaType
-ApplicationProfile.applicationPath
-SupplementRequest.status
-```
-
-#### 11.5.3 不同入口的数据变化
-
-从「官方标准处理期间卡」进入：
-
-```text
-type = standard_processing
-title = 官方标准处理期间
-primaryValue = 4 - 6 个月
-explanation = 官方标准处理期间说明
-```
-
-从「处理参考趋势卡」进入：
-
-```text
-type = trend
-title = 处理参考趋势
-primaryValue = 趋势说明
-chartData[] = 可验证公开数据
-explanation = 图表来源和统计口径
-```
-
-从「地区信息卡」进入：
-
-```text
-type = region
-title = {submittedOffice} 地区信息
-primaryValue = 地区参考
-explanation = 管辖范围和地区资料说明
-```
-
-从「来源卡」进入：
-
-```text
-type = source
-title = PublicDataSource.title
-primaryValue = PublicDataSource.summary
-explanation = 来源说明
-officialUrl = PublicDataSource.officialUrl
-```
-
-#### 11.5.4 交互
-
-可点击控件：
-
-| 控件 | 行为 |
-| --- | --- |
-| 返回按钮 | 回到数据 Tab |
-| 打开官方资料按钮 | 打开外部浏览器或 WebView |
-
-不可点击控件：
-
-- 核心值。
-- 来源标签。
-- 更新时间。
-- 说明卡。
-- 对预测影响卡。
-- 小狗/爪印装饰。
-
-点击官方链接：
-
-```text
-打开外部浏览器或 WebView
-```
-
-禁止项：
-
-- 不在本页编辑申请信息。
-- 不在本页修改数据来源。
-- 不在本页切换统计口径。
-- 不在本页展示没有来源的通过人数。
+> **已删除**：数据详情页与主页卡片内容高度重叠、体积小，MVP 不做。Pencil 设计稿对应页面已同步删除。
 
 ### 11.6 和首页的关系
 
