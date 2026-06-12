@@ -600,7 +600,7 @@ private fun StatusOptionChip(
         Text(
             status.displayLabel,
             style = TextStyle(fontSize = 12.sp, fontWeight = FontWeight.Bold),
-            color = colors.textColor.copy(alpha = if (selected) 1f else 0.7f),
+            color = colors.chipTextColor.copy(alpha = if (selected) 1f else 0.7f),
         )
     }
 }
@@ -624,7 +624,7 @@ private fun StatusPill(
         Text(
             status.displayLabel,
             style = EijyoTheme.typography.labelMedium,
-            color = colors.textColor,
+            color = colors.pillTextColor,
         )
     }
 }
@@ -635,7 +635,8 @@ private data class StatusColors(
     val dotBg: Color,
     val pillBg: Color,
     val chipBg: Color,
-    val textColor: Color,
+    val pillTextColor: Color,
+    val chipTextColor: Color,
 )
 
 private fun statusColors(status: DocumentStatus): StatusColors = when (status) {
@@ -643,25 +644,29 @@ private fun statusColors(status: DocumentStatus): StatusColors = when (status) {
         dotBg = Color(0xFFFFD4C8),
         pillBg = Color(0xFFFFD4C8),
         chipBg = Color(0xFFFFD4C8),
-        textColor = MacaronPalette.Coral,
+        pillTextColor = MacaronPalette.Coral,
+        chipTextColor = MacaronPalette.Coral,
     )
     DocumentStatus.PREPARED -> StatusColors(
         dotBg = MacaronPalette.Mint,
         pillBg = MacaronPalette.MintContainer,
         chipBg = MacaronPalette.Mint,
-        textColor = MacaronPalette.Mint,
+        pillTextColor = MacaronPalette.Mint,
+        chipTextColor = Color.White,
     )
     DocumentStatus.SUBMITTED -> StatusColors(
         dotBg = MacaronPalette.SkySoft,
         pillBg = MacaronPalette.SkySoft,
         chipBg = MacaronPalette.SkySoft,
-        textColor = MacaronPalette.SkyAccent,
+        pillTextColor = MacaronPalette.SkyAccent,
+        chipTextColor = MacaronPalette.SkyAccent,
     )
     DocumentStatus.NEEDS_UPDATE -> StatusColors(
         dotBg = Color(0xFFFFF0B8),
         pillBg = Color(0xFFFFF0B8),
         chipBg = Color(0xFFFFF0B8),
-        textColor = MacaronPalette.LemonAccent,
+        pillTextColor = MacaronPalette.LemonAccent,
+        chipTextColor = MacaronPalette.LemonAccent,
     )
 }
 
