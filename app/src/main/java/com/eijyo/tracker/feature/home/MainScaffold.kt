@@ -25,6 +25,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import com.eijyo.tracker.core.ui.theme.EijyoTheme
 import com.eijyo.tracker.feature.application.ApplicationScreen
 import com.eijyo.tracker.feature.placeholder.PlaceholderScreen
+import com.eijyo.tracker.feature.settings.SettingsScreen
 import com.eijyo.tracker.navigation.MainTab
 
 /**
@@ -71,7 +72,7 @@ fun MainScaffold(
                 MainTab.APPLICATION -> ApplicationScreen()
                 MainTab.DOCUMENTS -> PlaceholderScreen(title = "材料", subtitle = "材料清单与状态更新，下一里程碑实现。")
                 MainTab.DATA -> PlaceholderScreen(title = "数据", subtitle = "官方处理期间与公开数据，下一里程碑实现。")
-                MainTab.SETTINGS -> PlaceholderScreen(title = "我的", subtitle = "设置与账号，下一里程碑实现。")
+                MainTab.SETTINGS -> SettingsScreen()
             }
         }
     }

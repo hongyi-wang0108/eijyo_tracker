@@ -19,6 +19,19 @@
 **理由**：单人 + AI 结对项目，全套会烂尾成噪音。核心诉求是「跨会话记住进度」，一个永远最新的 PROGRESS 即可解决。ADR/release-notes 等以后真需要再加。
 **影响**：每次有意义改动按流程：说清范围 → 更 PROGRESS/DECISIONS → 看代码 → 复用优先 → 改 → 编译 → 同步文档 → 总结。测试步骤暂跳过。
 
+### 2026-06-12 — 语言切换暂缓，先灰掉入口
+
+**决定**：「我的」Tab 的「语言设置」行做成禁用态（变灰 + 不可点 + 「即将支持」标签）。底层基础设施（`LanguagePrefs` SharedPrefs + `MainActivity.attachBaseContext` 应用 locale + `findActivity().recreate()`）全部保留并已验证可用。
+**理由**：Android 语言切换只对 `res/strings.xml` 里的资源字符串生效，但全 App 文字目前硬编码在 Kotlin 里。要真正生效需做「全 App 本地化」独立工程（抽字符串 + 日英翻译），MVP 阶段页面还在逐个搭，过早本地化会反复返工。用户拍板暂缓。
+**影响**：`SettingsRowData.enabled` 标志控制；重新启用只需去掉 `enabled = false`。本地化工程列入上架前 backlog。
+
+### 2026-06-12 — 我的页狗狗用专属 `DogProfile`，非欢迎页 `DogMascot`
+
+**决定**：「我的」Tab 视觉区用新建的 `DogProfile`（正脸坐姿，对应设计 node `RnhY9`），不复用欢迎页的 `DogMascot`（站立全身）。
+**理由**：两者是不同素材；最初误用 `DogMascot` 导致比例/姿态不符。
+**耳朵 z-order**：绕了一圈——最终是 **head 画在耳朵之上**（body→耳朵→head→五官）。设计 JSON 里耳朵虽是 head 之后的 children，但实际渲染效果是「干净的脸、耳朵从两侧露出、内缘被头盖住」。若把耳朵画在头前，会糊到脸上、盖住眼睛，与设计不符。**以截图视觉为准，不照搬 JSON child 顺序。**
+**影响**：`DogMascot.kt` 新增 `DogProfile` + `drawDogProfile`，坐标严格照搬 node `RnhY9`（186×161.2 参考框），耳朵 ±12° 旋转。
+
 ### 2026-06-11 — 首页 MOCK 用 `.copy()` 只补缺失字段
 
 **决定**：首页预览「审查中」态时，不硬编码整份假 state，而是 `realState.copy(field = realState.field ?: mock)`，真实数据优先，仅缺失字段用假值兜底。

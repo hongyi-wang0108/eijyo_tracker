@@ -12,6 +12,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.rotate
 import androidx.compose.ui.unit.Dp
@@ -169,4 +170,96 @@ private fun DrawScope.drawDog(tailAngle: Float) {
     // Paws
     ovalAt(58f, 125f, 18f, 15f, MacaronPalette.DogMuzzle)
     ovalAt(94f, 125f, 18f, 15f, MacaronPalette.DogMuzzle)
+}
+
+/**
+ * Front-facing seated dog for the 我的 page visual stage (design node Q9Zjqe → RnhY9).
+ * Reference box: 186 × 161.2 dp. Tail wag animation optional.
+ */
+@Composable
+fun DogProfile(
+    modifier: Modifier = Modifier,
+    size: Dp = 186.dp,
+    wagging: Boolean = true,
+) {
+    val transition = rememberInfiniteTransition(label = "dogProfile")
+    val tailAngle by transition.animateFloat(
+        initialValue = -10f,
+        targetValue = 10f,
+        animationSpec = infiniteRepeatable(
+            animation = tween(durationMillis = 900),
+            repeatMode = RepeatMode.Reverse,
+        ),
+        label = "tail",
+    )
+    Canvas(modifier = modifier.size(size, size * (161.2f / 186f))) {
+        drawDogProfile(if (wagging) tailAngle else 0f)
+    }
+}
+
+private fun DrawScope.drawDogProfile(tailAngle: Float) {
+    // Reference: 186 × 161.2 dp (design node RnhY9 in Q9Zjqe)
+    val refW = 186f
+    val refH = 161.2f
+    val sx = size.width / refW
+    val sy = size.height / refH
+
+    // Center-based oval helper
+    fun oval(cx: Float, cy: Float, ew: Float, eh: Float, color: androidx.compose.ui.graphics.Color) {
+        drawOval(
+            color = color,
+            topLeft = Offset((cx - ew / 2f) * sx, (cy - eh / 2f) * sy),
+            size = Size(ew * sx, eh * sy),
+        )
+    }
+
+    // Draw order: body → ears → head (on top, covers ears' inner edges) → muzzle →
+    // eyes → nose → blush → tail → paws. Matching the design's visual: a clean tan
+    // face with the big brown ears peeking out at the sides, their inner edges tucked
+    // behind the head (NOT painted over the face).
+
+    // Body
+    oval(96.1f, 120.125f, 80.6f, 54.25f, MacaronPalette.DogBody)
+
+    // Ears — behind head, rotated ±12° around their centers
+    rotate(-12f, pivot = Offset(41.85f * sx, 75.95f * sy)) {
+        oval(41.85f, 75.95f, 37.2f, 65.1f, MacaronPalette.DogEar)
+    }
+    rotate(12f, pivot = Offset(145.7f * sx, 75.95f * sy)) {
+        oval(145.7f, 75.95f, 37.2f, 65.1f, MacaronPalette.DogEar)
+    }
+
+    // Head — on top of ears' inner edges
+    oval(93f, 70.525f, 99.2f, 85.25f, MacaronPalette.DogBody)
+
+    // Muzzle
+    oval(93f, 86.8f, 43.4f, 27.9f, MacaronPalette.DogMuzzle)
+
+    // Eyes
+    oval(74.4f, 65.875f, 9.3f, 10.85f, MacaronPalette.DogFeature)
+    oval(113.15f, 65.875f, 9.3f, 10.85f, MacaronPalette.DogFeature)
+
+    // Nose
+    oval(93.775f, 87.575f, 13.95f, 10.85f, MacaronPalette.DogFeature)
+
+    // Blush
+    oval(62f, 82.15f, 18.6f, 9.3f, MacaronPalette.Blush)
+    oval(127.1f, 82.15f, 18.6f, 9.3f, MacaronPalette.Blush)
+
+    // Tail — wags around its start point (134.85, 116.25)
+    val tailStart = Offset(134.85f * sx, 116.25f * sy)
+    val tailEnd = Offset(172.05f * sx, 141.05f * sy)
+    rotate(degrees = tailAngle, pivot = tailStart) {
+        drawLine(
+            color = MacaronPalette.DogPaw,
+            start = tailStart,
+            end = tailEnd,
+            strokeWidth = 6f * sx,
+            cap = StrokeCap.Round,
+        )
+    }
+
+    // Paws
+    oval(77.5f, 144.925f, 21.7f, 17.05f, MacaronPalette.DogMuzzle)
+    oval(114.7f, 144.925f, 21.7f, 17.05f, MacaronPalette.DogMuzzle)
 }
