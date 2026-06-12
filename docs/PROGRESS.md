@@ -3,7 +3,7 @@
 > 单一事实来源。每次有意义的改动后更新这里。新会话先读本文件即可接上进度。
 > 规格见根目录 `PRODUCT_PM.md`；口头敲定但 PMdoc 未覆盖的决定记在 `docs/DECISIONS.md`。
 
-**最后更新**：2026-06-12
+**最后更新**：2026-06-12（材料 Tab 完成）
 
 ---
 
@@ -26,7 +26,7 @@ Debug 包名：`com.eijyo.tracker.debug` · 远端：https://github.com/hongyi-w
 | 预测详情页 | §9 | ✅ UI 完成 | **MOCK_PREVIEW=true，待接真实数据** |
 | 风险自检页 | §10 | ✅ UI 完成 | **MOCK_PREVIEW=true，待接真实数据** |
 | 申请 Tab | §8 | ✅ UI 完成 | **MOCK_PREVIEW=true**；状态详情子页/时间线节点详情推迟 |
-| 材料 Tab / 材料清单 | §9(材料) | ⬜ Placeholder | |
+| 材料 Tab / 材料清单 | §9(材料) | ✅ 完成 | 真实数据；内联状态更新；四档筛选 |
 | 数据页 | §11 | ⬜ Placeholder | |
 | 我的 / 设置 | — | ✅ 完成 | 真实数据；语言入口暂灰；免责/关于 Sheet 可用；隐私 Sheet UI 占位 |
 
@@ -42,14 +42,13 @@ Debug 包名：`com.eijyo.tracker.debug` · 远端：https://github.com/hongyi-w
 
 ## 下一步（按优先级）
 
-1. 材料 Tab（§9 材料清单）— 4 个主 Tab 里仅剩材料、数据未做
-2. 数据页（§11）
-3. 关掉三处 `MOCK_PREVIEW`，接真实数据（见下方开关清单）
-4. 首页「准备中」「已结束」两态（现仅审查中态）
-5. 隐私与数据 Sheet 接真实逻辑（导出 / 删除档案，现仅 UI 占位）
-6. 真实数据贯通：时间线日期(CaseRecord)、公开数据卡数值(PublicData)
-7. **全 App 本地化**（抽 strings.xml + 日英翻译）→ 做完去掉语言入口 `enabled = false`。基础设施已就绪（`LanguagePrefs`/`attachBaseContext`/`findActivity`）
-8. 上架准备：Inter 字体、暗色模式、release 签名
+1. 数据页（§11）— 4 个主 Tab 仅剩数据未做
+2. 关掉三处 `MOCK_PREVIEW`，接真实数据（见下方开关清单）
+3. 首页「准备中」「已结束」两态（现仅审查中态）
+4. 隐私与数据 Sheet 接真实逻辑（导出 / 删除档案，现仅 UI 占位）
+5. 真实数据贯通：时间线日期(CaseRecord)、公开数据卡数值(PublicData)
+6. **全 App 本地化**（抽 strings.xml + 日英翻译）→ 做完去掉语言入口 `enabled = false`。基础设施已就绪（`LanguagePrefs`/`attachBaseContext`/`findActivity`）
+7. 上架准备：Inter 字体、暗色模式、release 签名
 
 ---
 
@@ -67,7 +66,8 @@ Debug 包名：`com.eijyo.tracker.debug` · 远端：https://github.com/hongyi-w
 | 我的页 语言设置入口 | `enabled` | `false` ⚠️ | 暂灰；本地化做完后改 `true` |
 | 首页 申请时间线卡 | — | 占位日期 | 待接 CaseRecord |
 | 首页 公开数据卡 | — | 占位数值 | 待接 PublicData 真实值 |
-| 材料 / 数据 Tab | — | PlaceholderScreen | 待实现（申请/我的已完成）|
+| 材料 Tab | — | 真实数据 ✅ | 已实现，内联更新 + 筛选 |
+| 数据 Tab | — | PlaceholderScreen | 待实现 |
 
 ---
 
