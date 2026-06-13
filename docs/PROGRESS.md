@@ -2,6 +2,7 @@
 
 > 单一事实来源。每次有意义的改动后更新这里。新会话先读本文件即可接上进度。
 > 规格见根目录 `PRODUCT_PM.md`；口头敲定但 PMdoc 未覆盖的决定记在 `docs/DECISIONS.md`。
+> 预测算法 + 公开数据管线的完整技术方案见 `docs/PREDICTION_AND_DATA.md`。
 
 **最后更新**：2026-06-12（材料 Tab + 数据 Tab 完成，5 个主 Tab 全部落地）
 
@@ -42,12 +43,19 @@ Debug 包名：`com.eijyo.tracker.debug` · 远端：https://github.com/hongyi-w
 
 ## 下一步（按优先级）
 
-1. 关掉三处 `MOCK_PREVIEW`，接真实数据（见下方开关清单）
+1. **预测算法 + 公开数据管线**（大方案，方案已定稿见 `docs/PREDICTION_AND_DATA.md`）。建议子步骤：
+   1. 数据结构 + JSON schema + 拉真实 e-Stat 数据填充（含东京/横滨拆分验证）
+   2. 网络层 + 三层降级（GitHub raw → Room → APK 内置兜底）
+   3. 公开数据卡 / 数据页接真实地区许可数 + 趋势（先交付看得见的真数据）
+   4. 时间线共享重构（抽 `buildTimeline`，首页只读摘要 + 申请页完整）
+   5. `PredictionEngine` 重写为 FIFO 排队模型（最后做）
+2. 关掉三处 `MOCK_PREVIEW`，接真实数据（见下方开关清单）
 3. 首页「准备中」「已结束」两态（现仅审查中态）
 4. 隐私与数据 Sheet 接真实逻辑（导出 / 删除档案，现仅 UI 占位）
-5. 真实数据贯通：时间线日期(CaseRecord)、公开数据卡数值(PublicData)
-6. **全 App 本地化**（抽 strings.xml + 日英翻译）→ 做完去掉语言入口 `enabled = false`。基础设施已就绪（`LanguagePrefs`/`attachBaseContext`/`findActivity`）
-7. 上架准备：Inter 字体、暗色模式、release 签名
+5. **全 App 本地化**（抽 strings.xml + 日英翻译）→ 做完去掉语言入口 `enabled = false`。基础设施已就绪（`LanguagePrefs`/`attachBaseContext`/`findActivity`）
+6. 上架准备：Inter 字体、暗色模式、release 签名
+
+> 注：原「真实数据贯通：时间线日期 + 公开数据卡数值」已并入第 1 项大方案。
 
 ---
 
