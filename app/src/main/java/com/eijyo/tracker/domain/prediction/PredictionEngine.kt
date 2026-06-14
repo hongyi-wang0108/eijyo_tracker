@@ -7,6 +7,7 @@ import com.eijyo.tracker.data.model.DateRange
 import com.eijyo.tracker.data.model.DatePrecision
 import com.eijyo.tracker.data.model.ImmigrationOffice
 import com.eijyo.tracker.data.model.Prediction
+import com.eijyo.tracker.data.model.PublicDataDoc
 import com.eijyo.tracker.data.model.TriState
 import com.eijyo.tracker.data.staticdata.PublicData
 import java.time.LocalDate
@@ -87,6 +88,20 @@ class PredictionEngine @Inject constructor() {
             reasons = reasons,
         )
     }
+
+    /**
+     * Step 5 entry point: FIFO model with [PublicDataDoc] real data.
+     * Falls back to [predict] (old 4-6 month logic) when:
+     *   - office has no monthly data in [publicDataDoc]
+     *   - office == OTHER
+     *   - series is empty
+     */
+    @Suppress("UNUSED_PARAMETER")
+    fun predict(
+        profile: ApplicationProfile,
+        publicDataDoc: PublicDataDoc,
+        today: LocalDate = LocalDate.now(),
+    ): Prediction? = TODO("Step 5: FIFO predict() — delegates to computeWait() then formats Prediction")
 
     private fun officeBuffer(office: ImmigrationOffice?): Int = when (office) {
         ImmigrationOffice.TOKYO, ImmigrationOffice.YOKOHAMA -> 1
