@@ -4,7 +4,7 @@
 > 规格见根目录 `PRODUCT_PM.md`；口头敲定但 PMdoc 未覆盖的决定记在 `docs/DECISIONS.md`。
 > 预测算法 + 公开数据管线的完整技术方案见 `docs/PREDICTION_AND_DATA.md`。
 
-**最后更新**：2026-06-12（材料 Tab + 数据 Tab 完成，5 个主 Tab 全部落地）
+**最后更新**：2026-06-14（Step 1 完成：数据结构 + 转换脚本 + 真实 public-data.json 入 assets + 单测）
 
 ---
 
@@ -43,12 +43,15 @@ Debug 包名：`com.eijyo.tracker.debug` · 远端：https://github.com/hongyi-w
 
 ## 下一步（按优先级）
 
-1. **预测算法 + 公开数据管线**（大方案，方案已定稿见 `docs/PREDICTION_AND_DATA.md`）。建议子步骤：
-   1. 数据结构 + JSON schema + 拉真实 e-Stat 数据填充（含东京/横滨拆分验证）
-   2. 网络层 + 三层降级（GitHub raw → Room → APK 内置兜底）
-   3. 公开数据卡 / 数据页接真实地区许可数 + 趋势（先交付看得见的真数据）
-   4. 时间线共享重构（抽 `buildTimeline`，首页只读摘要 + 申请页完整）
-   5. `PredictionEngine` 重写为 FIFO 排队模型（最后做）
+1. **预测算法 + 公开数据管线**（大方案，方案已定稿见 `docs/PREDICTION_AND_DATA.md`）：
+   - [x] 数据结构（`PublicDataDoc` / `OfficeData` / `MonthlyPoint` 等 Kotlin 模型） — 2026-06-14
+   - [x] Python 转换脚本（`estat_to_json.py`）+ 16 个转换断言全绿 — 2026-06-14（脚本在 data repo `scripts/`）
+   - [x] 真实 `public-data.json` 入 `app/src/main/assets/`（65 个月·6 个地区·gold-standard 2026-03 验证） — 2026-06-14
+   - [x] `PublicDataDocTest.kt`（Android JUnit，解析 + gold-standard 断言） — 2026-06-14
+   - [ ] 网络层 + 三层降级（GitHub raw → Room → APK 内置兜底）
+   - [ ] 公开数据卡 / 数据页接真实地区许可数 + 趋势（先交付看得见的真数据）
+   - [ ] 时间线共享重构（抽 `buildTimeline`，首页只读摘要 + 申请页完整）
+   - [ ] `PredictionEngine` 重写为 FIFO 排队模型 + 单测同步写（最后做）
 2. 关掉三处 `MOCK_PREVIEW`，接真实数据（见下方开关清单）
 3. 首页「准备中」「已结束」两态（现仅审查中态）
 4. 隐私与数据 Sheet 接真实逻辑（导出 / 删除档案，现仅 UI 占位）
