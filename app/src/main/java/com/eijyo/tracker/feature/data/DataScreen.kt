@@ -29,6 +29,7 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -36,7 +37,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.eijyo.tracker.core.ui.component.DogFace
 import com.eijyo.tracker.core.ui.theme.EijyoTheme
 import com.eijyo.tracker.core.ui.theme.MacaronPalette
-import com.eijyo.tracker.data.staticdata.PublicData
 
 @Composable
 fun DataScreen(viewModel: DataViewModel = hiltViewModel()) {
@@ -109,16 +109,29 @@ fun DataScreen(viewModel: DataViewModel = hiltViewModel()) {
             item {
                 Spacer(Modifier.height(16.dp))
                 OfficialHeroCard(
-                    data = state.publicData,
+                    state = state,
                     modifier = Modifier.padding(horizontal = 20.dp),
                 )
+            }
+
+            // Backlog / processing card — real e-Stat data
+            state.stats?.let { stats ->
+                item {
+                    Spacer(Modifier.height(16.dp))
+                    BacklogCard(
+                        officeLabel = state.officeLabel,
+                        dataAsOfLabel = state.dataAsOfLabel,
+                        stats = stats,
+                        modifier = Modifier.padding(horizontal = 20.dp),
+                    )
+                }
             }
 
             // Trend chart card
             item {
                 Spacer(Modifier.height(16.dp))
                 TrendChartCard(
-                    data = state.publicData,
+                    state = state,
                     modifier = Modifier.padding(horizontal = 20.dp),
                 )
             }
@@ -128,7 +141,7 @@ fun DataScreen(viewModel: DataViewModel = hiltViewModel()) {
                 Spacer(Modifier.height(16.dp))
                 RegionInfoCard(
                     officeLabel = state.officeLabel,
-                    regionalNote = state.publicData.regionalNote,
+                    regionalNote = state.regionalNote,
                     modifier = Modifier.padding(horizontal = 20.dp),
                 )
             }
@@ -165,8 +178,8 @@ fun DataScreen(viewModel: DataViewModel = hiltViewModel()) {
                     iconBg = MacaronPalette.SkySoft,
                     iconText = "i",
                     iconTextColor = MacaronPalette.SkyAccent,
-                    title = "公开统计资料",
-                    summary = "只展示可验证来源和更新时间",
+                    title = "出入国在留管理庁 出入国管理統計",
+                    summary = "e-Stat 受理处理・许可人数（每月更新）",
                     modifier = Modifier.padding(horizontal = 20.dp),
                 )
             }
@@ -178,7 +191,7 @@ fun DataScreen(viewModel: DataViewModel = hiltViewModel()) {
 
 @Composable
 private fun OfficialHeroCard(
-    data: PublicData,
+    state: DataUiState,
     modifier: Modifier = Modifier,
 ) {
     Box(
@@ -213,32 +226,43 @@ private fun OfficialHeroCard(
             )
             Spacer(Modifier.height(4.dp))
             Text(
-                data.standardProcessingRange,
+                state.standardRange,
                 style = TextStyle(fontSize = 34.sp, fontWeight = FontWeight.Bold),
                 color = MacaronPalette.Ink,
             )
             Spacer(Modifier.height(16.dp))
             Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                 DataPill(
-                    text = data.sourceName,
+                    text = state.sourceName,
                     bg = MacaronPalette.MintWash,
                     textColor = MacaronPalette.Mint,
                 )
-                DataPill(
-                    text = data.sourceUpdatedAt,
-                    bg = MacaronPalette.SkySoft,
-                    textColor = MacaronPalette.SkyAccent,
-                )
+                if (state.dataAsOfLabel.isNotBlank()) {
+                    DataPill(
+                        text = "更新至 ${state.dataAsOfLabel}",
+                        bg = MacaronPalette.SkySoft,
+                        textColor = MacaronPalette.SkyAccent,
+                    )
+                }
+                if (state.originLabel.isNotBlank()) {
+                    DataPill(
+                        text = state.originLabel,
+                        bg = MacaronPalette.LavenderSoft,
+                        textColor = MacaronPalette.LavenderAccent,
+                    )
+                }
             }
         }
     }
 }
 
-// ── Trend chart card ───────────────────────────────────────────────────────────
+// ── Backlog / processing card (real e-Stat) ─────────────────────────────────────
 
 @Composable
-private fun TrendChartCard(
-    data: PublicData,
+private fun BacklogCard(
+    officeLabel: String,
+    dataAsOfLabel: String,
+    stats: OfficeStats,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -255,69 +279,200 @@ private fun TrendChartCard(
             .padding(horizontal = 20.dp, vertical = 18.dp),
     ) {
         Text(
-            "处理参考趋势",
+            if (officeLabel.isNotBlank()) "${officeLabel}受理处理情况" else "受理处理情况",
+            style = EijyoTheme.typography.titleMedium,
+            color = MacaronPalette.Ink,
+        )
+        Spacer(Modifier.height(2.dp))
+        Text(
+            "${stats.latestMonthLabel} · 永住（已扣除管内支局）",
+            style = EijyoTheme.typography.labelMedium,
+            color = MacaronPalette.InkMuted,
+        )
+        Spacer(Modifier.height(16.dp))
+
+        Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+            StatBox(
+                label = "积压待处理",
+                value = formatCount(stats.pending),
+                accent = MacaronPalette.Coral,
+                modifier = Modifier.weight(1f),
+            )
+            StatBox(
+                label = "本月处理",
+                value = formatCount(stats.processed),
+                accent = MacaronPalette.Mint,
+                modifier = Modifier.weight(1f),
+            )
+            StatBox(
+                label = "本月新申请",
+                value = formatCount(stats.received),
+                accent = MacaronPalette.SkyAccent,
+                modifier = Modifier.weight(1f),
+            )
+        }
+
+        stats.queueMonths?.let { months ->
+            Spacer(Modifier.height(14.dp))
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clip(RoundedCornerShape(16.dp))
+                    .background(MacaronPalette.MintWash)
+                    .padding(horizontal = 14.dp, vertical = 12.dp),
+            ) {
+                Text(
+                    "按当前速度，清空现有积压约需 ${formatMonths(months)} 个月。" +
+                        "这是整体排队速度，非你个案的实际等待时间。",
+                    style = TextStyle(fontSize = 12.sp, fontWeight = FontWeight.Medium),
+                    color = MacaronPalette.Ink,
+                )
+            }
+        }
+
+        if (stats.bureauLabel != null && stats.bureauPending != null) {
+            Spacer(Modifier.height(8.dp))
+            Text(
+                "参考：${stats.bureauLabel}积压 ${formatCount(stats.bureauPending)}（含支局，整体看更快）",
+                style = TextStyle(fontSize = 11.sp, fontWeight = FontWeight.Medium),
+                color = MacaronPalette.InkMuted,
+            )
+        }
+    }
+}
+
+@Composable
+private fun StatBox(
+    label: String,
+    value: String,
+    accent: Color,
+    modifier: Modifier = Modifier,
+) {
+    Column(
+        modifier = modifier
+            .clip(RoundedCornerShape(18.dp))
+            .background(MacaronPalette.Cream)
+            .padding(horizontal = 12.dp, vertical = 14.dp),
+        horizontalAlignment = Alignment.Start,
+    ) {
+        Text(
+            value,
+            style = TextStyle(fontSize = 20.sp, fontWeight = FontWeight.Bold),
+            color = accent,
+        )
+        Spacer(Modifier.height(3.dp))
+        Text(
+            label,
+            style = TextStyle(fontSize = 10.sp, fontWeight = FontWeight.SemiBold),
+            color = MacaronPalette.InkMuted,
+        )
+    }
+}
+
+// ── Trend chart card ───────────────────────────────────────────────────────────
+
+@Composable
+private fun TrendChartCard(
+    state: DataUiState,
+    modifier: Modifier = Modifier,
+) {
+    Column(
+        modifier = modifier
+            .fillMaxWidth()
+            .shadow(
+                elevation = 8.dp,
+                shape = RoundedCornerShape(28.dp),
+                ambientColor = MacaronPalette.Shadow,
+                spotColor = MacaronPalette.Shadow,
+            )
+            .clip(RoundedCornerShape(28.dp))
+            .background(MacaronPalette.CreamSoft)
+            .padding(horizontal = 20.dp, vertical = 18.dp),
+    ) {
+        val hasTrend = state.trend.isNotEmpty()
+        Text(
+            if (hasTrend) state.trendTitle else "处理参考趋势",
             style = EijyoTheme.typography.titleMedium,
             color = MacaronPalette.Ink,
         )
         Spacer(Modifier.height(4.dp))
         Text(
-            "仅展示官方可确认数据",
+            if (hasTrend) "数据来源：${state.sourceName}（单位：${state.trendUnit}）"
+            else "暂无所选地区的公开趋势数据",
             style = EijyoTheme.typography.labelMedium,
             color = MacaronPalette.InkMuted,
         )
         Spacer(Modifier.height(16.dp))
-        ProcessingRangeChart(
-            minMonths = data.standardProcessingMinMonths,
-            maxMonths = data.standardProcessingMaxMonths,
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(82.dp),
-        )
-        Spacer(Modifier.height(12.dp))
-        Text(
-            "如无地区通过人数，不展示虚构数字",
-            style = TextStyle(fontSize = 11.sp, fontWeight = FontWeight.Bold),
-            color = MacaronPalette.Coral,
-        )
+
+        if (hasTrend) {
+            TrendBarChart(
+                bars = state.trend,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(120.dp),
+            )
+        } else {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(82.dp),
+                contentAlignment = Alignment.Center,
+            ) {
+                Text(
+                    "未指定地区或暂无可确认数据，不展示虚构数字",
+                    style = TextStyle(fontSize = 12.sp, fontWeight = FontWeight.Medium),
+                    color = MacaronPalette.InkMuted,
+                )
+            }
+        }
     }
 }
 
 @Composable
-private fun ProcessingRangeChart(
-    minMonths: Int,
-    maxMonths: Int,
+private fun TrendBarChart(
+    bars: List<TrendBar>,
     modifier: Modifier = Modifier,
 ) {
-    val totalMonths = 8
-    val bars = (1..totalMonths).map { month ->
-        val inRange = month in minMonths..maxMonths
-        val height = when {
-            month < minMonths -> 0.15f + (month.toFloat() / minMonths) * 0.45f
-            inRange -> when (month - minMonths) {
-                0 -> 0.75f
-                1 -> 1.0f
-                else -> 0.85f
-            }
-            else -> (0.7f - (month - maxMonths) * 0.2f).coerceAtLeast(0.15f)
-        }
-        inRange to height
-    }
+    val maxValue = (bars.maxOfOrNull { it.value } ?: 1).coerceAtLeast(1)
     Row(
         modifier = modifier,
-        horizontalArrangement = Arrangement.spacedBy(5.dp),
+        horizontalArrangement = Arrangement.spacedBy(6.dp),
         verticalAlignment = Alignment.Bottom,
     ) {
-        bars.forEach { (inRange, frac) ->
-            Box(
-                modifier = Modifier
-                    .weight(1f)
-                    .fillMaxHeight(frac)
-                    .clip(RoundedCornerShape(4.dp))
-                    .background(
-                        if (inRange) MacaronPalette.Mint
-                        else MacaronPalette.MintContainer.copy(alpha = 0.45f)
-                    ),
-            )
+        bars.forEachIndexed { index, bar ->
+            val frac = (bar.value.toFloat() / maxValue).coerceIn(0.04f, 1f)
+            val isLatest = index == bars.lastIndex
+            Column(
+                modifier = Modifier.weight(1f),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Bottom,
+            ) {
+                Text(
+                    formatCount(bar.value),
+                    style = TextStyle(fontSize = 8.sp, fontWeight = FontWeight.SemiBold),
+                    color = MacaronPalette.InkMuted,
+                    maxLines = 1,
+                )
+                Spacer(Modifier.height(3.dp))
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .fillMaxHeight(frac)
+                        .clip(RoundedCornerShape(topStart = 4.dp, topEnd = 4.dp))
+                        .background(
+                            if (isLatest) MacaronPalette.Mint
+                            else MacaronPalette.MintContainer.copy(alpha = 0.55f)
+                        ),
+                )
+                Spacer(Modifier.height(4.dp))
+                Text(
+                    bar.label,
+                    style = TextStyle(fontSize = 8.sp, fontWeight = FontWeight.Medium),
+                    color = MacaronPalette.InkMuted,
+                    maxLines = 1,
+                    textAlign = TextAlign.Center,
+                )
+            }
         }
     }
 }
@@ -545,3 +700,18 @@ private fun DataPawPrint(
         }
     }
 }
+
+// ── Formatting helpers ──────────────────────────────────────────────────────────
+
+/** 46300 → "4.6万"; 565 → "565". Compact for cards. */
+private fun formatCount(n: Int): String = when {
+    n >= 10_000 -> {
+        val wan = n / 1000 / 10.0
+        if (wan == wan.toInt().toDouble()) "${wan.toInt()}万" else "${wan}万"
+    }
+    else -> n.toString()
+}
+
+/** 14.67 → "14.7". */
+private fun formatMonths(m: Double): String =
+    (kotlin.math.round(m * 10) / 10.0).toString()

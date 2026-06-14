@@ -48,10 +48,10 @@ Debug 包名：`com.eijyo.tracker.debug` · 远端：https://github.com/hongyi-w
    - [x] Python 转换脚本（`estat_to_json.py`）+ 16 个转换断言全绿 — 2026-06-14（脚本在 data repo `scripts/`）
    - [x] 真实 `public-data.json` 入 `app/src/main/assets/`（65 个月·6 个地区·gold-standard 2026-03 验证） — 2026-06-14
    - [x] `PublicDataDocTest.kt`（Android JUnit，解析 + gold-standard 断言） — 2026-06-14
-   - [ ] 网络层 + 三层降级（GitHub raw → Room → APK 内置兜底）
-   - [ ] 公开数据卡 / 数据页接真实地区许可数 + 趋势（先交付看得见的真数据）
+   - [x] Step2 网络层 + 三层降级（jsDelivr → DataStore 缓存 → APK assets 兜底）+ 降级链6测试 — 2026-06-14
+   - [x] Step3 数据页接真实数据（积压卡 pending/月处理/排队 + permitsByYear 趋势图 + 双口径） — 2026-06-14
    - [ ] 时间线共享重构（抽 `buildTimeline`，首页只读摘要 + 申请页完整）
-   - [ ] `PredictionEngine` 重写为 FIFO 排队模型 + 单测同步写（最后做）
+   - [ ] `PredictionEngine` 重写为 FIFO 排队模型 + 单测同步写（Case A-G 已TDD红，最后做）
 2. 关掉三处 `MOCK_PREVIEW`，接真实数据（见下方开关清单）
 3. 首页「准备中」「已结束」两态（现仅审查中态）
 4. 隐私与数据 Sheet 接真实逻辑（导出 / 删除档案，现仅 UI 占位）
@@ -77,7 +77,7 @@ Debug 包名：`com.eijyo.tracker.debug` · 远端：https://github.com/hongyi-w
 | 首页 申请时间线卡 | — | 占位日期 | 待接 CaseRecord |
 | 首页 公开数据卡 | — | 占位数值 | 待接 PublicData 真实值 |
 | 材料 Tab | — | 真实数据 ✅ | 已实现，内联更新 + 筛选 |
-| 数据 Tab | — | 真实数据 ✅ | 已实现；§11.5 数据详情页已删除 |
+| 数据 Tab | — | 真实数据 ✅ | 接 e-Stat 真实积压/处理/许可数（三层降级）；§11.5 数据详情页已删除 |
 
 ---
 
