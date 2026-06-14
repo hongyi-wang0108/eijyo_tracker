@@ -54,7 +54,9 @@ Debug 包名：`com.eijyo.tracker.debug` · 远端：https://github.com/hongyi-w
    - [x] Step5 `PredictionEngine` FIFO 模型 + Case A-G 单测全绿（38 tests, 0 failures） — 2026-06-14
      - 算法在 `FifoPrediction.computeWait()`（纯函数）；`predict(profile, PublicDataDoc, today)` 重载格式化为 Prediction
      - 无地区数据/OTHER/空序列 → 退回旧 4-6 月逻辑（LOW 置信度）
-     - ⚠️ 待接线：ViewModel（PredictionDetailViewModel/HomeViewModel）改用新重载 + 关 MOCK_PREVIEW
+   - [x] 接线：`AnalysisRepository.regenerate/refreshPrediction` 改用 FIFO 重载（接 PublicDataRepository）；
+     启动时 `RootViewModel` 重算预测（避免冻结在上次编辑）；关闭 PredictionDetailScreen MOCK_PREVIEW — 2026-06-14
+     - Home/PredictionDetail 读 Room 存好的 Prediction，自动变 FIFO 结果，无需改 ViewModel
 2. 关掉三处 `MOCK_PREVIEW`，接真实数据（见下方开关清单）
 3. 首页「准备中」「已结束」两态（现仅审查中态）
 4. 隐私与数据 Sheet 接真实逻辑（导出 / 删除档案，现仅 UI 占位）
@@ -71,7 +73,7 @@ Debug 包名：`com.eijyo.tracker.debug` · 远端：https://github.com/hongyi-w
 
 | 位置 | 开关 | 当前值 | 含义 |
 |------|------|--------|------|
-| `feature/prediction/PredictionDetailScreen.kt` | `MOCK_PREVIEW` | `true` ⚠️ | UI 验收用假数据，验收完须改 `false` |
+| `feature/prediction/PredictionDetailScreen.kt` | `MOCK_PREVIEW` | `false` ✅ | 已接 FIFO 真实预测 |
 | `feature/risk/RiskDetailScreen.kt` | `MOCK_PREVIEW` | `true` ⚠️ | UI 验收用假数据，验收完须改 `false` |
 | `feature/application/ApplicationScreen.kt` | `MOCK_PREVIEW` | `true` ⚠️ | UI 验收用假数据，验收完须改 `false` |
 | `feature/home/HomeScreen.kt` | `MOCK_PREVIEW` | `false` ✅ | 真实数据；保留 `.copy()` 补缺字段逻辑 |

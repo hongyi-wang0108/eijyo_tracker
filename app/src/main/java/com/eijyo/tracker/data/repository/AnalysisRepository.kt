@@ -23,6 +23,7 @@ class AnalysisRepository @Inject constructor(
     private val riskDao: RiskDao,
     private val predictionEngine: PredictionEngine,
     private val riskEngine: RiskEngine,
+    private val publicDataRepository: PublicDataRepository,
 ) {
     fun observePrediction(appId: String = ApplicationProfile.SINGLETON_ID): Flow<Prediction?> =
         predictionDao.observeLatest(appId)
@@ -33,9 +34,22 @@ class AnalysisRepository @Inject constructor(
     suspend fun regenerate(profile: ApplicationProfile) {
         riskDao.deleteByApplication(profile.id)
         riskDao.insert(riskEngine.assess(profile))
+        refreshPrediction(profile)
+    }
 
+    /**
+     * Recomputes only the prediction (the date-sensitive artifact). Call on app launch so
+     * the FIFO windows reflect the current date + the freshest public data, instead of being
+     * frozen at the last profile edit. Risk doesn't depend on the date, so it's left alone.
+     */
+    suspend fun refreshPrediction(profile: ApplicationProfile) {
         predictionDao.deleteByApplication(profile.id)
-        val publicData = PublicDataSource.forOffice(profile.submittedOffice)
-        predictionEngine.predict(profile, publicData)?.let { predictionDao.insert(it) }
+        // Prefer the FIFO model on real e-Stat data (three-tier fallback, never throws).
+        // If even the bundled asset can't be read, fall back to the static standard period.
+        val prediction = runCatching { publicDataRepository.load().doc }
+            .getOrNull()
+            ?.let { doc -> predictionEngine.predict(profile, doc) }
+            ?: predictionEngine.predict(profile, PublicDataSource.forOffice(profile.submittedOffice))
+        prediction?.let { predictionDao.insert(it) }
     }
 }

@@ -50,8 +50,8 @@ private val ShadowTint = Color(0x1A8C5C3D)
 private val RingTrack = Color(0xFFF2EEE7)
 private val LemonBadge = Color(0xFFFFF0B8)
 
-// TEMP（UI 验收用）：用假数据预览有预测时的样子。验收完改回 false。
-private const val MOCK_PREVIEW = true
+// UI 验收用假数据预览开关。已接 FIFO 真实预测，关闭。
+private const val MOCK_PREVIEW = false
 private val mockState = PredictionDetailUiState(
     available = true,
     normalRange = "2026年9月中旬 - 11月上旬",
