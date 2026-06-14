@@ -43,13 +43,16 @@ class AnalysisRepository @Inject constructor(
      * frozen at the last profile edit. Risk doesn't depend on the date, so it's left alone.
      */
     suspend fun refreshPrediction(profile: ApplicationProfile) {
-        predictionDao.deleteByApplication(profile.id)
+        // Compute the new prediction BEFORE deleting the old one, so the old value stays
+        // visible during the (possibly slow) network load instead of flashing an empty
+        // "no prediction" state on every launch.
         // Prefer the FIFO model on real e-Stat data (three-tier fallback, never throws).
         // If even the bundled asset can't be read, fall back to the static standard period.
         val prediction = runCatching { publicDataRepository.load().doc }
             .getOrNull()
             ?.let { doc -> predictionEngine.predict(profile, doc) }
             ?: predictionEngine.predict(profile, PublicDataSource.forOffice(profile.submittedOffice))
+        predictionDao.deleteByApplication(profile.id)
         prediction?.let { predictionDao.insert(it) }
     }
 }

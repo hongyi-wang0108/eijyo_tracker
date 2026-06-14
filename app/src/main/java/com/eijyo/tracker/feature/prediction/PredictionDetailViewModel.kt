@@ -7,12 +7,13 @@ import com.eijyo.tracker.data.model.TriState
 import com.eijyo.tracker.data.model.VisaType
 import com.eijyo.tracker.data.repository.AnalysisRepository
 import com.eijyo.tracker.data.repository.ProfileRepository
-import com.eijyo.tracker.data.staticdata.PublicDataSource
+import com.eijyo.tracker.data.repository.PublicDataRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 /** Read-only view-state for the Prediction Detail page (PM doc §9). */
@@ -36,16 +37,22 @@ data class PredictionDetailUiState(
 class PredictionDetailViewModel @Inject constructor(
     profileRepository: ProfileRepository,
     analysisRepository: AnalysisRepository,
+    private val publicDataRepository: PublicDataRepository,
 ) : ViewModel() {
+
+    init {
+        viewModelScope.launch { runCatching { publicDataRepository.load() } }
+    }
 
     val state: StateFlow<PredictionDetailUiState> = combine(
         profileRepository.observeApplication(),
         analysisRepository.observePrediction(),
-    ) { app, prediction ->
+        publicDataRepository.state,
+    ) { app, prediction, dataResult ->
         if (app == null || prediction == null) {
             PredictionDetailUiState(available = false)
         } else {
-            val pub = PublicDataSource.forOffice(app.submittedOffice)
+            val doc = dataResult?.doc
             PredictionDetailUiState(
                 available = true,
                 normalRange = prediction.normalRange,
@@ -54,12 +61,12 @@ class PredictionDetailViewModel @Inject constructor(
                 office = app.submittedOffice?.label ?: "未指定入管",
                 optimisticRange = prediction.optimisticRange,
                 conservativeRange = prediction.conservativeRange,
-                processingRange = pub.standardProcessingRange,
+                processingRange = doc?.standardProcessing?.rangeLabel ?: "4 - 6 个月",
                 waitDays = prediction.currentWaitDays,
                 pathLabel = pathLabel(app.visaType, app.applicationPath),
                 supplementStatus = if (app.hasSupplementRequest == TriState.YES) "已收到" else "未发生",
-                sourceName = pub.sourceName,
-                sourceUpdated = pub.sourceUpdatedAt,
+                sourceName = doc?.source?.name ?: "出入国在留管理庁",
+                sourceUpdated = doc?.dataAsOf?.let { "更新至 ${monthLabel(it)}" } ?: "",
             )
         }
     }.stateIn(
@@ -67,6 +74,14 @@ class PredictionDetailViewModel @Inject constructor(
         started = SharingStarted.WhileSubscribed(5_000),
         initialValue = PredictionDetailUiState(),
     )
+}
+
+/** "2026-03" → "2026年3月"; passthrough if unparseable. */
+private fun monthLabel(ym: String): String {
+    val parts = ym.split("-")
+    if (parts.size != 2) return ym
+    val month = parts[1].toIntOrNull() ?: return ym
+    return "${parts[0]}年${month}月"
 }
 
 private fun pathLabel(visa: VisaType?, path: ApplicationPath?): String =

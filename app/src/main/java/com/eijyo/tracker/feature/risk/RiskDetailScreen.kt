@@ -50,8 +50,8 @@ private val LemonBadge = Color(0xFFFFF0B8)
 private val CoralSoft = Color(0xFFFFD4C8)
 private val LavendPill = Color(0xFFE4DBFF)
 
-// TEMP（UI 验收用）：用假数据预览有数据时的样子。验收完改回 false。
-private const val MOCK_PREVIEW = true
+// UI 验收用假数据预览开关。已接 RiskEngine 真实评估，关闭。
+private const val MOCK_PREVIEW = false
 private val mockState = RiskDetailUiState(
     available = true,
     levelLabel = "低风险",

@@ -83,7 +83,7 @@ fun HomeScreen(
         ) {
             Header(state)
             PredictionCard(state, onClick = onOpenPredictionDetail)
-            PublicDataCard(office = officeName(state))
+            PublicDataCard(office = officeName(state), state = state)
             TimelineCard(state)
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -301,14 +301,16 @@ private fun ProgressRing(percent: Int, ringSize: Dp = 66.dp) {
 }
 
 @Composable
-private fun PublicDataCard(office: String) {
+private fun PublicDataCard(office: String, state: HomeUiState) {
     val colors = EijyoTheme.colors
+    val updateLabel = if (state.publicDataAsOf.isNotBlank())
+        "公开资料更新：${state.publicDataAsOf}" else "官方公开统计资料"
     HomeCard(modifier = Modifier.fillMaxWidth(), radius = 26.dp) {
         Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
             Column(modifier = Modifier.weight(1f)) {
                 Text("${office}数据", style = EijyoTheme.typography.labelLarge.copy(fontSize = 16.sp), color = colors.ink)
                 Spacer(Modifier.height(4.dp))
-                Text("公开资料更新：2026年5月", style = EijyoTheme.typography.labelSmall.copy(fontSize = 11.sp), color = colors.inkMuted)
+                Text(updateLabel, style = EijyoTheme.typography.labelSmall.copy(fontSize = 11.sp), color = colors.inkMuted)
             }
             Box(
                 modifier = Modifier
@@ -322,11 +324,13 @@ private fun PublicDataCard(office: String) {
         Spacer(Modifier.height(14.dp))
         Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.Bottom) {
             Column(modifier = Modifier.weight(1f)) {
-                Text("处理参考趋势", style = EijyoTheme.typography.labelSmall.copy(fontSize = 12.sp), color = colors.inkMuted)
+                Text("官方标准处理期间", style = EijyoTheme.typography.labelSmall.copy(fontSize = 12.sp), color = colors.inkMuted)
                 Spacer(Modifier.height(4.dp))
-                Text("4 - 6 个月", style = EijyoTheme.typography.headlineMedium.copy(fontSize = 22.sp), color = colors.ink)
+                Text(state.standardRange, style = EijyoTheme.typography.headlineMedium.copy(fontSize = 22.sp), color = colors.ink)
             }
-            MiniBarChart(modifier = Modifier.width(140.dp).height(48.dp))
+            if (state.miniTrend.isNotEmpty()) {
+                MiniBarChart(values = state.miniTrend, modifier = Modifier.width(140.dp).height(48.dp))
+            }
         }
         Spacer(Modifier.height(8.dp))
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
@@ -336,23 +340,19 @@ private fun PublicDataCard(office: String) {
 }
 
 @Composable
-private fun MiniBarChart(modifier: Modifier = Modifier) {
+private fun MiniBarChart(values: List<Int>, modifier: Modifier = Modifier) {
     val colors = EijyoTheme.colors
-    val bars = listOf(
-        0.45f to colors.skySoft,
-        0.62f to colors.lavenderSoft,
-        0.55f to colors.mintContainer,
-        0.78f to colors.peach,
-        1.0f to colors.mint,
-    )
+    val palette = listOf(colors.skySoft, colors.lavenderSoft, colors.mintContainer, colors.peach, colors.mint)
+    val max = (values.maxOrNull() ?: 1).coerceAtLeast(1)
     Row(modifier = modifier, horizontalArrangement = Arrangement.spacedBy(8.dp), verticalAlignment = Alignment.Bottom) {
-        bars.forEach { (frac, color) ->
+        values.forEachIndexed { i, v ->
+            val frac = (v.toFloat() / max).coerceIn(0.08f, 1f)
             Box(
                 modifier = Modifier
                     .weight(1f)
                     .fillMaxHeight(frac)
                     .clip(RoundedCornerShape(5.dp))
-                    .background(color),
+                    .background(palette[i % palette.size]),
             )
         }
     }

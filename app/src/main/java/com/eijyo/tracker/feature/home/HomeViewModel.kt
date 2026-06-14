@@ -6,12 +6,15 @@ import com.eijyo.tracker.data.model.ApplicationProfile
 import com.eijyo.tracker.data.model.ApplicationStatus
 import com.eijyo.tracker.data.model.DocumentItem
 import com.eijyo.tracker.data.model.DocumentStatus
+import com.eijyo.tracker.data.model.ImmigrationOffice
 import com.eijyo.tracker.data.model.Prediction
+import com.eijyo.tracker.data.model.PublicDataDoc
 import com.eijyo.tracker.data.model.RiskLevel
 import com.eijyo.tracker.data.model.SupplementRequest
 import com.eijyo.tracker.data.repository.AnalysisRepository
 import com.eijyo.tracker.data.repository.DocumentRepository
 import com.eijyo.tracker.data.repository.ProfileRepository
+import com.eijyo.tracker.data.repository.PublicDataRepository
 import com.eijyo.tracker.data.repository.SupplementRepository
 import com.eijyo.tracker.domain.timeline.TimelineBuilder
 import com.eijyo.tracker.domain.timeline.TimelineDisplayItem
@@ -20,6 +23,7 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 import java.time.LocalTime
 import javax.inject.Inject
 
@@ -37,6 +41,9 @@ data class HomeUiState(
     val documentsPrepared: Int = 0,
     val documentsTotal: Int = 0,
     val timeline: List<TimelineDisplayItem> = emptyList(),
+    val publicDataAsOf: String = "",
+    val standardRange: String = "4 - 6 个月",
+    val miniTrend: List<Int> = emptyList(),
 )
 
 @HiltViewModel
@@ -45,8 +52,13 @@ class HomeViewModel @Inject constructor(
     documentRepository: DocumentRepository,
     analysisRepository: AnalysisRepository,
     supplementRepository: SupplementRepository,
+    private val publicDataRepository: PublicDataRepository,
     private val timelineBuilder: TimelineBuilder,
 ) : ViewModel() {
+
+    init {
+        viewModelScope.launch { runCatching { publicDataRepository.load() } }
+    }
 
     // Bundle the three analysis-side flows so the outer combine stays within its 5-arg
     // typed overload while still feeding the timeline summary.
@@ -65,7 +77,8 @@ class HomeViewModel @Inject constructor(
             analysisRepository.observeRisk(),
             supplementRepository.observeByApplication(),
         ) { prediction, risk, supplements -> Analysis(prediction, risk?.level, supplements) },
-    ) { user, application, documents, analysis ->
+        publicDataRepository.state,
+    ) { user, application, documents, analysis, dataResult ->
         if (application == null) {
             HomeUiState(loading = true)
         } else {
@@ -74,6 +87,7 @@ class HomeViewModel @Inject constructor(
                 application = application,
                 documents = documents,
                 analysis = analysis,
+                doc = dataResult?.doc,
             )
         }
     }.stateIn(
@@ -87,11 +101,18 @@ class HomeViewModel @Inject constructor(
         application: ApplicationProfile,
         documents: List<DocumentItem>,
         analysis: Analysis,
+        doc: PublicDataDoc?,
     ): HomeUiState {
         val prediction = analysis.prediction
         val prepared = documents.count {
             it.status == DocumentStatus.PREPARED || it.status == DocumentStatus.SUBMITTED
         }
+        val officeData = application.submittedOffice
+            ?.takeIf { it != ImmigrationOffice.OTHER }
+            ?.let { doc?.officeData(it.name) }
+        val miniTrend = officeData?.permitsByYear?.takeLast(5)?.map { it.count }
+            ?: officeData?.monthly?.takeLast(6)?.map { it.processed }
+            ?: emptyList()
         return HomeUiState(
             loading = false,
             greeting = greeting(nickname),
@@ -108,7 +129,18 @@ class HomeViewModel @Inject constructor(
             documentsPrepared = prepared,
             documentsTotal = documents.size,
             timeline = timelineBuilder.summary(application, analysis.supplements, prediction),
+            publicDataAsOf = doc?.dataAsOf?.let { monthLabel(it) } ?: "",
+            standardRange = doc?.standardProcessing?.rangeLabel ?: "4 - 6 个月",
+            miniTrend = miniTrend,
         )
+    }
+
+    /** "2026-03" → "2026年3月"; passthrough if unparseable. */
+    private fun monthLabel(ym: String): String {
+        val parts = ym.split("-")
+        if (parts.size != 2) return ym
+        val month = parts[1].toIntOrNull() ?: return ym
+        return "${parts[0]}年${month}月"
     }
 
     private fun greeting(nickname: String): String {

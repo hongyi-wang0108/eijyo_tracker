@@ -75,13 +75,13 @@ Debug 包名：`com.eijyo.tracker.debug` · 远端：https://github.com/hongyi-w
 | 位置 | 开关 | 当前值 | 含义 |
 |------|------|--------|------|
 | `feature/prediction/PredictionDetailScreen.kt` | `MOCK_PREVIEW` | `false` ✅ | 已接 FIFO 真实预测 |
-| `feature/risk/RiskDetailScreen.kt` | `MOCK_PREVIEW` | `true` ⚠️ | UI 验收用假数据，验收完须改 `false` |
+| `feature/risk/RiskDetailScreen.kt` | `MOCK_PREVIEW` | `false` ✅ | 已接 RiskEngine 真实评估 |
 | `feature/application/ApplicationScreen.kt` | `MOCK_PREVIEW` | `false` ✅ | 时间线已接 TimelineBuilder 真实数据 |
 | `feature/home/HomeScreen.kt` | `MOCK_PREVIEW` | `false` ✅ | 真实数据；保留 `.copy()` 补缺字段逻辑 |
 | `feature/settings/SettingsScreen.kt` | — | 真实数据 ✅ | 已无 MOCK，读 ProfileRepository 真名/状态 |
 | 我的页 语言设置入口 | `enabled` | `false` ⚠️ | 暂灰；本地化做完后改 `true` |
 | 首页 申请时间线卡 | — | 真实数据 ✅ | 接 TimelineBuilder.summary（提交/受理/预测/结果） |
-| 首页 公开数据卡 | — | 占位数值 | 待接 PublicData 真实值 |
+| 首页 公开数据卡 | — | 真实数据 ✅ | 接 PublicDataRepository（更新月 + 真实 mini 趋势） |
 | 材料 Tab | — | 真实数据 ✅ | 已实现，内联更新 + 筛选 |
 | 数据 Tab | — | 真实数据 ✅ | 接 e-Stat 真实积压/处理/许可数（三层降级）；§11.5 数据详情页已删除 |
 

@@ -46,6 +46,14 @@ class PublicDataRepository @Inject constructor(
      * Never throws: the bundled asset is the guaranteed floor.
      */
     suspend fun load(): PublicDataResult {
+        // Prime with the bundled (real) data immediately so the UI shows real numbers at
+        // once instead of staying empty while the network attempt is in flight. The tiers
+        // below upgrade to network/cache when available.
+        if (_state.value == null) {
+            runCatching { parse(bundled.readJson()) }.getOrNull()
+                ?.let { _state.value = PublicDataResult(it, PublicDataOrigin.BUNDLED) }
+        }
+
         // Tier 1: network. Parse before trusting it; cache only valid JSON.
         runCatching { remote.fetchJson() }
             .mapCatching { raw -> parse(raw) to raw }
