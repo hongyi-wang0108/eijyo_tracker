@@ -324,9 +324,15 @@ private fun PublicDataCard(office: String, state: HomeUiState) {
         Spacer(Modifier.height(14.dp))
         Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.Bottom) {
             Column(modifier = Modifier.weight(1f)) {
-                Text("官方标准处理期间", style = EijyoTheme.typography.labelSmall.copy(fontSize = 12.sp), color = colors.inkMuted)
-                Spacer(Modifier.height(4.dp))
-                Text(state.standardRange, style = EijyoTheme.typography.headlineMedium.copy(fontSize = 22.sp), color = colors.ink)
+                if (state.backlogLabel.isNotBlank()) {
+                    Text("当前积压参考", style = EijyoTheme.typography.labelSmall.copy(fontSize = 12.sp), color = colors.inkMuted)
+                    Spacer(Modifier.height(4.dp))
+                    Text(state.backlogLabel, style = EijyoTheme.typography.headlineMedium.copy(fontSize = 22.sp), color = colors.ink)
+                } else {
+                    Text("官方公开统计资料", style = EijyoTheme.typography.labelSmall.copy(fontSize = 12.sp), color = colors.inkMuted)
+                    Spacer(Modifier.height(4.dp))
+                    Text("前往数据页查看", style = EijyoTheme.typography.labelMedium.copy(fontSize = 13.sp), color = colors.inkMuted)
+                }
             }
             if (state.miniTrend.isNotEmpty()) {
                 MiniBarChart(values = state.miniTrend, modifier = Modifier.width(140.dp).height(48.dp))

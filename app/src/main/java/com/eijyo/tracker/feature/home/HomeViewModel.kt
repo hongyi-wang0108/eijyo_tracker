@@ -42,7 +42,7 @@ data class HomeUiState(
     val documentsTotal: Int = 0,
     val timeline: List<TimelineDisplayItem> = emptyList(),
     val publicDataAsOf: String = "",
-    val standardRange: String = "4 - 6 个月",
+    val backlogLabel: String = "",
     val miniTrend: List<Int> = emptyList(),
 )
 
@@ -113,6 +113,8 @@ class HomeViewModel @Inject constructor(
         val miniTrend = officeData?.permitsByYear?.takeLast(5)?.map { it.count }
             ?: officeData?.monthly?.takeLast(6)?.map { it.processed }
             ?: emptyList()
+        val backlogLabel = officeData?.monthly?.lastOrNull()
+            ?.let { "约${formatWan(it.pending)}件" } ?: ""
         return HomeUiState(
             loading = false,
             greeting = greeting(nickname),
@@ -130,7 +132,7 @@ class HomeViewModel @Inject constructor(
             documentsTotal = documents.size,
             timeline = timelineBuilder.summary(application, analysis.supplements, prediction),
             publicDataAsOf = doc?.dataAsOf?.let { monthLabel(it) } ?: "",
-            standardRange = doc?.standardProcessing?.rangeLabel ?: "4 - 6 个月",
+            backlogLabel = backlogLabel,
             miniTrend = miniTrend,
         )
     }
@@ -142,6 +144,12 @@ class HomeViewModel @Inject constructor(
         val month = parts[1].toIntOrNull() ?: return ym
         return "${parts[0]}年${month}月"
     }
+
+    /** 46300 → "4.6万"; 565 → "565" (1 decimal of 万). */
+    private fun formatWan(n: Int): String = if (n >= 10_000) {
+        val wan = Math.round(n / 1000.0) / 10.0
+        if (wan == wan.toInt().toDouble()) "${wan.toInt()}万" else "${wan}万"
+    } else n.toString()
 
     private fun greeting(nickname: String): String {
         val name = nickname.ifBlank { "你" }

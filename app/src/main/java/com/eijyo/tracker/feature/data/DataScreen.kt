@@ -24,7 +24,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
@@ -105,22 +104,12 @@ fun DataScreen(viewModel: DataViewModel = hiltViewModel()) {
                 }
             }
 
-            // Official processing period hero card
-            item {
-                Spacer(Modifier.height(16.dp))
-                OfficialHeroCard(
-                    state = state,
-                    modifier = Modifier.padding(horizontal = 20.dp),
-                )
-            }
-
             // Backlog / processing card — real e-Stat data
             state.stats?.let { stats ->
                 item {
                     Spacer(Modifier.height(16.dp))
                     BacklogCard(
                         officeLabel = state.officeLabel,
-                        dataAsOfLabel = state.dataAsOfLabel,
                         stats = stats,
                         modifier = Modifier.padding(horizontal = 20.dp),
                     )
@@ -187,81 +176,11 @@ fun DataScreen(viewModel: DataViewModel = hiltViewModel()) {
     }
 }
 
-// ── Official processing period hero card ──────────────────────────────────────
-
-@Composable
-private fun OfficialHeroCard(
-    state: DataUiState,
-    modifier: Modifier = Modifier,
-) {
-    Box(
-        modifier = modifier
-            .fillMaxWidth()
-            .shadow(
-                elevation = 8.dp,
-                shape = RoundedCornerShape(30.dp),
-                ambientColor = MacaronPalette.Shadow,
-                spotColor = MacaronPalette.Shadow,
-            )
-            .clip(RoundedCornerShape(30.dp))
-            .background(MacaronPalette.CreamSoft)
-            .padding(horizontal = 22.dp, vertical = 20.dp),
-    ) {
-        // Paw print decoration top-right
-        DataPawPrint(
-            color = MacaronPalette.DogPaw,
-            modifier = Modifier
-                .align(Alignment.TopEnd)
-                .padding(end = 4.dp)
-                .rotate(14f)
-                .size(18.dp),
-            opacity = 0.18f,
-        )
-
-        Column {
-            Text(
-                "官方标准处理期间",
-                style = EijyoTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Bold),
-                color = MacaronPalette.InkMuted,
-            )
-            Spacer(Modifier.height(4.dp))
-            Text(
-                state.standardRange,
-                style = TextStyle(fontSize = 34.sp, fontWeight = FontWeight.Bold),
-                color = MacaronPalette.Ink,
-            )
-            Spacer(Modifier.height(16.dp))
-            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                DataPill(
-                    text = state.sourceName,
-                    bg = MacaronPalette.MintWash,
-                    textColor = MacaronPalette.Mint,
-                )
-                if (state.dataAsOfLabel.isNotBlank()) {
-                    DataPill(
-                        text = "更新至 ${state.dataAsOfLabel}",
-                        bg = MacaronPalette.SkySoft,
-                        textColor = MacaronPalette.SkyAccent,
-                    )
-                }
-                if (state.originLabel.isNotBlank()) {
-                    DataPill(
-                        text = state.originLabel,
-                        bg = MacaronPalette.LavenderSoft,
-                        textColor = MacaronPalette.LavenderAccent,
-                    )
-                }
-            }
-        }
-    }
-}
-
 // ── Backlog / processing card (real e-Stat) ─────────────────────────────────────
 
 @Composable
 private fun BacklogCard(
     officeLabel: String,
-    dataAsOfLabel: String,
     stats: OfficeStats,
     modifier: Modifier = Modifier,
 ) {
@@ -668,36 +587,6 @@ private fun DataPill(
             style = EijyoTheme.typography.labelMedium,
             color = textColor,
         )
-    }
-}
-
-@Composable
-private fun DataPawPrint(
-    color: Color,
-    modifier: Modifier = Modifier,
-    opacity: Float = 0.18f,
-) {
-    Box(modifier = modifier, contentAlignment = Alignment.Center) {
-        Box(
-            Modifier
-                .align(Alignment.BottomCenter)
-                .size(8.dp, 6.dp)
-                .clip(RoundedCornerShape(50))
-                .background(color.copy(alpha = opacity)),
-        )
-        Row(
-            modifier = Modifier.align(Alignment.TopCenter),
-            horizontalArrangement = Arrangement.spacedBy(1.dp),
-        ) {
-            repeat(3) {
-                Box(
-                    Modifier
-                        .size(3.5.dp)
-                        .clip(CircleShape)
-                        .background(color.copy(alpha = opacity)),
-                )
-            }
-        }
     }
 }
 
