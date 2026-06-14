@@ -881,7 +881,8 @@
           "year": 2024,
           "count": 17903
         }
-      ]
+      ],
+      "calibrationFactor": 1.65
     },
     {
       "code": "YOKOHAMA",
@@ -1278,7 +1279,8 @@
           "processed": 565,
           "pending": 5407
         }
-      ]
+      ],
+      "calibrationFactor": 1.0
     },
     {
       "code": "OSAKA",
@@ -2148,7 +2150,8 @@
           "year": 2024,
           "count": 4843
         }
-      ]
+      ],
+      "calibrationFactor": 1.0
     },
     {
       "code": "KOBE",
@@ -2545,7 +2548,8 @@
           "processed": 114,
           "pending": 1436
         }
-      ]
+      ],
+      "calibrationFactor": 1.0
     },
     {
       "code": "NAGOYA",
@@ -3415,7 +3419,8 @@
           "year": 2024,
           "count": 10239
         }
-      ]
+      ],
+      "calibrationFactor": 1.0
     },
     {
       "code": "FUKUOKA",
@@ -4285,7 +4290,8 @@
           "year": 2024,
           "count": 1344
         }
-      ]
+      ],
+      "calibrationFactor": 1.0
     }
   ]
 }

@@ -72,8 +72,13 @@ fun computeWait(
     val sigmaP = sorted.filter { it.month > anchor.month }.sumOf { it.processed }
     val rLatest = q0 - sigmaP
 
-    // 3. Extrapolate the data-lag gap (latest data month → today) at the central speed.
-    val gap = monthsBetween(latest.month, today).coerceAtLeast(0)
+    // 3. Extrapolate the unobserved gap at the central speed. The gap counts only the
+    //    months during which the user was *both* already in the queue *and* we have no
+    //    data — i.e. from max(latest data month, submitMonth) to today. Without the
+    //    submitMonth bound, a brand-new applicant (submitted after the latest data) would
+    //    wrongly have the data-lag processing subtracted from their position.
+    val gapStart = maxOf(latest.month, submitMonth)
+    val gap = monthsBetween(gapStart, today).coerceAtLeast(0)
 
     // μ_central = average processed over the recent window. Using the average (not the
     // single latest month) keeps the central estimate stable and the optimistic/normal/

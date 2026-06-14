@@ -38,6 +38,13 @@ data class OfficeData(
     val monthly: List<MonthlyPoint>,
     val bureauTotal: BureauTotal? = null,
     val permitsByYear: List<YearlyPermit>? = null,
+    /**
+     * Multiplier applied to the FIFO wait time so the prediction matches real observed
+     * latency, which runs longer than the naive backlog÷throughput estimate (the queue
+     * isn't strictly FIFO; resources are shared across statuses; some cases stall).
+     * 1.0 = no calibration. Tuned per office from ground truth (e.g. Tokyo ≈ 700 days).
+     */
+    val calibrationFactor: Double = 1.0,
 )
 
 /**

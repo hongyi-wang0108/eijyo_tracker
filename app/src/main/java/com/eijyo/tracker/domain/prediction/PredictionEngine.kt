@@ -132,12 +132,19 @@ class PredictionEngine @Inject constructor() {
         val officeData = publicDataDoc.officeData(office!!.name)
         reasons += "基于${officeData?.displayName ?: office.label}真实受理处理数据（更新至 ${publicDataDoc.dataAsOf}）"
 
+        // Calibrate the raw FIFO wait to real observed latency (see OfficeData.calibrationFactor).
+        // Applied to time only — rNow (people ahead) stays a real count.
+        val factor = officeData?.calibrationFactor ?: 1.0
+        val optimisticMonths = wait.optimisticMonths * factor
+        val normalMonths = wait.normalMonths * factor
+        val conservativeMonths = wait.conservativeMonths * factor
+
         // Add fractional months as days so the three scenarios land on distinct dates.
         // Truncating to whole months (toLong) collapsed e.g. 9.2 and 9.9 into the same
         // month, making 正常 and 保守 show identical labels.
-        val optimisticDate = today.plusFractionalMonths(wait.optimisticMonths)
-        val normalDate = today.plusFractionalMonths(wait.normalMonths)
-        val conservativeDate = today.plusFractionalMonths(wait.conservativeMonths)
+        val optimisticDate = today.plusFractionalMonths(optimisticMonths)
+        val normalDate = today.plusFractionalMonths(normalMonths)
+        val conservativeDate = today.plusFractionalMonths(conservativeMonths)
 
         val optimisticRange: String
         val normalRange: String
@@ -153,7 +160,7 @@ class PredictionEngine @Inject constructor() {
             normalRange = DateLabels.monthThird(normalDate)
             conservativeRange = DateLabels.monthThird(conservativeDate)
             reasons += "估算你前面约还有 ${wait.rNow} 件待处理"
-            reasons += "按近期处理速度推算，约还需 ${wait.normalMonths.roundToInt()} 个月"
+            reasons += "按近期处理速度推算，约还需 ${normalMonths.roundToInt()} 个月"
         }
 
         if (profile.submittedDatePrecision == DatePrecision.MONTH) {
@@ -169,7 +176,7 @@ class PredictionEngine @Inject constructor() {
         )
 
         val waitDays = ChronoUnit.DAYS.between(submitted, today).toInt().coerceAtLeast(0)
-        val remainingDays = (wait.normalMonths.coerceAtLeast(0.0) * 30).toInt()
+        val remainingDays = (normalMonths.coerceAtLeast(0.0) * AVG_DAYS_PER_MONTH).toInt()
         val progress = when {
             wait.state == WaitState.ALREADY_DUE -> 99
             waitDays + remainingDays <= 0 -> 0
