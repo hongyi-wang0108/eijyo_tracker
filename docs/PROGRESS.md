@@ -51,7 +51,10 @@ Debug 包名：`com.eijyo.tracker.debug` · 远端：https://github.com/hongyi-w
    - [x] Step2 网络层 + 三层降级（jsDelivr → DataStore 缓存 → APK assets 兜底）+ 降级链6测试 — 2026-06-14
    - [x] Step3 数据页接真实数据（积压卡 pending/月处理/排队 + permitsByYear 趋势图 + 双口径） — 2026-06-14
    - [ ] 时间线共享重构（抽 `buildTimeline`，首页只读摘要 + 申请页完整）
-   - [ ] `PredictionEngine` 重写为 FIFO 排队模型 + 单测同步写（Case A-G 已TDD红，最后做）
+   - [x] Step5 `PredictionEngine` FIFO 模型 + Case A-G 单测全绿（38 tests, 0 failures） — 2026-06-14
+     - 算法在 `FifoPrediction.computeWait()`（纯函数）；`predict(profile, PublicDataDoc, today)` 重载格式化为 Prediction
+     - 无地区数据/OTHER/空序列 → 退回旧 4-6 月逻辑（LOW 置信度）
+     - ⚠️ 待接线：ViewModel（PredictionDetailViewModel/HomeViewModel）改用新重载 + 关 MOCK_PREVIEW
 2. 关掉三处 `MOCK_PREVIEW`，接真实数据（见下方开关清单）
 3. 首页「准备中」「已结束」两态（现仅审查中态）
 4. 隐私与数据 Sheet 接真实逻辑（导出 / 删除档案，现仅 UI 占位）

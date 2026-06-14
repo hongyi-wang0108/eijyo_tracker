@@ -14,6 +14,7 @@ import java.time.LocalDate
 import java.time.temporal.ChronoUnit
 import javax.inject.Inject
 import kotlin.math.min
+import kotlin.math.roundToInt
 
 /**
  * Rule-based, explainable prediction (PM doc §14 + 6.3.5). It produces three result
@@ -90,18 +91,125 @@ class PredictionEngine @Inject constructor() {
     }
 
     /**
-     * Step 5 entry point: FIFO model with [PublicDataDoc] real data.
-     * Falls back to [predict] (old 4-6 month logic) when:
-     *   - office has no monthly data in [publicDataDoc]
-     *   - office == OTHER
-     *   - series is empty
+     * FIFO model driven by real [PublicDataDoc] data. Falls back to the old 4-6 month
+     * logic (with LOW confidence) when the office has no regional series — OTHER, an
+     * unknown office, or an empty `monthly` list.
      */
-    @Suppress("UNUSED_PARAMETER")
     fun predict(
         profile: ApplicationProfile,
         publicDataDoc: PublicDataDoc,
         today: LocalDate = LocalDate.now(),
-    ): Prediction? = TODO("Step 5: FIFO predict() — delegates to computeWait() then formats Prediction")
+    ): Prediction? {
+        if (profile.status != ApplicationStatus.REVIEWING) return null
+        val submitted = DateLabels.resolveSubmitted(
+            profile.submittedDate,
+            profile.submittedDatePrecision,
+        ) ?: return null
+
+        val office = profile.submittedOffice
+        val series = office
+            ?.takeIf { it != ImmigrationOffice.OTHER }
+            ?.let { publicDataDoc.officeData(it.name) }
+            ?.monthly
+            .orEmpty()
+
+        // No regional data → old standard-period logic, flagged low confidence.
+        if (series.isEmpty()) {
+            val fallbackPublic = PublicData(
+                standardProcessingRange = publicDataDoc.standardProcessing.rangeLabel,
+                standardProcessingMinMonths = publicDataDoc.standardProcessing.minMonths,
+                standardProcessingMaxMonths = publicDataDoc.standardProcessing.maxMonths,
+                regionalNote = "",
+            )
+            return predict(profile, fallbackPublic, today)
+                ?.copy(confidenceLevel = ConfidenceLevel.LOW)
+        }
+
+        val submitMonth = DateLabels.formatMonth(submitted)
+        val wait = computeWait(series, submitMonth, today)
+
+        val reasons = mutableListOf<String>()
+        val officeData = publicDataDoc.officeData(office!!.name)
+        reasons += "基于${officeData?.displayName ?: office.label}真实受理处理数据（更新至 ${publicDataDoc.dataAsOf}）"
+
+        val optimisticDate = today.plusMonths(wait.optimisticMonths.coerceAtLeast(0.0).toLong())
+        val normalDate = today.plusMonths(wait.normalMonths.coerceAtLeast(0.0).toLong())
+        val conservativeDate = today.plusMonths(wait.conservativeMonths.coerceAtLeast(0.0).toLong())
+
+        val optimisticRange: String
+        val normalRange: String
+        val conservativeRange: String
+        if (wait.state == WaitState.ALREADY_DUE) {
+            val dueLabel = "已进入可能出结果区间"
+            optimisticRange = dueLabel
+            normalRange = dueLabel
+            conservativeRange = dueLabel
+            reasons += "按统计你已进入可能出结果的区间，请留意入管通知"
+        } else {
+            optimisticRange = DateLabels.monthThird(optimisticDate)
+            normalRange = DateLabels.monthThird(normalDate)
+            conservativeRange = DateLabels.monthThird(conservativeDate)
+            reasons += "估算你前面约还有 ${wait.rNow} 件待处理"
+            reasons += "按近期处理速度推算，约还需 ${wait.normalMonths.roundToInt()} 个月"
+        }
+
+        if (profile.submittedDatePrecision == DatePrecision.MONTH) {
+            reasons += "申请日期仅精确到月，预测以该月中旬估算，置信度相应降低"
+        }
+        reasons += "此为按平均处理速度的参考估算，非你个案的实际进度"
+
+        val confidence = fifoConfidence(
+            precision = profile.submittedDatePrecision,
+            dataAsOf = publicDataDoc.dataAsOf,
+            rNow = wait.rNow,
+            today = today,
+        )
+
+        val waitDays = ChronoUnit.DAYS.between(submitted, today).toInt().coerceAtLeast(0)
+        val remainingDays = (wait.normalMonths.coerceAtLeast(0.0) * 30).toInt()
+        val progress = when {
+            wait.state == WaitState.ALREADY_DUE -> 99
+            waitDays + remainingDays <= 0 -> 0
+            else -> min(99, waitDays * 100 / (waitDays + remainingDays))
+        }
+
+        return Prediction(
+            applicationId = profile.id,
+            optimisticRange = optimisticRange,
+            normalRange = normalRange,
+            conservativeRange = conservativeRange,
+            confidenceLevel = confidence,
+            currentWaitDays = waitDays,
+            progressPercent = progress,
+            reasons = reasons,
+        )
+    }
+
+    /** Confidence for the FIFO path: starts HIGH, docked for imprecision/staleness. */
+    private fun fifoConfidence(
+        precision: DatePrecision,
+        dataAsOf: String,
+        rNow: Int,
+        today: LocalDate,
+    ): ConfidenceLevel {
+        var points = 2
+        if (precision == DatePrecision.MONTH) points -= 1
+        if (dataAgeMonths(dataAsOf, today) > 12) points -= 1
+        if (rNow <= 0) points -= 1
+        return when {
+            points >= 2 -> ConfidenceLevel.HIGH
+            points == 1 -> ConfidenceLevel.MEDIUM
+            else -> ConfidenceLevel.LOW
+        }
+    }
+
+    private fun dataAgeMonths(dataAsOf: String, today: LocalDate): Int {
+        val parts = dataAsOf.split("-")
+        if (parts.size != 2) return 0
+        val year = parts[0].toIntOrNull() ?: return 0
+        val month = parts[1].toIntOrNull() ?: return 0
+        return (today.year - year) * 12 + (today.monthValue - month)
+    }
 
     private fun officeBuffer(office: ImmigrationOffice?): Int = when (office) {
         ImmigrationOffice.TOKYO, ImmigrationOffice.YOKOHAMA -> 1
