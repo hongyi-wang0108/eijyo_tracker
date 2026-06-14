@@ -243,16 +243,17 @@ App 三层降级：
 - [ ] 时间线共享：抽 `buildTimeline` 到 domain，首页只读摘要 + 申请页完整
 - [ ] 公开数据卡 / 数据页：接 `permitsByYear` 真实趋势 + 地区数据，删「暂无地区通过人数」
 - [ ] UI：标注「数据更新于 {dataAsOf}」+ 加载/错误/缓存态
+- [ ] 测试：见 §10
 
 ---
 
 ## 8. 建议实现顺序
 
-1. 数据结构 + JSON schema 落地 + 转换脚本 + 用真实 CSV 生成首版 public-data.json（含横滨拆分验证）
-2. 网络层 + 三层降级 + Room 缓存
+1. 数据结构 + JSON schema 落地 + 转换脚本 + 用真实 CSV 生成首版 public-data.json（含横滨拆分验证）+ **转换断言**
+2. 网络层 + 三层降级 + Room 缓存（+ 降级链测试）
 3. 公开数据卡 / 数据页接真实数据（先交付看得见的真数据）
 4. 时间线共享重构
-5. `PredictionEngine` 重写为 FIFO 模型（最后做，依赖数据就位）
+5. `PredictionEngine` 重写为 FIFO 模型 + **单测同步写**（最后做，依赖数据就位）
 
 ---
 
@@ -261,3 +262,39 @@ App 三层降级：
 - 竞品 xiaofushi.com：同类功能，数据源 e-Stat sid=0003449073（即本文主表），算法即本文 FIFO 模型，后端每月拉 API（我们用 A2 人工替代）。
 - e-Stat 总页：https://www.e-stat.go.jp/statistics/00250011
 - 出入国在留管理庁 统计：https://www.moj.go.jp/isa/policies/statistics/index.html
+
+---
+
+## 10. 测试策略
+
+分层测，不全测。原则：逻辑复杂度 × 出错代价 × 好不好测。基础设施 `testImplementation(junit)` 已在，纯逻辑单测零配置；涉及 Flow/Room 的补 `kotlinx-coroutines-test`。
+
+| 优先级 | 对象 | 方式 |
+|--------|------|------|
+| 🔴 必测 | `PredictionEngine`（FIFO 算法） | JUnit 纯函数单测 |
+| 🟡 值得测 | CSV→JSON 转换 + 地区拆分 | 用真实 CSV 当金标准断言 |
+| 🟢 可选 | 三层降级链 | fake repo + coroutines-test |
+| ⚪ 跳过 | UI（Compose） | MVP 不做 |
+
+### 10.1 PredictionEngine 单测用例（必做）
+- **正常**：造一组 monthly，手算预期等待，断言 normal/optimistic/conservative 区间
+- **提交月早于序列**：用最早月 pending（保守），不崩
+- **`R_now ≤ 0`**：返回「已进入可能出结果区间」，不报负数
+- **某月 `μ=0`**：不除零崩溃（走近 N 月平均）
+- **`OTHER`/无地区数据**：退回旧逻辑（标准 4-6 月 + buffer）
+- **置信度各档**：数据陈旧 / 日期仅到月 / 无数据 → HIGH/MEDIUM/LOW 正确
+- **非审查中状态**：返回 null
+
+### 10.2 转换断言（金标准，每月更新跑一遍）
+拿已知真实值兜底列错位/减错支局：
+- `2026-03 东京管内 既済_総数 == 3720`、`受理_新受 == 5713`
+- `纯东京 == 东京管内 − 成田 − 羽田 − 横浜`（逐项）
+- `pending == 受理_総数 − 既済_総数`
+- 永住筛选用代码 `60`、项目用 `103000/300000/100000` 取数正确
+
+> 转换脚本若用 Python（数据仓库侧）→ pytest；若 Kotlin（App 侧）→ JUnit。脚本语言实现时定。
+
+### 10.3 降级链（可选，至少冒烟）
+- 网络失败 → 返回 Room 缓存
+- 缓存空 → 返回 APK 内置 bundled
+- 拉到新数据 → 写入 Room 并更新 `dataAsOf`

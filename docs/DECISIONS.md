@@ -7,6 +7,12 @@
 
 ---
 
+### 2026-06-14 — 核心逻辑引入单元测试，UI 仍跳过
+
+**决定**：从预测/数据管线这块起，核心纯逻辑（`PredictionEngine` FIFO 算法、CSV→JSON 转换+地区拆分、降级链）写单元测试；UI（Compose）继续跳过。测试策略详见 `docs/PREDICTION_AND_DATA.md` §10。
+**理由**：之前「测试暂跳过」针对的是 UI（Compose 测试成本高收益低）。但 FIFO 算法/数据拆分全是纯逻辑、边界多、算错肉眼看不出，出错代价高、又最好测，性价比与 UI 相反。`testImplementation(junit)` 已在，零配置可写。
+**影响**：修正下方「瘦身流程」里的「测试步骤暂跳过」——改为「UI 跳过、核心逻辑必测」。实现 `PredictionEngine` 时算法与单测同步写。
+
 ### 2026-06-13 — 预测算法升级为 FIFO 排队模型 + e-Stat 真实数据（A2 托管）
 
 **决定**：把处理时间预测从「固定 4-6 个月 + 拍脑袋 buffer」改为「基于入管局真实积压/处理量的 FIFO 排队消化模型」；数据走 **A2 方案**——GitHub raw 托管人工维护的 JSON、每月跟 e-Stat 月報更新、**不上后端**。完整方案见 `docs/PREDICTION_AND_DATA.md`。
@@ -36,7 +42,7 @@
 
 **决定**：用 `docs/PROGRESS.md` + `docs/DECISIONS.md` + `CHANGELOG.md` 三件套，不上完整六件套（README/prd/adr/checklist/release-notes）。
 **理由**：单人 + AI 结对项目，全套会烂尾成噪音。核心诉求是「跨会话记住进度」，一个永远最新的 PROGRESS 即可解决。ADR/release-notes 等以后真需要再加。
-**影响**：每次有意义改动按流程：说清范围 → 更 PROGRESS/DECISIONS → 看代码 → 复用优先 → 改 → 编译 → 同步文档 → 总结。测试步骤暂跳过。
+**影响**：每次有意义改动按流程：说清范围 → 更 PROGRESS/DECISIONS → 看代码 → 复用优先 → 改 → 编译 → 同步文档 → 总结。测试：UI 跳过、核心逻辑必测（见 2026-06-14 决定）。
 
 ### 2026-06-12 — 语言切换暂缓，先灰掉入口
 
