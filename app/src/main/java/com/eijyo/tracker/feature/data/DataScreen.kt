@@ -703,10 +703,10 @@ private fun DataPawPrint(
 
 // ── Formatting helpers ──────────────────────────────────────────────────────────
 
-/** 46300 → "4.6万"; 565 → "565". Compact for cards. */
+/** 46300 → "4.6万"; 17903 → "1.8万"; 565 → "565". Compact for cards (1 decimal). */
 private fun formatCount(n: Int): String = when {
     n >= 10_000 -> {
-        val wan = n / 1000 / 10.0
+        val wan = kotlin.math.round(n / 1000.0) / 10.0  // round to 1 decimal of 万
         if (wan == wan.toInt().toDouble()) "${wan.toInt()}万" else "${wan}万"
     }
     else -> n.toString()
