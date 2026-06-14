@@ -98,8 +98,11 @@ class DataViewModel @Inject constructor(
                 received = latest.received,
                 processed = latest.processed,
                 pending = latest.pending,
+                // Calibrated to real latency so it matches the prediction page
+                // (raw pending÷processed underestimates; see OfficeData.calibrationFactor).
                 queueMonths = if (latest.processed > 0)
-                    latest.pending.toDouble() / latest.processed else null,
+                    latest.pending.toDouble() / latest.processed * officeData.calibrationFactor
+                else null,
                 bureauLabel = officeData.bureauTotal?.label,
                 bureauPending = bureauLatest?.pending,
             )

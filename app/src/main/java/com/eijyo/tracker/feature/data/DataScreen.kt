@@ -322,8 +322,8 @@ private fun BacklogCard(
                     .padding(horizontal = 14.dp, vertical = 12.dp),
             ) {
                 Text(
-                    "按当前速度，清空现有积压约需 ${formatMonths(months)} 个月。" +
-                        "这是整体排队速度，非你个案的实际等待时间。",
+                    "按实际处理速度估算，目前提交大约需要 ${formatMonths(months)} 个月出结果。" +
+                        "仅为整体参考，非你个案的实际进度。",
                     style = TextStyle(fontSize = 12.sp, fontWeight = FontWeight.Medium),
                     color = MacaronPalette.Ink,
                 )
