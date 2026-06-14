@@ -42,6 +42,7 @@ import com.eijyo.tracker.core.ui.theme.EijyoTheme
 import com.eijyo.tracker.core.ui.theme.MacaronPalette
 import com.eijyo.tracker.data.model.ApplicationStatus
 import com.eijyo.tracker.data.model.RiskLevel
+import com.eijyo.tracker.domain.timeline.TimelineDot
 
 private val ShadowTint = Color(0x1C8C5C3D)
 private val CandyTrack = Color(0xFFFCE2EA)
@@ -360,48 +361,55 @@ private fun MiniBarChart(modifier: Modifier = Modifier) {
 @Composable
 private fun TimelineCard(state: HomeUiState) {
     val colors = EijyoTheme.colors
-    val predictionShort = state.predictionRange ?: "待生成"
-    data class Step(val color: Color, val label: String, val date: String)
-    val steps = listOf(
-        Step(colors.mint, "已提交申请", if (state.waitDays != null) "已提交" else "待提交"),
-        Step(colors.skyAccent, "入管受理", if (state.status == ApplicationStatus.REVIEWING) "已受理" else "待发生"),
-        Step(colors.lavenderAccent, "审查结果", "预计 $predictionShort"),
-        Step(colors.coral, "通知书 / 明信片 / 补资料", "待发生"),
-    )
     HomeCard(modifier = Modifier.fillMaxWidth(), radius = 26.dp) {
         Text("申请时间线", style = EijyoTheme.typography.labelLarge.copy(fontSize = 16.sp), color = colors.ink)
         Spacer(Modifier.height(12.dp))
-        steps.forEachIndexed { i, step ->
-            Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.Top) {
-                Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.width(16.dp)) {
-                    Box(
-                        modifier = Modifier
-                            .size(10.dp)
-                            .clip(RoundedCornerShape(5.dp))
-                            .background(step.color),
-                    )
-                    if (i < steps.lastIndex) {
+        if (state.timeline.isEmpty()) {
+            Text(
+                "补充申请信息后，这里会显示提交、受理与预计结果。",
+                style = EijyoTheme.typography.labelMedium.copy(fontSize = 12.sp),
+                color = colors.inkMuted,
+            )
+        } else {
+            state.timeline.forEachIndexed { i, item ->
+                val dotColor = when (item.dot) {
+                    TimelineDot.MINT -> colors.mint
+                    TimelineDot.SKY -> colors.skyAccent
+                    TimelineDot.LAVENDER -> colors.lavenderAccent
+                    TimelineDot.CORAL -> colors.coral
+                }
+                val titleColor = if (item.isPending) colors.inkMuted else colors.ink
+                Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.Top) {
+                    Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.width(16.dp)) {
                         Box(
                             modifier = Modifier
-                                .width(2.dp)
-                                .height(16.dp)
-                                .background(colors.border),
+                                .size(10.dp)
+                                .clip(RoundedCornerShape(5.dp))
+                                .background(if (item.isPending) colors.border else dotColor),
                         )
+                        if (i < state.timeline.lastIndex) {
+                            Box(
+                                modifier = Modifier
+                                    .width(2.dp)
+                                    .height(16.dp)
+                                    .background(colors.border),
+                            )
+                        }
                     }
+                    Spacer(Modifier.width(12.dp))
+                    Text(
+                        item.dateLabel,
+                        style = EijyoTheme.typography.labelSmall.copy(fontSize = 11.sp),
+                        color = colors.inkMuted,
+                        modifier = Modifier.width(92.dp),
+                    )
+                    Text(
+                        item.title,
+                        style = EijyoTheme.typography.labelMedium.copy(fontSize = 12.sp),
+                        color = titleColor,
+                        modifier = Modifier.weight(1f),
+                    )
                 }
-                Spacer(Modifier.width(12.dp))
-                Text(
-                    step.date,
-                    style = EijyoTheme.typography.labelSmall.copy(fontSize = 11.sp),
-                    color = colors.inkMuted,
-                    modifier = Modifier.width(92.dp),
-                )
-                Text(
-                    step.label,
-                    style = EijyoTheme.typography.labelMedium.copy(fontSize = 12.sp),
-                    color = colors.ink,
-                    modifier = Modifier.weight(1f),
-                )
             }
         }
     }

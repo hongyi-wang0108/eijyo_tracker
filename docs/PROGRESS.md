@@ -50,7 +50,8 @@ Debug 包名：`com.eijyo.tracker.debug` · 远端：https://github.com/hongyi-w
    - [x] `PublicDataDocTest.kt`（Android JUnit，解析 + gold-standard 断言） — 2026-06-14
    - [x] Step2 网络层 + 三层降级（jsDelivr → DataStore 缓存 → APK assets 兜底）+ 降级链6测试 — 2026-06-14
    - [x] Step3 数据页接真实数据（积压卡 pending/月处理/排队 + permitsByYear 趋势图 + 双口径） — 2026-06-14
-   - [ ] 时间线共享重构（抽 `buildTimeline`，首页只读摘要 + 申请页完整）
+   - [x] Step4 时间线共享重构：抽 `TimelineBuilder` 到 `domain/timeline`，申请页用 `build()` 完整、
+     首页用 `summary()` 只读摘要（接真实提交/补资料/预测/结果）；关 ApplicationScreen MOCK_PREVIEW — 2026-06-14
    - [x] Step5 `PredictionEngine` FIFO 模型 + Case A-G 单测全绿（38 tests, 0 failures） — 2026-06-14
      - 算法在 `FifoPrediction.computeWait()`（纯函数）；`predict(profile, PublicDataDoc, today)` 重载格式化为 Prediction
      - 无地区数据/OTHER/空序列 → 退回旧 4-6 月逻辑（LOW 置信度）
@@ -75,11 +76,11 @@ Debug 包名：`com.eijyo.tracker.debug` · 远端：https://github.com/hongyi-w
 |------|------|--------|------|
 | `feature/prediction/PredictionDetailScreen.kt` | `MOCK_PREVIEW` | `false` ✅ | 已接 FIFO 真实预测 |
 | `feature/risk/RiskDetailScreen.kt` | `MOCK_PREVIEW` | `true` ⚠️ | UI 验收用假数据，验收完须改 `false` |
-| `feature/application/ApplicationScreen.kt` | `MOCK_PREVIEW` | `true` ⚠️ | UI 验收用假数据，验收完须改 `false` |
+| `feature/application/ApplicationScreen.kt` | `MOCK_PREVIEW` | `false` ✅ | 时间线已接 TimelineBuilder 真实数据 |
 | `feature/home/HomeScreen.kt` | `MOCK_PREVIEW` | `false` ✅ | 真实数据；保留 `.copy()` 补缺字段逻辑 |
 | `feature/settings/SettingsScreen.kt` | — | 真实数据 ✅ | 已无 MOCK，读 ProfileRepository 真名/状态 |
 | 我的页 语言设置入口 | `enabled` | `false` ⚠️ | 暂灰；本地化做完后改 `true` |
-| 首页 申请时间线卡 | — | 占位日期 | 待接 CaseRecord |
+| 首页 申请时间线卡 | — | 真实数据 ✅ | 接 TimelineBuilder.summary（提交/受理/预测/结果） |
 | 首页 公开数据卡 | — | 占位数值 | 待接 PublicData 真实值 |
 | 材料 Tab | — | 真实数据 ✅ | 已实现，内联更新 + 筛选 |
 | 数据 Tab | — | 真实数据 ✅ | 接 e-Stat 真实积压/处理/许可数（三层降级）；§11.5 数据详情页已删除 |

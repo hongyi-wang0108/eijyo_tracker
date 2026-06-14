@@ -41,6 +41,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.eijyo.tracker.core.ui.component.DogFace
 import com.eijyo.tracker.core.ui.component.OnboardingBackground
 import com.eijyo.tracker.core.ui.theme.EijyoTheme
+import com.eijyo.tracker.domain.timeline.TimelineDisplayItem
+import com.eijyo.tracker.domain.timeline.TimelineDot
 
 private val ShadowTint = Color(0x1A8C5C3D)
 private val CoralSoft = Color(0xFFFFD4C8)
@@ -48,8 +50,8 @@ private val LavendPill = Color(0xFFE4DBFF)
 private val HintBg = Color(0xFFFFF7ED)
 private val TimelineLineColor = Color(0xFFF0E3D7)
 
-// TEMP（UI 验收用）：用假数据预览。验收完改 false。
-private const val MOCK_PREVIEW = true
+// UI 验收用假数据预览开关。时间线已接真实数据（TimelineBuilder），关闭。
+private const val MOCK_PREVIEW = false
 private val mockState = ApplicationUiState(
     officeName = "东京入管",
     statusLabel = "审查中",

@@ -8,9 +8,13 @@ import com.eijyo.tracker.data.model.DocumentItem
 import com.eijyo.tracker.data.model.DocumentStatus
 import com.eijyo.tracker.data.model.Prediction
 import com.eijyo.tracker.data.model.RiskLevel
+import com.eijyo.tracker.data.model.SupplementRequest
 import com.eijyo.tracker.data.repository.AnalysisRepository
 import com.eijyo.tracker.data.repository.DocumentRepository
 import com.eijyo.tracker.data.repository.ProfileRepository
+import com.eijyo.tracker.data.repository.SupplementRepository
+import com.eijyo.tracker.domain.timeline.TimelineBuilder
+import com.eijyo.tracker.domain.timeline.TimelineDisplayItem
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -32,6 +36,7 @@ data class HomeUiState(
     val riskLevel: RiskLevel? = null,
     val documentsPrepared: Int = 0,
     val documentsTotal: Int = 0,
+    val timeline: List<TimelineDisplayItem> = emptyList(),
 )
 
 @HiltViewModel
@@ -39,15 +44,28 @@ class HomeViewModel @Inject constructor(
     profileRepository: ProfileRepository,
     documentRepository: DocumentRepository,
     analysisRepository: AnalysisRepository,
+    supplementRepository: SupplementRepository,
+    private val timelineBuilder: TimelineBuilder,
 ) : ViewModel() {
+
+    // Bundle the three analysis-side flows so the outer combine stays within its 5-arg
+    // typed overload while still feeding the timeline summary.
+    private data class Analysis(
+        val prediction: Prediction?,
+        val riskLevel: RiskLevel?,
+        val supplements: List<SupplementRequest>,
+    )
 
     val state: StateFlow<HomeUiState> = combine(
         profileRepository.observeUser(),
         profileRepository.observeApplication(),
         documentRepository.observe(),
-        analysisRepository.observePrediction(),
-        analysisRepository.observeRisk(),
-    ) { user, application, documents, prediction, risk ->
+        combine(
+            analysisRepository.observePrediction(),
+            analysisRepository.observeRisk(),
+            supplementRepository.observeByApplication(),
+        ) { prediction, risk, supplements -> Analysis(prediction, risk?.level, supplements) },
+    ) { user, application, documents, analysis ->
         if (application == null) {
             HomeUiState(loading = true)
         } else {
@@ -55,8 +73,7 @@ class HomeViewModel @Inject constructor(
                 nickname = user?.nickname.orEmpty(),
                 application = application,
                 documents = documents,
-                prediction = prediction,
-                riskLevel = risk?.level,
+                analysis = analysis,
             )
         }
     }.stateIn(
@@ -69,9 +86,9 @@ class HomeViewModel @Inject constructor(
         nickname: String,
         application: ApplicationProfile,
         documents: List<DocumentItem>,
-        prediction: Prediction?,
-        riskLevel: RiskLevel?,
+        analysis: Analysis,
     ): HomeUiState {
+        val prediction = analysis.prediction
         val prepared = documents.count {
             it.status == DocumentStatus.PREPARED || it.status == DocumentStatus.SUBMITTED
         }
@@ -87,9 +104,10 @@ class HomeViewModel @Inject constructor(
             predictionPlaceholder = placeholderFor(application, prediction),
             confidenceLabel = prediction?.confidenceLevel?.label,
             progressPercent = prediction?.progressPercent,
-            riskLevel = riskLevel,
+            riskLevel = analysis.riskLevel,
             documentsPrepared = prepared,
             documentsTotal = documents.size,
+            timeline = timelineBuilder.summary(application, analysis.supplements, prediction),
         )
     }
 
