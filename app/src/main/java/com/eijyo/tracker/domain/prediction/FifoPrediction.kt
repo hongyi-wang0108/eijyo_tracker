@@ -72,25 +72,27 @@ fun computeWait(
     val sigmaP = sorted.filter { it.month > anchor.month }.sumOf { it.processed }
     val rLatest = q0 - sigmaP
 
-    // 3. Extrapolate the data-lag gap (latest data month → today) at the latest speed.
+    // 3. Extrapolate the data-lag gap (latest data month → today) at the central speed.
     val gap = monthsBetween(latest.month, today).coerceAtLeast(0)
 
+    // μ_central = average processed over the recent window. Using the average (not the
+    // single latest month) keeps the central estimate stable and the optimistic/normal/
+    // conservative band roughly symmetric — one anomalously slow/fast latest month no
+    // longer skews "正常" toward one edge.
     val recent = sorted.takeLast(RECENT_WINDOW).map { it.processed }
-    val recentAvg = if (recent.isNotEmpty()) recent.average() else 0.0
-    val muLatest = if (latest.processed > 0) latest.processed.toDouble()
-        else recentAvg.coerceAtLeast(1.0)
+    val muCentral = (if (recent.isNotEmpty()) recent.average() else 0.0).coerceAtLeast(1.0)
 
-    val rNowExact = rLatest - muLatest * gap
+    val rNowExact = rLatest - muCentral * gap
 
     // 4. Speed bounds for the optimistic / conservative ends.
     val muFast = (recent.maxOrNull() ?: latest.processed).toDouble().coerceAtLeast(1.0)
-    val muSlow = (recent.filter { it > 0 }.minOrNull()?.toDouble() ?: muLatest).coerceAtLeast(1.0)
+    val muSlow = (recent.filter { it > 0 }.minOrNull()?.toDouble() ?: muCentral).coerceAtLeast(1.0)
 
     val state = if (rNowExact <= 0.0) WaitState.ALREADY_DUE else WaitState.WAITING
 
     return WaitResult(
         rNow = Math.round(rNowExact).toInt(),
-        normalMonths = rNowExact / muLatest,
+        normalMonths = rNowExact / muCentral,
         optimisticMonths = rNowExact / muFast,
         conservativeMonths = rNowExact / muSlow,
         state = state,

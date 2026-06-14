@@ -132,9 +132,12 @@ class PredictionEngine @Inject constructor() {
         val officeData = publicDataDoc.officeData(office!!.name)
         reasons += "基于${officeData?.displayName ?: office.label}真实受理处理数据（更新至 ${publicDataDoc.dataAsOf}）"
 
-        val optimisticDate = today.plusMonths(wait.optimisticMonths.coerceAtLeast(0.0).toLong())
-        val normalDate = today.plusMonths(wait.normalMonths.coerceAtLeast(0.0).toLong())
-        val conservativeDate = today.plusMonths(wait.conservativeMonths.coerceAtLeast(0.0).toLong())
+        // Add fractional months as days so the three scenarios land on distinct dates.
+        // Truncating to whole months (toLong) collapsed e.g. 9.2 and 9.9 into the same
+        // month, making 正常 and 保守 show identical labels.
+        val optimisticDate = today.plusFractionalMonths(wait.optimisticMonths)
+        val normalDate = today.plusFractionalMonths(wait.normalMonths)
+        val conservativeDate = today.plusFractionalMonths(wait.conservativeMonths)
 
         val optimisticRange: String
         val normalRange: String
@@ -203,6 +206,10 @@ class PredictionEngine @Inject constructor() {
         }
     }
 
+    /** Adds [months] (may be fractional) to a date by converting to whole days. */
+    private fun LocalDate.plusFractionalMonths(months: Double): LocalDate =
+        plusDays((months.coerceAtLeast(0.0) * AVG_DAYS_PER_MONTH).roundToInt().toLong())
+
     private fun dataAgeMonths(dataAsOf: String, today: LocalDate): Int {
         val parts = dataAsOf.split("-")
         if (parts.size != 2) return 0
@@ -214,6 +221,10 @@ class PredictionEngine @Inject constructor() {
     private fun officeBuffer(office: ImmigrationOffice?): Int = when (office) {
         ImmigrationOffice.TOKYO, ImmigrationOffice.YOKOHAMA -> 1
         else -> 0
+    }
+
+    private companion object {
+        const val AVG_DAYS_PER_MONTH = 30.44
     }
 
     private fun confidence(
