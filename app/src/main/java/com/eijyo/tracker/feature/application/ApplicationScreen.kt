@@ -132,7 +132,7 @@ private fun Header() {
             Text(stringResource(R.string.application_title), style = EijyoTheme.typography.headlineMedium.copy(fontSize = 28.sp), color = colors.ink)
             Text(stringResource(R.string.application_subtitle), style = EijyoTheme.typography.labelMedium.copy(fontSize = 14.sp), color = colors.inkMuted)
         }
-        DogFace(size = 34.dp)
+        DogFace(modifier = Modifier.align(Alignment.Top), size = 42.dp)
     }
 }
 

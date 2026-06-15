@@ -110,7 +110,7 @@ fun MaterialsScreen(viewModel: MaterialsViewModel = hiltViewModel()) {
                     }
                     DogFace(
                         modifier = Modifier.align(Alignment.TopEnd),
-                        size = 36.dp,
+                        size = 42.dp,
                     )
                 }
             }
