@@ -21,7 +21,7 @@
 |---|------|-------|------|
 | 0 | 基建：strings.xml 三语结构 + 语言切换端到端打通 | — | ✅ 2026-06-15 |
 | 1 | 设置页 + 通用词（确定/取消/按钮） | ~38 | ✅ 2026-06-15（zh/ja/en 实机验证切换） |
-| 2 | 首页 Dashboard | ~50 | ⏳ |
+| 2 | 首页 Dashboard | ~33 | ✅ 2026-06-15（zh/ja/en，HomeScreen.kt 全替换） |
 | 3 | Onboarding 问答 | ~41 | ⏳ |
 | 4 | 数据页 + 预测页 + 风险页 | ~70 | ⏳ |
 | 5 | 材料页 + 申请页 + 各 Sheet | ~60 | ⏳ |
@@ -29,6 +29,9 @@
 
 > 验证结论（批1）：语言入口已打开（`enabled=true`）；切 zh/ja/en 经 `recreate()` 即时生效；
 > 未抽取的字符串（导航/Enums/其他页）按设计回退原中文，App 不空白不崩。
+>
+> 批2 注意：`HomeViewModel.greeting()` / `statusSummary()` / `placeholderFor()` / `backlogLabel` 里的中文（约10条）
+> 留批6处理（需注入 Context 或上移到 UI 层）。`officeName()` 的 `contains("入管")` 检查在批6 ViewModel 改造后需同步更新。
 
 > 状态：⏳ 待做 / 🔧 进行中 / ✅ 完成。每批完成后回填本表 + commit。
 

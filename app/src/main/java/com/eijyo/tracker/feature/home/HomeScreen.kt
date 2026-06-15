@@ -31,11 +31,13 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.eijyo.tracker.R
 import com.eijyo.tracker.core.ui.component.DogFace
 import com.eijyo.tracker.core.ui.component.WelcomeBackground
 import com.eijyo.tracker.core.ui.theme.EijyoTheme
@@ -70,6 +72,7 @@ fun HomeScreen(
         documentsPrepared = if (realState.documentsTotal > 0) realState.documentsPrepared else 23,
     )
     val colors = EijyoTheme.colors
+    val officeFallback = stringResource(R.string.home_data_title_fallback)
 
     Box(modifier = Modifier.fillMaxSize().background(colors.screen)) {
         WelcomeBackground()
@@ -83,7 +86,7 @@ fun HomeScreen(
         ) {
             Header(state)
             PredictionCard(state, onClick = onOpenPredictionDetail)
-            PublicDataCard(office = officeName(state), state = state)
+            PublicDataCard(office = officeName(state, officeFallback), state = state)
             TimelineCard(state)
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -106,9 +109,9 @@ fun HomeScreen(
  * prefix as an office when it actually names one; otherwise (e.g. "准备中") falls back to a
  * generic label so the card never reads "准备中数据".
  */
-private fun officeName(state: HomeUiState): String {
+private fun officeName(state: HomeUiState, fallback: String): String {
     val prefix = state.statusSummary.substringBefore(" ·").substringBefore("·").trim()
-    return if (prefix.contains("入管")) prefix else "入管处理"
+    return if (prefix.contains("入管")) prefix else fallback
 }
 
 @Composable
@@ -151,7 +154,7 @@ private fun Header(state: HomeUiState) {
                         .padding(horizontal = 14.dp, vertical = 8.dp),
                 ) {
                     Text(
-                        "已提交 ${state.waitDays} 天",
+                        stringResource(R.string.home_header_wait_days, state.waitDays),
                         style = EijyoTheme.typography.labelMedium.copy(fontSize = 12.sp),
                         color = colors.mint,
                     )
@@ -163,7 +166,7 @@ private fun Header(state: HomeUiState) {
         // the status sits tight under the greeting instead of being centered in the tall card.
         Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.Top) {
             Text(
-                state.statusSummary.ifBlank { "准备中" },
+                state.statusSummary.ifBlank { stringResource(R.string.home_header_preparing_fallback) },
                 style = EijyoTheme.typography.bodyMedium,
                 color = colors.inkMuted,
                 modifier = Modifier
@@ -183,9 +186,9 @@ private fun AssistantCard() {
             AssistantDog()
             Spacer(Modifier.width(10.dp))
             Column {
-                Text("小狗帮你盯进度", style = EijyoTheme.typography.labelMedium.copy(fontSize = 13.sp), color = colors.ink)
+                Text(stringResource(R.string.home_assistant_title), style = EijyoTheme.typography.labelMedium.copy(fontSize = 13.sp), color = colors.ink)
                 Spacer(Modifier.height(2.dp))
-                Text("有新状态会提醒你", style = EijyoTheme.typography.labelSmall.copy(fontSize = 10.sp), color = colors.inkMuted)
+                Text(stringResource(R.string.home_assistant_subtitle), style = EijyoTheme.typography.labelSmall.copy(fontSize = 10.sp), color = colors.inkMuted)
             }
         }
     }
@@ -223,7 +226,7 @@ private fun ReviewingHeroCard(state: HomeUiState, onClick: () -> Unit) {
     HomeCard(modifier = Modifier.fillMaxWidth(), radius = 28.dp, padding = 22.dp, onClick = onClick) {
         Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
             Column(modifier = Modifier.weight(1f)) {
-                Text("预计结果区间", style = EijyoTheme.typography.labelMedium.copy(fontSize = 14.sp), color = colors.inkMuted)
+                Text(stringResource(R.string.home_reviewing_title), style = EijyoTheme.typography.labelMedium.copy(fontSize = 14.sp), color = colors.inkMuted)
                 Spacer(Modifier.height(8.dp))
                 val parts = state.predictionRange!!.split(" - ", " – ", "-").map { it.trim() }
                 Text(parts.getOrElse(0) { state.predictionRange!! }, style = EijyoTheme.typography.headlineMedium.copy(fontSize = 28.sp), color = colors.ink)
@@ -256,7 +259,7 @@ private fun ReviewingHeroCard(state: HomeUiState, onClick: () -> Unit) {
         Spacer(Modifier.height(14.dp))
         Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
             Text(
-                "基于官方处理期间、申请类型和同类案例估算",
+                stringResource(R.string.home_reviewing_footnote),
                 style = EijyoTheme.typography.labelSmall.copy(fontSize = 12.sp),
                 color = colors.inkMuted,
                 modifier = Modifier.weight(1f),
@@ -269,7 +272,7 @@ private fun ReviewingHeroCard(state: HomeUiState, onClick: () -> Unit) {
                         .background(colors.pink)
                         .padding(horizontal = 12.dp, vertical = 6.dp),
                 ) {
-                    Text("置信度 $it", style = EijyoTheme.typography.labelMedium.copy(fontSize = 12.sp), color = colors.pinkAccent)
+                    Text(stringResource(R.string.home_reviewing_confidence, it), style = EijyoTheme.typography.labelMedium.copy(fontSize = 12.sp), color = colors.pinkAccent)
                 }
             }
         }
@@ -281,16 +284,16 @@ private fun ReviewingHeroCard(state: HomeUiState, onClick: () -> Unit) {
 private fun PreparingHeroCard(state: HomeUiState) {
     val colors = EijyoTheme.colors
     HomeCard(modifier = Modifier.fillMaxWidth(), radius = 28.dp, padding = 22.dp) {
-        Text("申请准备中", style = EijyoTheme.typography.labelMedium.copy(fontSize = 14.sp), color = colors.inkMuted)
+        Text(stringResource(R.string.home_preparing_title), style = EijyoTheme.typography.labelMedium.copy(fontSize = 14.sp), color = colors.inkMuted)
         Spacer(Modifier.height(8.dp))
         Text(
-            "完成材料与风险确认",
+            stringResource(R.string.home_preparing_subtitle),
             style = EijyoTheme.typography.headlineMedium.copy(fontSize = 26.sp),
             color = colors.ink,
         )
         Spacer(Modifier.height(8.dp))
         Text(
-            state.predictionPlaceholder ?: "补充提交日期后，可生成预计时间",
+            state.predictionPlaceholder ?: stringResource(R.string.home_preparing_date_hint),
             style = EijyoTheme.typography.labelMedium.copy(fontSize = 13.sp),
             color = colors.inkMuted,
         )
@@ -314,7 +317,7 @@ private fun PreparingHeroCard(state: HomeUiState) {
             }
             Spacer(Modifier.height(8.dp))
             Text(
-                "材料已准备 ${state.documentsPrepared} / ${state.documentsTotal}",
+                stringResource(R.string.home_preparing_docs_progress, state.documentsPrepared, state.documentsTotal),
                 style = EijyoTheme.typography.labelSmall.copy(fontSize = 12.sp),
                 color = colors.inkMuted,
             )
@@ -328,24 +331,24 @@ private fun ResultHeroCard(state: HomeUiState) {
     val colors = EijyoTheme.colors
     val accent = if (state.resultApproved) colors.mint else colors.coral
     HomeCard(modifier = Modifier.fillMaxWidth(), radius = 28.dp, padding = 22.dp) {
-        Text("审查结果", style = EijyoTheme.typography.labelMedium.copy(fontSize = 14.sp), color = colors.inkMuted)
+        Text(stringResource(R.string.home_result_title), style = EijyoTheme.typography.labelMedium.copy(fontSize = 14.sp), color = colors.inkMuted)
         Spacer(Modifier.height(8.dp))
         Text(
-            state.resultLabel.ifBlank { "已结束" },
+            state.resultLabel.ifBlank { stringResource(R.string.home_result_fallback) },
             style = EijyoTheme.typography.headlineMedium.copy(fontSize = 30.sp),
             color = accent,
         )
         if (state.resultDate.isNotBlank()) {
             Spacer(Modifier.height(8.dp))
             Text(
-                "结果日期：${state.resultDate}",
+                stringResource(R.string.home_result_date, state.resultDate),
                 style = EijyoTheme.typography.labelMedium.copy(fontSize = 13.sp),
                 color = colors.inkMuted,
             )
         }
         Spacer(Modifier.height(10.dp))
         Text(
-            if (state.resultApproved) "恭喜！永住许可已记录。" else "结果已记录，可在申请页查看详情。",
+            stringResource(if (state.resultApproved) R.string.home_result_approved_body else R.string.home_result_other_body),
             style = EijyoTheme.typography.labelSmall.copy(fontSize = 12.sp),
             color = colors.inkMuted,
         )
@@ -381,11 +384,13 @@ private fun ProgressRing(percent: Int, ringSize: Dp = 66.dp) {
 private fun PublicDataCard(office: String, state: HomeUiState) {
     val colors = EijyoTheme.colors
     val updateLabel = if (state.publicDataAsOf.isNotBlank())
-        "公开资料更新：${state.publicDataAsOf}" else "官方公开统计资料"
+        stringResource(R.string.home_data_update_label, state.publicDataAsOf)
+    else
+        stringResource(R.string.home_data_official_stats)
     HomeCard(modifier = Modifier.fillMaxWidth(), radius = 26.dp) {
         Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
             Column(modifier = Modifier.weight(1f)) {
-                Text("${office}数据", style = EijyoTheme.typography.labelLarge.copy(fontSize = 16.sp), color = colors.ink)
+                Text(stringResource(R.string.home_data_title_fmt, office), style = EijyoTheme.typography.labelLarge.copy(fontSize = 16.sp), color = colors.ink)
                 Spacer(Modifier.height(4.dp))
                 Text(updateLabel, style = EijyoTheme.typography.labelSmall.copy(fontSize = 11.sp), color = colors.inkMuted)
             }
@@ -395,20 +400,20 @@ private fun PublicDataCard(office: String, state: HomeUiState) {
                     .background(colors.mintWash)
                     .padding(horizontal = 10.dp, vertical = 5.dp),
             ) {
-                Text("官方资料", style = EijyoTheme.typography.labelSmall.copy(fontSize = 11.sp), color = colors.mint)
+                Text(stringResource(R.string.home_data_badge), style = EijyoTheme.typography.labelSmall.copy(fontSize = 11.sp), color = colors.mint)
             }
         }
         Spacer(Modifier.height(14.dp))
         Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.Bottom) {
             Column(modifier = Modifier.weight(1f)) {
                 if (state.backlogLabel.isNotBlank()) {
-                    Text("当前积压参考", style = EijyoTheme.typography.labelSmall.copy(fontSize = 12.sp), color = colors.inkMuted)
+                    Text(stringResource(R.string.home_data_backlog_label), style = EijyoTheme.typography.labelSmall.copy(fontSize = 12.sp), color = colors.inkMuted)
                     Spacer(Modifier.height(4.dp))
                     Text(state.backlogLabel, style = EijyoTheme.typography.headlineMedium.copy(fontSize = 22.sp), color = colors.ink)
                 } else {
-                    Text("官方公开统计资料", style = EijyoTheme.typography.labelSmall.copy(fontSize = 12.sp), color = colors.inkMuted)
+                    Text(stringResource(R.string.home_data_official_stats), style = EijyoTheme.typography.labelSmall.copy(fontSize = 12.sp), color = colors.inkMuted)
                     Spacer(Modifier.height(4.dp))
-                    Text("前往数据页查看", style = EijyoTheme.typography.labelMedium.copy(fontSize = 13.sp), color = colors.inkMuted)
+                    Text(stringResource(R.string.home_data_view_more), style = EijyoTheme.typography.labelMedium.copy(fontSize = 13.sp), color = colors.inkMuted)
                 }
             }
             if (state.miniTrend.isNotEmpty()) {
@@ -417,7 +422,7 @@ private fun PublicDataCard(office: String, state: HomeUiState) {
         }
         Spacer(Modifier.height(8.dp))
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
-            Text("仅展示官方可确认数据", style = EijyoTheme.typography.labelSmall.copy(fontSize = 10.sp), color = colors.inkMuted)
+            Text(stringResource(R.string.home_data_footnote), style = EijyoTheme.typography.labelSmall.copy(fontSize = 10.sp), color = colors.inkMuted)
         }
     }
 }
@@ -445,11 +450,11 @@ private fun MiniBarChart(values: List<Int>, modifier: Modifier = Modifier) {
 private fun TimelineCard(state: HomeUiState) {
     val colors = EijyoTheme.colors
     HomeCard(modifier = Modifier.fillMaxWidth(), radius = 26.dp) {
-        Text("申请时间线", style = EijyoTheme.typography.labelLarge.copy(fontSize = 16.sp), color = colors.ink)
+        Text(stringResource(R.string.home_timeline_title), style = EijyoTheme.typography.labelLarge.copy(fontSize = 16.sp), color = colors.ink)
         Spacer(Modifier.height(12.dp))
         if (state.timeline.isEmpty()) {
             Text(
-                "补充申请信息后，这里会显示提交、受理与预计结果。",
+                stringResource(R.string.home_timeline_empty),
                 style = EijyoTheme.typography.labelMedium.copy(fontSize = 12.sp),
                 color = colors.inkMuted,
             )
@@ -502,10 +507,10 @@ private fun TimelineCard(state: HomeUiState) {
 private fun RiskMiniCard(modifier: Modifier, level: RiskLevel?, onClick: () -> Unit = {}) {
     val colors = EijyoTheme.colors
     val (badgeBg, badgeMark, badgeColor, title) = when (level) {
-        RiskLevel.LOW -> Quad(colors.mintWash, "✓", colors.mint, "暂无明显风险")
-        RiskLevel.MEDIUM -> Quad(colors.lemonSoft, "!", colors.lemonAccent, "有待确认项")
-        RiskLevel.HIGH -> Quad(colors.peach, "!", colors.coral, "风险较高")
-        null -> Quad(colors.mintWash, "·", colors.inkMuted, "风险自检")
+        RiskLevel.LOW -> Quad(colors.mintWash, "✓", colors.mint, stringResource(R.string.home_risk_low))
+        RiskLevel.MEDIUM -> Quad(colors.lemonSoft, "!", colors.lemonAccent, stringResource(R.string.home_risk_medium))
+        RiskLevel.HIGH -> Quad(colors.peach, "!", colors.coral, stringResource(R.string.home_risk_high))
+        null -> Quad(colors.mintWash, "·", colors.inkMuted, stringResource(R.string.home_risk_unknown))
     }
     HomeCard(modifier = modifier, radius = 24.dp, padding = 14.dp, onClick = onClick) {
         Row(verticalAlignment = Alignment.CenterVertically) {
@@ -524,7 +529,8 @@ private fun MaterialMiniCard(modifier: Modifier, prepared: Int, total: Int) {
             Badge(colors.lemonSoft, "□", colors.lemonAccent)
             Spacer(Modifier.width(10.dp))
             Text(
-                if (total == 0) "材料待生成" else "材料 $prepared / $total",
+                if (total == 0) stringResource(R.string.home_material_empty)
+                else stringResource(R.string.home_material_count, prepared, total),
                 style = EijyoTheme.typography.labelLarge.copy(fontSize = 14.sp),
                 color = colors.ink,
             )

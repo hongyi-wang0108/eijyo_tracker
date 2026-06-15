@@ -54,4 +54,38 @@
     <string name="settings_about_source_value">出入国在留管理庁の公開データ</string>
     <string name="settings_about_method_label">予測方法</string>
     <string name="settings_about_method_value">公開の処理期間統計に基づく推計（公式判断ではありません）</string>
+
+    <!-- ホーム ダッシュボード（バッチ2） -->
+    <string name="home_header_wait_days">申請から %d 日</string>
+    <string name="home_header_preparing_fallback">準備中</string>
+    <string name="home_assistant_title">ワンちゃんが進捗を確認中</string>
+    <string name="home_assistant_subtitle">新しい状況があればお知らせします</string>
+    <string name="home_reviewing_title">予想結果期間</string>
+    <string name="home_reviewing_footnote">公式処理期間・申請タイプ・類似ケースに基づく推計</string>
+    <string name="home_reviewing_confidence">信頼度 %s</string>
+    <string name="home_preparing_title">申請準備中</string>
+    <string name="home_preparing_subtitle">書類と審査確認を完了してください</string>
+    <string name="home_preparing_date_hint">申請日を入力後、予想期間を生成できます</string>
+    <string name="home_preparing_docs_progress">書類準備完了：%1$d / %2$d</string>
+    <string name="home_result_title">審査結果</string>
+    <string name="home_result_fallback">終了</string>
+    <string name="home_result_date">結果日：%s</string>
+    <string name="home_result_approved_body">おめでとうございます！永住許可が記録されました。</string>
+    <string name="home_result_other_body">結果が記録されました。申請ページで詳細を確認できます。</string>
+    <string name="home_data_title_fmt">%s データ</string>
+    <string name="home_data_title_fallback">入管処理</string>
+    <string name="home_data_update_label">公開データ更新：%s</string>
+    <string name="home_data_official_stats">出入国在留管理庁 公開統計</string>
+    <string name="home_data_badge">公式データ</string>
+    <string name="home_data_backlog_label">現在の積滞件数（参考）</string>
+    <string name="home_data_view_more">データページを見る</string>
+    <string name="home_data_footnote">公式確認済みデータのみ表示</string>
+    <string name="home_timeline_title">申請タイムライン</string>
+    <string name="home_timeline_empty">申請情報を補完すると、提出・受理・予想結果が表示されます。</string>
+    <string name="home_risk_low">明確なリスクなし</string>
+    <string name="home_risk_medium">確認が必要な項目あり</string>
+    <string name="home_risk_high">リスクが高め</string>
+    <string name="home_risk_unknown">リスク確認</string>
+    <string name="home_material_empty">書類リスト未生成</string>
+    <string name="home_material_count">書類 %1$d / %2$d</string>
 </resources>

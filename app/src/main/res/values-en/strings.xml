@@ -54,4 +54,38 @@
     <string name="settings_about_source_value">Official open data from Japan\'s Immigration Services Agency</string>
     <string name="settings_about_method_label">Prediction method</string>
     <string name="settings_about_method_value">Based on public processing statistics; not an official judgment</string>
+
+    <!-- Home Dashboard (batch 2) -->
+    <string name="home_header_wait_days">%d days since submission</string>
+    <string name="home_header_preparing_fallback">Preparing</string>
+    <string name="home_assistant_title">Tracking your progress</string>
+    <string name="home_assistant_subtitle">We\'ll notify you of updates</string>
+    <string name="home_reviewing_title">Estimated result window</string>
+    <string name="home_reviewing_footnote">Based on official processing times, application type, and similar cases</string>
+    <string name="home_reviewing_confidence">Confidence: %s</string>
+    <string name="home_preparing_title">Preparing application</string>
+    <string name="home_preparing_subtitle">Complete documents &amp; risk check</string>
+    <string name="home_preparing_date_hint">Enter submit date to generate estimate</string>
+    <string name="home_preparing_docs_progress">Documents ready: %1$d / %2$d</string>
+    <string name="home_result_title">Review result</string>
+    <string name="home_result_fallback">Closed</string>
+    <string name="home_result_date">Result date: %s</string>
+    <string name="home_result_approved_body">Congratulations! Permanent residence approved.</string>
+    <string name="home_result_other_body">Result recorded. Check the application page for details.</string>
+    <string name="home_data_title_fmt">%s Data</string>
+    <string name="home_data_title_fallback">Immigration Office</string>
+    <string name="home_data_update_label">Official data as of %s</string>
+    <string name="home_data_official_stats">Official public statistics</string>
+    <string name="home_data_badge">Official</string>
+    <string name="home_data_backlog_label">Current backlog (ref.)</string>
+    <string name="home_data_view_more">View data page</string>
+    <string name="home_data_footnote">Official confirmed data only</string>
+    <string name="home_timeline_title">Application timeline</string>
+    <string name="home_timeline_empty">Fill in application details to see submission, acceptance &amp; estimated result.</string>
+    <string name="home_risk_low">No significant risk</string>
+    <string name="home_risk_medium">Items to confirm</string>
+    <string name="home_risk_high">High risk</string>
+    <string name="home_risk_unknown">Risk check</string>
+    <string name="home_material_empty">Documents not generated</string>
+    <string name="home_material_count">Docs %1$d / %2$d</string>
 </resources>
