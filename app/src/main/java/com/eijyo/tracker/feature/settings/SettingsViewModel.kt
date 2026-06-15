@@ -2,6 +2,7 @@ package com.eijyo.tracker.feature.settings
 
 import android.content.Context
 import android.net.Uri
+import com.eijyo.tracker.EijyoApp
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.eijyo.tracker.data.local.AppPreferences
@@ -64,6 +65,10 @@ class SettingsViewModel @Inject constructor(
 
     fun saveLanguage(code: String) {
         LanguagePrefs.set(appContext, code)
+        // Refresh the live application resources so @ApplicationContext consumers
+        // (ViewModels/domain via context.getString) switch language immediately; the
+        // Activity itself picks it up through attachBaseContext on recreate().
+        (appContext as? EijyoApp)?.applyLocale()
     }
 
     /** Suggested filename for the export "save document" picker. */
