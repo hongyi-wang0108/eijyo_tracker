@@ -1,7 +1,9 @@
 package com.eijyo.tracker.feature.prediction
 
+import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.eijyo.tracker.R
 import com.eijyo.tracker.data.model.ApplicationPath
 import com.eijyo.tracker.data.model.TriState
 import com.eijyo.tracker.data.model.VisaType
@@ -9,6 +11,7 @@ import com.eijyo.tracker.data.repository.AnalysisRepository
 import com.eijyo.tracker.data.repository.ProfileRepository
 import com.eijyo.tracker.data.repository.PublicDataRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
@@ -35,6 +38,7 @@ data class PredictionDetailUiState(
 
 @HiltViewModel
 class PredictionDetailViewModel @Inject constructor(
+    @ApplicationContext private val context: Context,
     profileRepository: ProfileRepository,
     analysisRepository: AnalysisRepository,
     private val publicDataRepository: PublicDataRepository,
@@ -57,16 +61,22 @@ class PredictionDetailViewModel @Inject constructor(
                 available = true,
                 normalRange = prediction.normalRange,
                 progressPercent = prediction.progressPercent,
-                confidenceLabel = prediction.confidenceLevel.label,
-                office = app.submittedOffice?.label ?: "未指定入管",
+                confidenceLabel = context.getString(prediction.confidenceLevel.labelRes),
+                office = app.submittedOffice?.let { context.getString(it.labelRes) }
+                    ?: context.getString(R.string.pred_office_unspecified),
                 optimisticRange = prediction.optimisticRange,
                 conservativeRange = prediction.conservativeRange,
                 processingRange = doc?.standardProcessing?.rangeLabel ?: "4 - 6 个月",
                 waitDays = prediction.currentWaitDays,
                 pathLabel = pathLabel(app.visaType, app.applicationPath),
-                supplementStatus = if (app.hasSupplementRequest == TriState.YES) "已收到" else "未发生",
+                supplementStatus = if (app.hasSupplementRequest == TriState.YES)
+                    context.getString(R.string.pred_supplement_received_status)
+                else
+                    context.getString(R.string.pred_supplement_not_occurred),
                 sourceName = doc?.source?.name ?: "出入国在留管理庁",
-                sourceUpdated = doc?.dataAsOf?.let { "更新至 ${monthLabel(it)}" } ?: "",
+                sourceUpdated = doc?.dataAsOf?.let {
+                    context.getString(R.string.pred_source_updated_fmt, monthLabel(it))
+                } ?: "",
             )
         }
     }.stateIn(
@@ -74,25 +84,27 @@ class PredictionDetailViewModel @Inject constructor(
         started = SharingStarted.WhileSubscribed(5_000),
         initialValue = PredictionDetailUiState(),
     )
-}
 
-/** "2026-03" → "2026年3月"; passthrough if unparseable. */
-private fun monthLabel(ym: String): String {
-    val parts = ym.split("-")
-    if (parts.size != 2) return ym
-    val month = parts[1].toIntOrNull() ?: return ym
-    return "${parts[0]}年${month}月"
-}
+    /** "2026-03" → locale-formatted year-month; passthrough if unparseable. */
+    private fun monthLabel(ym: String): String {
+        val parts = ym.split("-")
+        if (parts.size != 2) return ym
+        val month = parts[1].toIntOrNull() ?: return ym
+        return context.getString(R.string.date_year_month_fmt, parts[0], month.toString())
+    }
 
-private fun pathLabel(visa: VisaType?, path: ApplicationPath?): String =
-    listOfNotNull(visa?.let(::shortVisa), path?.label).joinToString(" · ").ifBlank { "未指定" }
+    private fun pathLabel(visa: VisaType?, path: ApplicationPath?): String =
+        listOfNotNull(visa?.let { shortVisa(it) }, path?.let { context.getString(it.labelRes) })
+            .joinToString(" · ")
+            .ifBlank { context.getString(R.string.pred_path_unspecified) }
 
-/** Compact visa label so the factor row fits on one line (full labels are long). */
-private fun shortVisa(visa: VisaType): String = when (visa) {
-    VisaType.ENGINEER -> "技人国"
-    VisaType.HIGHLY_SKILLED -> "高度专门职"
-    VisaType.SPOUSE_OF_JAPANESE -> "日本人配偶"
-    VisaType.SPOUSE_OF_PR -> "永住者配偶"
-    VisaType.LONG_TERM_RESIDENT -> "定住者"
-    VisaType.DEPENDENT -> "家族滞在"
+    /** Compact visa label so the factor row fits on one line (full labels are long). */
+    private fun shortVisa(visa: VisaType): String = when (visa) {
+        VisaType.ENGINEER -> context.getString(R.string.visa_abbr_engineer)
+        VisaType.HIGHLY_SKILLED -> context.getString(R.string.visa_abbr_highly_skilled)
+        VisaType.SPOUSE_OF_JAPANESE -> context.getString(R.string.visa_abbr_spouse_of_japanese)
+        VisaType.SPOUSE_OF_PR -> context.getString(R.string.visa_abbr_spouse_of_pr)
+        VisaType.LONG_TERM_RESIDENT -> context.getString(R.string.visa_abbr_long_term_resident)
+        VisaType.DEPENDENT -> context.getString(R.string.visa_abbr_dependent)
+    }
 }

@@ -37,6 +37,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.annotation.StringRes
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -53,14 +54,14 @@ private val CoralSoft = Color(0xFFFFD4C8)
 private val LemonBadge = Color(0xFFFFF0B8)
 private val DragHandleColor = Color(0xFFE7D8CA)
 
-enum class EventType(val label: String, val icon: ImageVector) {
-    SUPPLEMENT_RECEIVED("收到补资料", Icons.Filled.Mail),
-    SUPPLEMENT_SUBMITTED("补资料已提交", Icons.Filled.Drafts),
-    NOTICE_RECEIVED("收到通知书", Icons.Filled.Description),
-    APPROVED("许可", Icons.Filled.CheckCircle),
-    REJECTED("不许可", Icons.Filled.Undo),
-    WITHDRAWN("撤回", Icons.Filled.Undo),
-    CUSTOM_NOTE("自定义备注", Icons.Filled.EditNote),
+enum class EventType(@StringRes val labelRes: Int, val icon: ImageVector) {
+    SUPPLEMENT_RECEIVED(R.string.event_type_supplement_received, Icons.Filled.Mail),
+    SUPPLEMENT_SUBMITTED(R.string.event_type_supplement_submitted, Icons.Filled.Drafts),
+    NOTICE_RECEIVED(R.string.event_type_notice_received, Icons.Filled.Description),
+    APPROVED(R.string.event_type_approved, Icons.Filled.CheckCircle),
+    REJECTED(R.string.event_type_rejected, Icons.Filled.Undo),
+    WITHDRAWN(R.string.event_type_withdrawn, Icons.Filled.Undo),
+    CUSTOM_NOTE(R.string.event_type_custom_note, Icons.Filled.EditNote),
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -151,11 +152,11 @@ private fun TypePickerStep(onSelect: (EventType) -> Unit) {
                     .background(Color.White.copy(alpha = 0.45f)),
                 contentAlignment = Alignment.Center,
             ) {
-                Icon(type.icon, contentDescription = type.label, tint = textColor, modifier = Modifier.size(16.dp))
+                Icon(type.icon, contentDescription = stringResource(type.labelRes), tint = textColor, modifier = Modifier.size(16.dp))
             }
             Spacer(Modifier.width(12.dp))
             Text(
-                type.label,
+                stringResource(type.labelRes),
                 style = EijyoTheme.typography.labelLarge.copy(fontSize = 15.sp),
                 color = textColor,
                 modifier = Modifier.weight(1f),
@@ -178,7 +179,7 @@ private fun EventFormStep(
     var field3 by remember { mutableStateOf("") }
 
     EventSheetHeader(
-        title = type.label,
+        title = stringResource(type.labelRes),
         subtitle = stringResource(R.string.event_sheet_subtitle),
         onBack = onBack,
     )

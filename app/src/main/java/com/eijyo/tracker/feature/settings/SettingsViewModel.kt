@@ -52,8 +52,8 @@ class SettingsViewModel @Inject constructor(
     ) { user, app ->
         SettingsUiState(
             displayName = user?.nickname?.takeIf { it.isNotBlank() } ?: "",
-            statusLabel = app?.status?.label ?: "",
-            officeLabel = app?.submittedOffice?.label ?: "",
+            statusLabel = app?.status?.let { appContext.getString(it.labelRes) } ?: "",
+            officeLabel = app?.submittedOffice?.let { appContext.getString(it.labelRes) } ?: "",
             currentLanguage = LanguagePrefs.get(appContext),
         )
     }.stateIn(

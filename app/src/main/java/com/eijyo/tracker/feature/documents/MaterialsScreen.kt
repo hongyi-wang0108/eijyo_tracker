@@ -308,7 +308,7 @@ private fun FilterChipsRow(
                 contentAlignment = Alignment.Center,
             ) {
                 Text(
-                    filter.label,
+                    stringResource(filter.labelRes),
                     style = EijyoTheme.typography.labelMedium,
                     color = if (isSelected) Color.White else MacaronPalette.InkMuted,
                 )
@@ -347,7 +347,7 @@ private fun DocumentSectionCard(
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Text(
-                section.category.label,
+                stringResource(section.category.labelRes),
                 style = EijyoTheme.typography.titleMedium,
                 color = MacaronPalette.Ink,
                 modifier = Modifier.weight(1f),

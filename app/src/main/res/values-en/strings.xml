@@ -261,4 +261,221 @@
     <string name="welcome_body">Track your application progress, organize your documents, and estimate when you\'ll hear back.</string>
     <string name="welcome_start_cta">Create application profile</string>
     <string name="welcome_disclaimer">Predictions are for reference only, not legal advice</string>
+
+    <!-- Batch 6: Enums / DocumentFilter / EventType / MainTab -->
+
+    <!-- ApplicationStatus -->
+    <string name="appstatus_preparing">Preparing</string>
+    <string name="appstatus_reviewing">Under Review</string>
+    <string name="appstatus_completed">Closed</string>
+
+    <!-- ResultType -->
+    <string name="resulttype_approved">Approved</string>
+    <string name="resulttype_rejected">Rejected</string>
+    <string name="resulttype_withdrawn">Withdrawn</string>
+    <string name="resulttype_unknown">Unknown</string>
+
+    <!-- TriState -->
+    <string name="tristate_yes">Yes</string>
+    <string name="tristate_no">No</string>
+    <string name="tristate_unknown">Uncertain</string>
+
+    <!-- VisaType -->
+    <string name="visatype_engineer">Engineer / Humanities</string>
+    <string name="visatype_highly_skilled">Highly Skilled Professional</string>
+    <string name="visatype_spouse_of_japanese">Spouse of Japanese</string>
+    <string name="visatype_spouse_of_pr">Spouse of PR Holder</string>
+    <string name="visatype_long_term_resident">Long-Term Resident</string>
+    <string name="visatype_dependent">Dependent</string>
+
+    <!-- ApplicationPath -->
+    <string name="apppath_ten_years">10-Year Residency</string>
+    <string name="apppath_hsp_70">HSP 70 Points</string>
+    <string name="apppath_hsp_80">HSP 80 Points</string>
+    <string name="apppath_spouse_of_japanese">Spouse of Japanese</string>
+    <string name="apppath_spouse_of_pr">Spouse of PR Holder</string>
+    <string name="apppath_long_term_resident">Long-Term Resident</string>
+    <string name="apppath_unsure">Not Sure</string>
+
+    <!-- ImmigrationOffice -->
+    <string name="office_tokyo">Tokyo</string>
+    <string name="office_osaka">Osaka</string>
+    <string name="office_nagoya">Nagoya</string>
+    <string name="office_yokohama">Yokohama Branch</string>
+    <string name="office_kobe">Kobe Branch</string>
+    <string name="office_fukuoka">Fukuoka</string>
+    <string name="office_other">Other / Unknown</string>
+
+    <!-- IncomeRange -->
+    <string name="income_below_300">Under ¥3M</string>
+    <string name="income_r300_400">¥3M – ¥4M</string>
+    <string name="income_r400_500">¥4M – ¥5M</string>
+    <string name="income_r500_700">¥5M – ¥7M</string>
+    <string name="income_above_700">¥7M or More</string>
+    <string name="income_undisclosed">Prefer Not to Say</string>
+
+    <!-- DocumentCategory -->
+    <string name="doccat_identity">ID &amp; Status</string>
+    <string name="doccat_tax">Tax Records</string>
+    <string name="doccat_pension">Pension Records</string>
+    <string name="doccat_health_insurance">Health Insurance</string>
+    <string name="doccat_income">Income &amp; Employment</string>
+    <string name="doccat_family">Family &amp; Spouse</string>
+    <string name="doccat_forms">Application Forms</string>
+    <string name="doccat_supplement">Supplementary Docs</string>
+    <string name="doccat_other">Other</string>
+
+    <!-- RequiredLevel -->
+    <string name="reqlevel_required">Required</string>
+    <string name="reqlevel_recommended">Recommended</string>
+    <string name="reqlevel_conditional">Conditional</string>
+
+    <!-- DocumentStatus -->
+    <string name="docstatus_not_started">Not Started</string>
+    <string name="docstatus_prepared">Prepared</string>
+    <string name="docstatus_submitted">Submitted</string>
+    <string name="docstatus_needs_update">Needs Update</string>
+
+    <!-- SupplementStatus -->
+    <string name="suppstatus_received">Received</string>
+    <string name="suppstatus_submitted">Submitted</string>
+    <string name="suppstatus_overdue">Overdue</string>
+
+    <!-- RiskLevel -->
+    <string name="risklevel_low">Low Risk</string>
+    <string name="risklevel_medium">Medium Risk</string>
+    <string name="risklevel_high">High Risk</string>
+
+    <!-- ConfidenceLevel -->
+    <string name="conflevel_high">High</string>
+    <string name="conflevel_medium">Medium</string>
+    <string name="conflevel_low">Low</string>
+
+    <!-- DocumentFilter -->
+    <string name="filter_all">All</string>
+    <string name="filter_incomplete">Incomplete</string>
+    <string name="filter_complete">Complete</string>
+    <string name="filter_needs_update">Needs Update</string>
+
+    <!-- EventType -->
+    <string name="event_type_supplement_received">Supplement Received</string>
+    <string name="event_type_supplement_submitted">Supplement Submitted</string>
+    <string name="event_type_notice_received">Notice Received</string>
+    <string name="event_type_approved">Approved</string>
+    <string name="event_type_rejected">Rejected</string>
+    <string name="event_type_withdrawn">Withdrawn</string>
+    <string name="event_type_custom_note">Custom Note</string>
+
+    <!-- MainTab -->
+    <string name="tab_home">Home</string>
+    <string name="tab_application">Application</string>
+    <string name="tab_documents">Documents</string>
+    <string name="tab_data">Data</string>
+    <string name="tab_settings">Settings</string>
+
+    <!-- HomeViewModel / OnboardingCompleteViewModel (batch 6b) -->
+    <string name="home_greeting_morning">Good morning</string>
+    <string name="home_greeting_noon">Good afternoon</string>
+    <string name="home_greeting_afternoon">Good afternoon</string>
+    <string name="home_greeting_evening">Good evening</string>
+    <string name="home_greeting_name_fallback">there</string>
+    <string name="home_greeting_fmt">%1$s, %2$s</string>
+    <string name="home_status_reviewing_fmt">%s · Under Review</string>
+    <string name="home_status_reviewing">Under Review</string>
+    <string name="home_status_completed">Result Recorded</string>
+    <string name="home_placeholder_preparing">Complete your document list and risk check first</string>
+    <string name="home_placeholder_completed">Result has been recorded</string>
+    <string name="home_placeholder_no_date">Add your submission date to generate a prediction</string>
+    <string name="home_backlog_fmt">~%s pending</string>
+    <string name="complete_placeholder_preparing">Progress established. Complete your document list and risk check next</string>
+    <string name="complete_placeholder_no_date">Add your submission date to generate a prediction</string>
+
+    <!-- ApplicationViewModel (batch 6b) -->
+    <string name="app_wait_days_fmt">Submitted %d days ago</string>
+    <string name="app_stage_preparing">Ready to Submit</string>
+    <string name="app_stage_reviewing">Awaiting Result</string>
+    <string name="app_stage_approved">Approved</string>
+    <string name="app_stage_rejected">Rejected</string>
+    <string name="app_stage_withdrawn">Withdrawn</string>
+    <string name="app_stage_completed">Closed</string>
+
+    <!-- DataViewModel (batch 6b) -->
+    <string name="data_origin_live">Live data</string>
+    <string name="data_origin_cached">Cached data</string>
+    <string name="data_origin_bundled">Built-in data</string>
+    <string name="data_trend_yearly_title">Annual PR approvals</string>
+    <string name="data_trend_yearly_unit">approvals/yr</string>
+    <string name="data_trend_monthly_title">Monthly processing</string>
+    <string name="data_trend_monthly_unit">cases/mo</string>
+
+    <!-- PredictionDetailViewModel (batch 6b) -->
+    <string name="pred_office_unspecified">Office unspecified</string>
+    <string name="pred_supplement_received_status">Received</string>
+    <string name="pred_supplement_not_occurred">Not occurred</string>
+    <string name="pred_path_unspecified">Unspecified</string>
+    <string name="pred_source_updated_fmt">Updated to %s</string>
+    <string name="visa_abbr_engineer">Tech/Int\'l</string>
+    <string name="visa_abbr_highly_skilled">HSP</string>
+    <string name="visa_abbr_spouse_of_japanese">JP Spouse</string>
+    <string name="visa_abbr_spouse_of_pr">PR Spouse</string>
+    <string name="visa_abbr_long_term_resident">Long-term</string>
+    <string name="visa_abbr_dependent">Dependent</string>
+
+    <!-- RiskDetailViewModel (batch 6b) -->
+    <string name="risk_summary_low">No significant risk items found. Keep your documents and payment records complete</string>
+    <string name="risk_summary_medium">There are uncertain or unconfirmed items in your questionnaire. Please address the hints below</string>
+    <string name="risk_summary_high">Your profile has clear risk items. Strengthen them before proceeding</string>
+    <string name="risk_updated_just_now">Just updated</string>
+    <string name="risk_updated_today">Updated today</string>
+    <string name="risk_updated_recently">Recently updated</string>
+    <string name="risk_section_conduct_title">Conduct</string>
+    <string name="risk_section_livelihood_title">Livelihood</string>
+    <string name="risk_section_public_title">Civic compliance</string>
+    <string name="risk_section_no_profile">No application profile available</string>
+    <string name="risk_conduct_supplement_hint">You have a supplement record. Confirm you submitted on time and have documentation</string>
+    <string name="risk_conduct_default_hint">No illegal or violation fields in your questionnaire. Only supplement status is flagged here — other areas need your own verification</string>
+    <string name="risk_status_no_data">No data</string>
+    <string name="risk_status_check_ongoing">Ongoing check</string>
+    <string name="risk_status_self_check">Self-verify</string>
+    <string name="risk_livelihood_income_issue">Income or number of dependents may affect stability assessment</string>
+    <string name="risk_livelihood_no_income">Income not provided — livelihood stability will be assessed conservatively</string>
+    <string name="risk_livelihood_ok">Current income and dependents do not trigger obvious risk rules</string>
+    <string name="risk_status_pending_confirm">Needs review</string>
+    <string name="risk_status_supplement_needed">Needs input</string>
+    <string name="risk_status_stable">Stable</string>
+    <string name="risk_public_issue">At least one of tax, pension, or insurance is unconfirmed or abnormal</string>
+    <string name="risk_public_ok">Tax, pension, and insurance all passed the basic check based on your questionnaire answers</string>
+    <string name="risk_status_confirm_needed">Confirm needed</string>
+    <string name="risk_status_confirmed">Confirmed</string>
+    <string name="risk_recommendation_note">These recommendations come directly from questionnaire items flagged as unconfirmed, unpaid, supplemented, or financially weak.</string>
+    <string name="risk_source_no_profile">No application profile available, showing empty state.</string>
+    <string name="risk_source_summary_fmt">Generated from your tax, pension, health insurance, income, dependents, application path, and supplement status. Current path: %s.</string>
+    <string name="risk_path_hsp">Highly skilled professional</string>
+    <string name="risk_path_not_filled">Path not filled in</string>
+    <string name="risk_model_type">Rule-based model</string>
+
+    <!-- TimelineBuilder (batch 6c) -->
+    <string name="timeline_date_pending">Not filled in</string>
+    <string name="timeline_submitted_title">Application submitted</string>
+    <string name="timeline_submitted_subtitle">Documents handed to immigration</string>
+    <string name="timeline_accepted_title">Application accepted</string>
+    <string name="timeline_accepted_subtitle">Review process started</string>
+    <string name="timeline_date_unknown">Unknown</string>
+    <string name="timeline_supplement_received_title">Supplement received</string>
+    <string name="timeline_supplement_received_subtitle_empty">Check immigration\'s requirements</string>
+    <string name="timeline_supplement_submitted_title">Supplement submitted</string>
+    <string name="timeline_supplement_submitted_subtitle">Submitted to immigration on time</string>
+    <string name="timeline_result_title">Review result</string>
+    <string name="timeline_result_subtitle_estimated">Estimated from public data</string>
+    <string name="timeline_result_subtitle_waiting">Awaiting prediction data</string>
+    <string name="timeline_date_future">Not yet</string>
+    <string name="timeline_notice_title">Notice / Postcard / Supplement</string>
+    <string name="timeline_notice_subtitle">You\'ll be notified of new status</string>
+    <string name="timeline_result_approved_subtitle">Permanent residency approved</string>
+    <string name="timeline_result_rejected_subtitle">Application was not approved</string>
+    <string name="timeline_result_withdrawn_subtitle">Application was withdrawn</string>
+    <string name="timeline_range_prefix">Est.</string>
+
+    <!-- Shared date format -->
+    <string name="date_year_month_fmt">%1$s/%2$s</string>
 </resources>

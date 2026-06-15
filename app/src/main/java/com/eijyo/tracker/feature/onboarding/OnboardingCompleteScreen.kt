@@ -110,7 +110,7 @@ fun OnboardingCompleteScreen(
                     iconMark = "!",
                     iconColor = colors.skyAccent,
                     title = stringResource(R.string.onboarding_complete_risk_label),
-                    value = state.riskLevel?.label ?: "—",
+                    value = state.riskLevel?.let { stringResource(it.labelRes) } ?: "—",
                     valueColor = riskColor(state.riskLevel),
                 )
 

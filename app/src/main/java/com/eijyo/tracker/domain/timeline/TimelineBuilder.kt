@@ -1,11 +1,14 @@
 package com.eijyo.tracker.domain.timeline
 
+import android.content.Context
+import com.eijyo.tracker.R
 import com.eijyo.tracker.data.model.ApplicationProfile
 import com.eijyo.tracker.data.model.ApplicationStatus
 import com.eijyo.tracker.data.model.Prediction
 import com.eijyo.tracker.data.model.ResultType
 import com.eijyo.tracker.data.model.SupplementRequest
 import com.eijyo.tracker.data.model.SupplementStatus
+import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
 /** Color role for a timeline node, mapped to theme colors at the UI layer. */
@@ -25,7 +28,9 @@ data class TimelineDisplayItem(
  * summary via [summary]) so both stay consistent — a single source of truth for the
  * "提交 → 受理 → 补资料 → 结果" narrative.
  */
-class TimelineBuilder @Inject constructor() {
+class TimelineBuilder @Inject constructor(
+    @ApplicationContext private val context: Context,
+) {
 
     fun build(
         profile: ApplicationProfile,
@@ -35,72 +40,71 @@ class TimelineBuilder @Inject constructor() {
         val items = mutableListOf<TimelineDisplayItem>()
         val subDate = profile.submittedDate?.replace("-", ".")
 
-        // 已提交申请
         items += TimelineDisplayItem(
             dot = TimelineDot.MINT,
-            dateLabel = subDate ?: "待填写",
-            title = "已提交申请",
-            subtitle = "材料已交给入管",
+            dateLabel = subDate ?: context.getString(R.string.timeline_date_pending),
+            title = context.getString(R.string.timeline_submitted_title),
+            subtitle = context.getString(R.string.timeline_submitted_subtitle),
             isPending = subDate == null,
         )
 
-        // 入管受理
         if (subDate != null) {
             items += TimelineDisplayItem(
                 dot = TimelineDot.SKY,
                 dateLabel = subDate,
-                title = "入管受理",
-                subtitle = "开始进入审查流程",
+                title = context.getString(R.string.timeline_accepted_title),
+                subtitle = context.getString(R.string.timeline_accepted_subtitle),
             )
         }
 
-        // 补资料事件（按收到日期排序）
         supplements.sortedBy { it.receivedDate }.forEach { sup ->
             items += TimelineDisplayItem(
                 dot = TimelineDot.CORAL,
-                dateLabel = sup.receivedDate?.replace("-", ".") ?: "未知",
-                title = "收到补资料",
-                subtitle = sup.type.ifEmpty { "请确认入管要求" },
+                dateLabel = sup.receivedDate?.replace("-", ".") ?: context.getString(R.string.timeline_date_unknown),
+                title = context.getString(R.string.timeline_supplement_received_title),
+                subtitle = sup.type.ifEmpty { context.getString(R.string.timeline_supplement_received_subtitle_empty) },
             )
             if (sup.status == SupplementStatus.SUBMITTED) {
                 items += TimelineDisplayItem(
                     dot = TimelineDot.MINT,
-                    dateLabel = sup.submittedDate?.replace("-", ".") ?: "未知",
-                    title = "补资料已提交",
-                    subtitle = "已按期提交给入管",
+                    dateLabel = sup.submittedDate?.replace("-", ".") ?: context.getString(R.string.timeline_date_unknown),
+                    title = context.getString(R.string.timeline_supplement_submitted_title),
+                    subtitle = context.getString(R.string.timeline_supplement_submitted_subtitle),
                 )
             }
         }
 
-        // 预计结果（仅审查中时）
         if (profile.status == ApplicationStatus.REVIEWING) {
-            val predLabel = prediction?.normalRange?.let { shortRange(it) } ?: "预计"
+            val predLabel = prediction?.normalRange?.let { shortRange(it) }
+                ?: context.getString(R.string.timeline_range_prefix)
             items += TimelineDisplayItem(
                 dot = TimelineDot.LAVENDER,
                 dateLabel = predLabel,
-                title = "审查结果",
-                subtitle = if (prediction != null) "基于公开数据估算" else "等待预测数据",
+                title = context.getString(R.string.timeline_result_title),
+                subtitle = if (prediction != null)
+                    context.getString(R.string.timeline_result_subtitle_estimated)
+                else
+                    context.getString(R.string.timeline_result_subtitle_waiting),
                 isPending = prediction == null,
             )
             items += TimelineDisplayItem(
                 dot = TimelineDot.CORAL,
-                dateLabel = "待发生",
-                title = "通知书 / 明信片 / 补资料",
-                subtitle = "有新状态会提醒你",
+                dateLabel = context.getString(R.string.timeline_date_future),
+                title = context.getString(R.string.timeline_notice_title),
+                subtitle = context.getString(R.string.timeline_notice_subtitle),
                 isPending = true,
             )
         }
 
-        // 最终结果（已结束时）
         if (profile.status == ApplicationStatus.COMPLETED && profile.resultType != ResultType.UNKNOWN) {
             items += TimelineDisplayItem(
                 dot = if (profile.resultType == ResultType.APPROVED) TimelineDot.MINT else TimelineDot.CORAL,
-                dateLabel = profile.resultDate?.replace("-", ".") ?: "未知",
-                title = profile.resultType.label,
+                dateLabel = profile.resultDate?.replace("-", ".") ?: context.getString(R.string.timeline_date_unknown),
+                title = context.getString(profile.resultType.labelRes),
                 subtitle = when (profile.resultType) {
-                    ResultType.APPROVED -> "永住许可已获批准"
-                    ResultType.REJECTED -> "申请未获批准"
-                    ResultType.WITHDRAWN -> "申请已撤回"
+                    ResultType.APPROVED -> context.getString(R.string.timeline_result_approved_subtitle)
+                    ResultType.REJECTED -> context.getString(R.string.timeline_result_rejected_subtitle)
+                    ResultType.WITHDRAWN -> context.getString(R.string.timeline_result_withdrawn_subtitle)
                     else -> ""
                 },
             )
@@ -122,17 +126,17 @@ class TimelineBuilder @Inject constructor() {
     ): List<TimelineDisplayItem> {
         val full = build(profile, supplements, prediction)
         if (full.size <= limit) return full
-        // Keep the first two (提交/受理) and the last (limit-2) nodes (latest events/outcome).
         val head = full.take(2)
         val tail = full.takeLast(limit - 2)
         return head + tail
     }
 
     private fun shortRange(normalRange: String): String {
-        val year = Regex("(\\d{4})年").find(normalRange)?.groupValues?.get(1) ?: return "预计"
+        val prefix = context.getString(R.string.timeline_range_prefix)
+        val year = Regex("(\\d{4})年").find(normalRange)?.groupValues?.get(1) ?: return prefix
         val months = Regex("(\\d{1,2})月").findAll(normalRange).map { it.groupValues[1] }.toList()
-        return if (months.size >= 2) "预计 $year.${months[0].padStart(2, '0')} - ${months.last()}"
-        else if (months.size == 1) "预计 $year.${months[0].padStart(2, '0')}"
-        else "预计 $year"
+        return if (months.size >= 2) "$prefix $year.${months[0].padStart(2, '0')} - ${months.last()}"
+        else if (months.size == 1) "$prefix $year.${months[0].padStart(2, '0')}"
+        else "$prefix $year"
     }
 }

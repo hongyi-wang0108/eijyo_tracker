@@ -1,7 +1,9 @@
 package com.eijyo.tracker.feature.application
 
+import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.eijyo.tracker.R
 import com.eijyo.tracker.data.model.ApplicationProfile
 import com.eijyo.tracker.data.model.ApplicationStatus
 import com.eijyo.tracker.data.model.Prediction
@@ -15,6 +17,7 @@ import com.eijyo.tracker.data.repository.SupplementRepository
 import com.eijyo.tracker.domain.timeline.TimelineBuilder
 import com.eijyo.tracker.domain.timeline.TimelineDisplayItem
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
@@ -39,6 +42,7 @@ data class ApplicationUiState(
 
 @HiltViewModel
 class ApplicationViewModel @Inject constructor(
+    @ApplicationContext private val context: Context,
     private val profileRepo: ProfileRepository,
     private val supplementRepo: SupplementRepository,
     private val analysisRepo: AnalysisRepository,
@@ -61,12 +65,12 @@ class ApplicationViewModel @Inject constructor(
         if (profile == null) return ApplicationUiState()
         val waitDays = calcWaitDays(profile.submittedDate)
         return ApplicationUiState(
-            officeName = profile.submittedOffice?.label ?: "",
-            statusLabel = profile.status.label,
-            waitDaysLabel = if (waitDays != null) "已提交 $waitDays 天" else "",
+            officeName = profile.submittedOffice?.let { context.getString(it.labelRes) } ?: "",
+            statusLabel = context.getString(profile.status.labelRes),
+            waitDaysLabel = if (waitDays != null) context.getString(R.string.app_wait_days_fmt, waitDays) else "",
             stagePillLabel = stagePill(profile.status, profile.resultType),
-            visaTypeLabel = profile.visaType?.label ?: "",
-            pathLabel = profile.applicationPath?.label ?: "",
+            visaTypeLabel = profile.visaType?.let { context.getString(it.labelRes) } ?: "",
+            pathLabel = profile.applicationPath?.let { context.getString(it.labelRes) } ?: "",
             submittedDateDisplay = profile.submittedDate?.replace("-", ".") ?: "",
             timeline = timelineBuilder.build(profile, supplements, prediction),
             hasPendingSupplement = supplements.any { it.status == SupplementStatus.RECEIVED },
@@ -74,13 +78,13 @@ class ApplicationViewModel @Inject constructor(
     }
 
     private fun stagePill(status: ApplicationStatus, result: ResultType): String = when (status) {
-        ApplicationStatus.PREPARING -> "准备提交"
-        ApplicationStatus.REVIEWING -> "等待结果中"
+        ApplicationStatus.PREPARING -> context.getString(R.string.app_stage_preparing)
+        ApplicationStatus.REVIEWING -> context.getString(R.string.app_stage_reviewing)
         ApplicationStatus.COMPLETED -> when (result) {
-            ResultType.APPROVED -> "已许可"
-            ResultType.REJECTED -> "未许可"
-            ResultType.WITHDRAWN -> "已撤回"
-            ResultType.UNKNOWN -> "已结束"
+            ResultType.APPROVED -> context.getString(R.string.app_stage_approved)
+            ResultType.REJECTED -> context.getString(R.string.app_stage_rejected)
+            ResultType.WITHDRAWN -> context.getString(R.string.app_stage_withdrawn)
+            ResultType.UNKNOWN -> context.getString(R.string.app_stage_completed)
         }
     }
 

@@ -264,4 +264,221 @@
     <string name="welcome_body">记录申请进度、整理材料清单，帮你预测大概什么时候收到通知。</string>
     <string name="welcome_start_cta">开始创建申请档案</string>
     <string name="welcome_disclaimer">预测仅供参考，不构成法律意见</string>
+
+    <!-- 批6：Enums / DocumentFilter / EventType / MainTab -->
+
+    <!-- ApplicationStatus -->
+    <string name="appstatus_preparing">准备中</string>
+    <string name="appstatus_reviewing">审查中</string>
+    <string name="appstatus_completed">已结束</string>
+
+    <!-- ResultType -->
+    <string name="resulttype_approved">许可</string>
+    <string name="resulttype_rejected">不许可</string>
+    <string name="resulttype_withdrawn">撤回</string>
+    <string name="resulttype_unknown">未知</string>
+
+    <!-- TriState -->
+    <string name="tristate_yes">是</string>
+    <string name="tristate_no">否</string>
+    <string name="tristate_unknown">不确定</string>
+
+    <!-- VisaType -->
+    <string name="visatype_engineer">技术・人文知识・国际业务</string>
+    <string name="visatype_highly_skilled">高度专业职</string>
+    <string name="visatype_spouse_of_japanese">日本人配偶者</string>
+    <string name="visatype_spouse_of_pr">永住者配偶者</string>
+    <string name="visatype_long_term_resident">定住者</string>
+    <string name="visatype_dependent">家族滞在</string>
+
+    <!-- ApplicationPath -->
+    <string name="apppath_ten_years">10年居住</string>
+    <string name="apppath_hsp_70">高度人才 70 分</string>
+    <string name="apppath_hsp_80">高度人才 80 分</string>
+    <string name="apppath_spouse_of_japanese">日本人配偶者</string>
+    <string name="apppath_spouse_of_pr">永住者配偶者</string>
+    <string name="apppath_long_term_resident">定住者</string>
+    <string name="apppath_unsure">不确定</string>
+
+    <!-- ImmigrationOffice -->
+    <string name="office_tokyo">东京入管</string>
+    <string name="office_osaka">大阪入管</string>
+    <string name="office_nagoya">名古屋入管</string>
+    <string name="office_yokohama">横滨支局</string>
+    <string name="office_kobe">神户支局</string>
+    <string name="office_fukuoka">福冈入管</string>
+    <string name="office_other">其他 / 不确定</string>
+
+    <!-- IncomeRange -->
+    <string name="income_below_300">300万日元以下</string>
+    <string name="income_r300_400">300万 - 400万日元</string>
+    <string name="income_r400_500">400万 - 500万日元</string>
+    <string name="income_r500_700">500万 - 700万日元</string>
+    <string name="income_above_700">700万日元以上</string>
+    <string name="income_undisclosed">不想填写</string>
+
+    <!-- DocumentCategory -->
+    <string name="doccat_identity">身份与在留</string>
+    <string name="doccat_tax">纳税相关</string>
+    <string name="doccat_pension">年金相关</string>
+    <string name="doccat_health_insurance">健康保险</string>
+    <string name="doccat_income">收入与在职</string>
+    <string name="doccat_family">家族与配偶</string>
+    <string name="doccat_forms">申请表与照片</string>
+    <string name="doccat_supplement">补充资料</string>
+    <string name="doccat_other">其他</string>
+
+    <!-- RequiredLevel -->
+    <string name="reqlevel_required">必备</string>
+    <string name="reqlevel_recommended">建议</string>
+    <string name="reqlevel_conditional">视情况</string>
+
+    <!-- DocumentStatus (Enums.kt 原始标签，区别于 MaterialsScreen 的显示标签) -->
+    <string name="docstatus_not_started">未开始</string>
+    <string name="docstatus_prepared">已准备</string>
+    <string name="docstatus_submitted">已提交</string>
+    <string name="docstatus_needs_update">需更新</string>
+
+    <!-- SupplementStatus -->
+    <string name="suppstatus_received">已收到</string>
+    <string name="suppstatus_submitted">已提交</string>
+    <string name="suppstatus_overdue">已逾期</string>
+
+    <!-- RiskLevel -->
+    <string name="risklevel_low">低风险</string>
+    <string name="risklevel_medium">中风险</string>
+    <string name="risklevel_high">高风险</string>
+
+    <!-- ConfidenceLevel -->
+    <string name="conflevel_high">较高</string>
+    <string name="conflevel_medium">中等</string>
+    <string name="conflevel_low">较低</string>
+
+    <!-- DocumentFilter -->
+    <string name="filter_all">全部</string>
+    <string name="filter_incomplete">未完成</string>
+    <string name="filter_complete">已完成</string>
+    <string name="filter_needs_update">需更新</string>
+
+    <!-- EventType -->
+    <string name="event_type_supplement_received">收到补资料</string>
+    <string name="event_type_supplement_submitted">补资料已提交</string>
+    <string name="event_type_notice_received">收到通知书</string>
+    <string name="event_type_approved">许可</string>
+    <string name="event_type_rejected">不许可</string>
+    <string name="event_type_withdrawn">撤回</string>
+    <string name="event_type_custom_note">自定义备注</string>
+
+    <!-- MainTab -->
+    <string name="tab_home">首页</string>
+    <string name="tab_application">申请</string>
+    <string name="tab_documents">材料</string>
+    <string name="tab_data">数据</string>
+    <string name="tab_settings">我的</string>
+
+    <!-- HomeViewModel / OnboardingCompleteViewModel（批6b） -->
+    <string name="home_greeting_morning">早上好</string>
+    <string name="home_greeting_noon">中午好</string>
+    <string name="home_greeting_afternoon">下午好</string>
+    <string name="home_greeting_evening">晚上好</string>
+    <string name="home_greeting_name_fallback">你</string>
+    <string name="home_greeting_fmt">%1$s，%2$s</string>
+    <string name="home_status_reviewing_fmt">%s · 审查中</string>
+    <string name="home_status_reviewing">审查中</string>
+    <string name="home_status_completed">结果已记录</string>
+    <string name="home_placeholder_preparing">先完成材料清单和风险确认</string>
+    <string name="home_placeholder_completed">结果记录已生成</string>
+    <string name="home_placeholder_no_date">补充申请日期后，可以生成预计时间</string>
+    <string name="home_backlog_fmt">约%s件</string>
+    <string name="complete_placeholder_preparing">准备进度已建立，先完成材料清单和风险确认</string>
+    <string name="complete_placeholder_no_date">补充申请日期后，可以生成预计时间</string>
+
+    <!-- ApplicationViewModel（批6b） -->
+    <string name="app_wait_days_fmt">已提交 %d 天</string>
+    <string name="app_stage_preparing">准备提交</string>
+    <string name="app_stage_reviewing">等待结果中</string>
+    <string name="app_stage_approved">已许可</string>
+    <string name="app_stage_rejected">未许可</string>
+    <string name="app_stage_withdrawn">已撤回</string>
+    <string name="app_stage_completed">已结束</string>
+
+    <!-- DataViewModel（批6b） -->
+    <string name="data_origin_live">最新数据</string>
+    <string name="data_origin_cached">缓存数据</string>
+    <string name="data_origin_bundled">内置数据</string>
+    <string name="data_trend_yearly_title">年度永住许可人数</string>
+    <string name="data_trend_yearly_unit">人/年</string>
+    <string name="data_trend_monthly_title">近月处理人数</string>
+    <string name="data_trend_monthly_unit">人/月</string>
+
+    <!-- PredictionDetailViewModel（批6b） -->
+    <string name="pred_office_unspecified">未指定入管</string>
+    <string name="pred_supplement_received_status">已收到</string>
+    <string name="pred_supplement_not_occurred">未发生</string>
+    <string name="pred_path_unspecified">未指定</string>
+    <string name="pred_source_updated_fmt">更新至 %s</string>
+    <string name="visa_abbr_engineer">技人国</string>
+    <string name="visa_abbr_highly_skilled">高度专门职</string>
+    <string name="visa_abbr_spouse_of_japanese">日本人配偶</string>
+    <string name="visa_abbr_spouse_of_pr">永住者配偶</string>
+    <string name="visa_abbr_long_term_resident">定住者</string>
+    <string name="visa_abbr_dependent">家族滞在</string>
+
+    <!-- RiskDetailViewModel（批6b） -->
+    <string name="risk_summary_low">当前问卷里没有明显风险项，建议继续保持材料和缴纳记录完整</string>
+    <string name="risk_summary_medium">问卷里存在不确定或待确认项，请先处理下方提示</string>
+    <string name="risk_summary_high">当前档案里有明确风险项，建议优先补强再继续推进</string>
+    <string name="risk_updated_just_now">刚刚更新</string>
+    <string name="risk_updated_today">今天更新</string>
+    <string name="risk_updated_recently">最近更新</string>
+    <string name="risk_section_conduct_title">素行</string>
+    <string name="risk_section_livelihood_title">生计</string>
+    <string name="risk_section_public_title">公益性</string>
+    <string name="risk_section_no_profile">暂无申请档案，无法判断</string>
+    <string name="risk_conduct_supplement_hint">你填过补资料记录，建议确认是否已按期提交并留存凭证</string>
+    <string name="risk_conduct_default_hint">当前问卷没有违法或违章字段，这里只按补资料状态做提醒，其他需你自行确认</string>
+    <string name="risk_status_no_data">暂无数据</string>
+    <string name="risk_status_check_ongoing">持续确认</string>
+    <string name="risk_status_self_check">自行确认</string>
+    <string name="risk_livelihood_income_issue">年收或扶养人数会影响稳定性判断</string>
+    <string name="risk_livelihood_no_income">你没有填写年收，生计稳定性会更保守</string>
+    <string name="risk_livelihood_ok">当前年收与扶养人数没有触发明显风险规则</string>
+    <string name="risk_status_pending_confirm">有待确认</string>
+    <string name="risk_status_supplement_needed">待补充</string>
+    <string name="risk_status_stable">稳定</string>
+    <string name="risk_public_issue">纳税・年金・保险里至少有一项未确认或异常</string>
+    <string name="risk_public_ok">纳税・年金・保险三项都按你问卷里的答案通过了基础检查</string>
+    <string name="risk_status_confirm_needed">需确认</string>
+    <string name="risk_status_confirmed">已确认</string>
+    <string name="risk_recommendation_note">这些建议直接来自你问卷里被判成未确认、未缴、补资料或生计偏弱的项目。</string>
+    <string name="risk_source_no_profile">当前没有可用申请档案，所以这里只能显示空态。</string>
+    <string name="risk_source_summary_fmt">基于你在问卷和申请档案里填写的纳税、年金、健康保险、年收、扶养人数、申请路径和补资料状态生成。当前路径：%s。</string>
+    <string name="risk_path_hsp">高度人才路径</string>
+    <string name="risk_path_not_filled">未填写申请路径</string>
+    <string name="risk_model_type">规则模型</string>
+
+    <!-- TimelineBuilder（批6c） -->
+    <string name="timeline_date_pending">待填写</string>
+    <string name="timeline_submitted_title">已提交申请</string>
+    <string name="timeline_submitted_subtitle">材料已交给入管</string>
+    <string name="timeline_accepted_title">入管受理</string>
+    <string name="timeline_accepted_subtitle">开始进入审查流程</string>
+    <string name="timeline_date_unknown">未知</string>
+    <string name="timeline_supplement_received_title">收到补资料</string>
+    <string name="timeline_supplement_received_subtitle_empty">请确认入管要求</string>
+    <string name="timeline_supplement_submitted_title">补资料已提交</string>
+    <string name="timeline_supplement_submitted_subtitle">已按期提交给入管</string>
+    <string name="timeline_result_title">审查结果</string>
+    <string name="timeline_result_subtitle_estimated">基于公开数据估算</string>
+    <string name="timeline_result_subtitle_waiting">等待预测数据</string>
+    <string name="timeline_date_future">待发生</string>
+    <string name="timeline_notice_title">通知书 / 明信片 / 补资料</string>
+    <string name="timeline_notice_subtitle">有新状态会提醒你</string>
+    <string name="timeline_result_approved_subtitle">永住许可已获批准</string>
+    <string name="timeline_result_rejected_subtitle">申请未获批准</string>
+    <string name="timeline_result_withdrawn_subtitle">申请已撤回</string>
+    <string name="timeline_range_prefix">预计</string>
+
+    <!-- Shared date format -->
+    <string name="date_year_month_fmt">%1$s年%2$s月</string>
 </resources>

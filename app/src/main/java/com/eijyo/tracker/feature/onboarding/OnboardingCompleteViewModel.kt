@@ -1,7 +1,9 @@
 package com.eijyo.tracker.feature.onboarding
 
+import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.eijyo.tracker.R
 import com.eijyo.tracker.data.model.ApplicationProfile
 import com.eijyo.tracker.data.model.ApplicationStatus
 import com.eijyo.tracker.data.model.RiskLevel
@@ -9,6 +11,7 @@ import com.eijyo.tracker.data.repository.AnalysisRepository
 import com.eijyo.tracker.data.repository.DocumentRepository
 import com.eijyo.tracker.data.repository.ProfileRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
@@ -25,6 +28,7 @@ data class CompleteUiState(
 
 @HiltViewModel
 class OnboardingCompleteViewModel @Inject constructor(
+    @ApplicationContext private val context: Context,
     profileRepository: ProfileRepository,
     documentRepository: DocumentRepository,
     analysisRepository: AnalysisRepository,
@@ -56,17 +60,18 @@ class OnboardingCompleteViewModel @Inject constructor(
     )
 
     private fun statusSummary(app: ApplicationProfile): String = when (app.status) {
-        ApplicationStatus.PREPARING -> "准备中"
-        ApplicationStatus.REVIEWING ->
-            app.submittedOffice?.let { "${it.label} · 审查中" } ?: "审查中"
-        ApplicationStatus.COMPLETED -> "结果已记录"
+        ApplicationStatus.PREPARING -> context.getString(R.string.appstatus_preparing)
+        ApplicationStatus.REVIEWING -> app.submittedOffice
+            ?.let { context.getString(R.string.home_status_reviewing_fmt, context.getString(it.labelRes)) }
+            ?: context.getString(R.string.home_status_reviewing)
+        ApplicationStatus.COMPLETED -> context.getString(R.string.home_status_completed)
     }
 
     /** Copy shown in place of a prediction range for non-reviewing states (6.3.5). */
     private fun placeholderFor(app: ApplicationProfile): String? = when (app.status) {
-        ApplicationStatus.PREPARING -> "准备进度已建立，先完成材料清单和风险确认"
-        ApplicationStatus.COMPLETED -> "结果记录已生成"
+        ApplicationStatus.PREPARING -> context.getString(R.string.complete_placeholder_preparing)
+        ApplicationStatus.COMPLETED -> context.getString(R.string.home_placeholder_completed)
         ApplicationStatus.REVIEWING ->
-            if (app.submittedDate == null) "补充申请日期后，可以生成预计时间" else null
+            if (app.submittedDate == null) context.getString(R.string.complete_placeholder_no_date) else null
     }
 }

@@ -1,7 +1,9 @@
 package com.eijyo.tracker.feature.risk
 
+import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.eijyo.tracker.R
 import com.eijyo.tracker.data.model.ApplicationPath
 import com.eijyo.tracker.data.model.ApplicationProfile
 import com.eijyo.tracker.data.model.IncomeRange
@@ -11,6 +13,7 @@ import com.eijyo.tracker.data.repository.AnalysisRepository
 import com.eijyo.tracker.data.repository.ProfileRepository
 import com.eijyo.tracker.data.model.TriState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
@@ -37,11 +40,12 @@ data class RiskDetailUiState(
     val recommendations: List<String> = emptyList(),
     val recommendationNote: String = "",
     val sourceSummary: String = "",
-    val modelType: String = "规则模型",
+    val modelType: String = "",
 )
 
 @HiltViewModel
 class RiskDetailViewModel @Inject constructor(
+    @ApplicationContext private val context: Context,
     private val analysisRepo: AnalysisRepository,
     private val profileRepository: ProfileRepository,
 ) : ViewModel() {
@@ -56,7 +60,7 @@ class RiskDetailViewModel @Inject constructor(
         if (risk == null) return RiskDetailUiState()
         return RiskDetailUiState(
             available = true,
-            levelLabel = risk.level.label,
+            levelLabel = context.getString(risk.level.labelRes),
             riskLevel = risk.level,
             displayScore = displayScore(risk.level, risk.score),
             summary = summaryFor(risk, profile),
@@ -65,7 +69,7 @@ class RiskDetailViewModel @Inject constructor(
             recommendations = risk.suggestions,
             recommendationNote = recommendationNote(risk),
             sourceSummary = sourceSummary(profile),
-            modelType = "规则模型",
+            modelType = context.getString(R.string.risk_model_type),
         )
     }
 
@@ -79,18 +83,17 @@ class RiskDetailViewModel @Inject constructor(
     }
 
     private fun summaryFor(risk: RiskAssessment, profile: ApplicationProfile?): String = when (risk.level) {
-        RiskLevel.LOW -> "当前问卷里没有明显风险项，建议继续保持材料和缴纳记录完整"
-        RiskLevel.MEDIUM -> "问卷里存在不确定或待确认项，请先处理下方提示"
-        RiskLevel.HIGH -> "当前档案里有明确风险项，建议优先补强再继续推进"
+        RiskLevel.LOW -> context.getString(R.string.risk_summary_low)
+        RiskLevel.MEDIUM -> context.getString(R.string.risk_summary_medium)
+        RiskLevel.HIGH -> context.getString(R.string.risk_summary_high)
     }
 
     private fun relativeTime(createdAt: Long): String {
         val diffMs = System.currentTimeMillis() - createdAt
         return when {
-            diffMs < TimeUnit.MINUTES.toMillis(2) -> "刚刚更新"
-            diffMs < TimeUnit.HOURS.toMillis(1) -> "今天更新"
-            diffMs < TimeUnit.DAYS.toMillis(1) -> "今天更新"
-            else -> "最近更新"
+            diffMs < TimeUnit.MINUTES.toMillis(2) -> context.getString(R.string.risk_updated_just_now)
+            diffMs < TimeUnit.DAYS.toMillis(1) -> context.getString(R.string.risk_updated_today)
+            else -> context.getString(R.string.risk_updated_recently)
         }
     }
 
@@ -100,16 +103,16 @@ class RiskDetailViewModel @Inject constructor(
         val conductIssue = conductIssue(profile)
         return listOf(
             RiskSectionItem(
-                title = "素行",
+                title = context.getString(R.string.risk_section_conduct_title),
                 subtitle = when {
-                    profile == null -> "暂无申请档案，无法判断"
-                    profile.hasSupplementRequest == TriState.YES -> "你填过补资料记录，建议确认是否已按期提交并留存凭证"
-                    else -> "当前问卷没有违法或违章字段，这里只按补资料状态做提醒，其他需你自行确认"
+                    profile == null -> context.getString(R.string.risk_section_no_profile)
+                    profile.hasSupplementRequest == TriState.YES -> context.getString(R.string.risk_conduct_supplement_hint)
+                    else -> context.getString(R.string.risk_conduct_default_hint)
                 },
                 statusLabel = when {
-                    profile == null -> "暂无数据"
-                    conductIssue -> "持续确认"
-                    else -> "自行确认"
+                    profile == null -> context.getString(R.string.risk_status_no_data)
+                    conductIssue -> context.getString(R.string.risk_status_check_ongoing)
+                    else -> context.getString(R.string.risk_status_self_check)
                 },
                 status = when {
                     profile == null -> SectionStatus.INFO
@@ -118,18 +121,18 @@ class RiskDetailViewModel @Inject constructor(
                 },
             ),
             RiskSectionItem(
-                title = "生计",
+                title = context.getString(R.string.risk_section_livelihood_title),
                 subtitle = when {
-                    profile == null -> "暂无申请档案，无法判断"
-                    livelihoodIssue -> "年收或扶养人数会影响稳定性判断"
-                    profile.annualIncomeRange == IncomeRange.UNDISCLOSED -> "你没有填写年收，生计稳定性会更保守"
-                    else -> "当前年收与扶养人数没有触发明显风险规则"
+                    profile == null -> context.getString(R.string.risk_section_no_profile)
+                    livelihoodIssue -> context.getString(R.string.risk_livelihood_income_issue)
+                    profile.annualIncomeRange == IncomeRange.UNDISCLOSED -> context.getString(R.string.risk_livelihood_no_income)
+                    else -> context.getString(R.string.risk_livelihood_ok)
                 },
                 statusLabel = when {
-                    profile == null -> "暂无数据"
-                    livelihoodIssue -> "有待确认"
-                    profile.annualIncomeRange == IncomeRange.UNDISCLOSED -> "待补充"
-                    else -> "稳定"
+                    profile == null -> context.getString(R.string.risk_status_no_data)
+                    livelihoodIssue -> context.getString(R.string.risk_status_pending_confirm)
+                    profile.annualIncomeRange == IncomeRange.UNDISCLOSED -> context.getString(R.string.risk_status_supplement_needed)
+                    else -> context.getString(R.string.risk_status_stable)
                 },
                 status = when {
                     profile == null -> SectionStatus.INFO
@@ -139,16 +142,16 @@ class RiskDetailViewModel @Inject constructor(
                 },
             ),
             RiskSectionItem(
-                title = "公益性",
+                title = context.getString(R.string.risk_section_public_title),
                 subtitle = when {
-                    profile == null -> "暂无申请档案，无法判断"
-                    publicIssue -> "纳税・年金・保险里至少有一项未确认或异常"
-                    else -> "纳税・年金・保险三项都按你问卷里的答案通过了基础检查"
+                    profile == null -> context.getString(R.string.risk_section_no_profile)
+                    publicIssue -> context.getString(R.string.risk_public_issue)
+                    else -> context.getString(R.string.risk_public_ok)
                 },
                 statusLabel = when {
-                    profile == null -> "暂无数据"
-                    publicIssue -> "需确认"
-                    else -> "已确认"
+                    profile == null -> context.getString(R.string.risk_status_no_data)
+                    publicIssue -> context.getString(R.string.risk_status_confirm_needed)
+                    else -> context.getString(R.string.risk_status_confirmed)
                 },
                 status = when {
                     profile == null -> SectionStatus.INFO
@@ -176,15 +179,15 @@ class RiskDetailViewModel @Inject constructor(
         ).any { it != TriState.YES }
 
     private fun recommendationNote(risk: RiskAssessment): String =
-        if (risk.suggestions.isEmpty()) "" else "这些建议直接来自你问卷里被判成未确认、未缴、补资料或生计偏弱的项目。"
+        if (risk.suggestions.isEmpty()) "" else context.getString(R.string.risk_recommendation_note)
 
     private fun sourceSummary(profile: ApplicationProfile?): String {
-        if (profile == null) return "当前没有可用申请档案，所以这里只能显示空态。"
+        if (profile == null) return context.getString(R.string.risk_source_no_profile)
         val pathLabel = when (profile.applicationPath) {
-            ApplicationPath.HSP_70, ApplicationPath.HSP_80 -> "高度人才路径"
-            null -> "未填写申请路径"
-            else -> profile.applicationPath.label
+            ApplicationPath.HSP_70, ApplicationPath.HSP_80 -> context.getString(R.string.risk_path_hsp)
+            null -> context.getString(R.string.risk_path_not_filled)
+            else -> context.getString(profile.applicationPath.labelRes)
         }
-        return "基于你在问卷和申请档案里填写的纳税、年金、健康保险、年收、扶养人数、申请路径和补资料状态生成。当前路径：$pathLabel。"
+        return context.getString(R.string.risk_source_summary_fmt, pathLabel)
     }
 }

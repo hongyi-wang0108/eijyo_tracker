@@ -261,4 +261,221 @@
     <string name="welcome_body">申請の進捗記録、書類整理、審査結果の目安予測をサポートします。</string>
     <string name="welcome_start_cta">申請ファイルを作成する</string>
     <string name="welcome_disclaimer">予測は参考のみです。法律上のアドバイスではありません</string>
+
+    <!-- バッチ6：Enum / DocumentFilter / EventType / MainTab -->
+
+    <!-- ApplicationStatus -->
+    <string name="appstatus_preparing">準備中</string>
+    <string name="appstatus_reviewing">審査中</string>
+    <string name="appstatus_completed">終了</string>
+
+    <!-- ResultType -->
+    <string name="resulttype_approved">許可</string>
+    <string name="resulttype_rejected">不許可</string>
+    <string name="resulttype_withdrawn">取下げ</string>
+    <string name="resulttype_unknown">不明</string>
+
+    <!-- TriState -->
+    <string name="tristate_yes">はい</string>
+    <string name="tristate_no">いいえ</string>
+    <string name="tristate_unknown">不明</string>
+
+    <!-- VisaType -->
+    <string name="visatype_engineer">技術・人文知識・国際業務</string>
+    <string name="visatype_highly_skilled">高度専門職</string>
+    <string name="visatype_spouse_of_japanese">日本人の配偶者等</string>
+    <string name="visatype_spouse_of_pr">永住者の配偶者等</string>
+    <string name="visatype_long_term_resident">定住者</string>
+    <string name="visatype_dependent">家族滞在</string>
+
+    <!-- ApplicationPath -->
+    <string name="apppath_ten_years">10年居住</string>
+    <string name="apppath_hsp_70">高度人材 70点</string>
+    <string name="apppath_hsp_80">高度人材 80点</string>
+    <string name="apppath_spouse_of_japanese">日本人の配偶者等</string>
+    <string name="apppath_spouse_of_pr">永住者の配偶者等</string>
+    <string name="apppath_long_term_resident">定住者</string>
+    <string name="apppath_unsure">わからない</string>
+
+    <!-- ImmigrationOffice -->
+    <string name="office_tokyo">東京入管</string>
+    <string name="office_osaka">大阪入管</string>
+    <string name="office_nagoya">名古屋入管</string>
+    <string name="office_yokohama">横浜支局</string>
+    <string name="office_kobe">神戸支局</string>
+    <string name="office_fukuoka">福岡入管</string>
+    <string name="office_other">その他・不明</string>
+
+    <!-- IncomeRange -->
+    <string name="income_below_300">300万円未満</string>
+    <string name="income_r300_400">300万〜400万円</string>
+    <string name="income_r400_500">400万〜500万円</string>
+    <string name="income_r500_700">500万〜700万円</string>
+    <string name="income_above_700">700万円以上</string>
+    <string name="income_undisclosed">回答しない</string>
+
+    <!-- DocumentCategory -->
+    <string name="doccat_identity">身分・在留</string>
+    <string name="doccat_tax">納税関係</string>
+    <string name="doccat_pension">年金関係</string>
+    <string name="doccat_health_insurance">健康保険</string>
+    <string name="doccat_income">収入・在職</string>
+    <string name="doccat_family">家族・配偶者</string>
+    <string name="doccat_forms">申請書・写真</string>
+    <string name="doccat_supplement">追加資料</string>
+    <string name="doccat_other">その他</string>
+
+    <!-- RequiredLevel -->
+    <string name="reqlevel_required">必須</string>
+    <string name="reqlevel_recommended">推奨</string>
+    <string name="reqlevel_conditional">場合による</string>
+
+    <!-- DocumentStatus -->
+    <string name="docstatus_not_started">未着手</string>
+    <string name="docstatus_prepared">準備済み</string>
+    <string name="docstatus_submitted">提出済み</string>
+    <string name="docstatus_needs_update">要更新</string>
+
+    <!-- SupplementStatus -->
+    <string name="suppstatus_received">受領済み</string>
+    <string name="suppstatus_submitted">提出済み</string>
+    <string name="suppstatus_overdue">期限切れ</string>
+
+    <!-- RiskLevel -->
+    <string name="risklevel_low">低リスク</string>
+    <string name="risklevel_medium">中リスク</string>
+    <string name="risklevel_high">高リスク</string>
+
+    <!-- ConfidenceLevel -->
+    <string name="conflevel_high">高め</string>
+    <string name="conflevel_medium">中程度</string>
+    <string name="conflevel_low">低め</string>
+
+    <!-- DocumentFilter -->
+    <string name="filter_all">すべて</string>
+    <string name="filter_incomplete">未完了</string>
+    <string name="filter_complete">完了</string>
+    <string name="filter_needs_update">要更新</string>
+
+    <!-- EventType -->
+    <string name="event_type_supplement_received">追加書類受領</string>
+    <string name="event_type_supplement_submitted">追加書類提出</string>
+    <string name="event_type_notice_received">通知書受領</string>
+    <string name="event_type_approved">許可</string>
+    <string name="event_type_rejected">不許可</string>
+    <string name="event_type_withdrawn">取下げ</string>
+    <string name="event_type_custom_note">カスタムメモ</string>
+
+    <!-- MainTab -->
+    <string name="tab_home">ホーム</string>
+    <string name="tab_application">申請</string>
+    <string name="tab_documents">書類</string>
+    <string name="tab_data">データ</string>
+    <string name="tab_settings">設定</string>
+
+    <!-- HomeViewModel / OnboardingCompleteViewModel（バッチ6b） -->
+    <string name="home_greeting_morning">おはようございます</string>
+    <string name="home_greeting_noon">こんにちは</string>
+    <string name="home_greeting_afternoon">こんにちは</string>
+    <string name="home_greeting_evening">こんばんは</string>
+    <string name="home_greeting_name_fallback">あなた</string>
+    <string name="home_greeting_fmt">%1$s、%2$s</string>
+    <string name="home_status_reviewing_fmt">%s · 審査中</string>
+    <string name="home_status_reviewing">審査中</string>
+    <string name="home_status_completed">結果を記録済み</string>
+    <string name="home_placeholder_preparing">書類リストとリスク確認を先に完了してください</string>
+    <string name="home_placeholder_completed">結果を記録済み</string>
+    <string name="home_placeholder_no_date">申請日を入力すると予測が生成されます</string>
+    <string name="home_backlog_fmt">約%s件</string>
+    <string name="complete_placeholder_preparing">準備状況が確認されました。書類リストとリスク確認を続けてください</string>
+    <string name="complete_placeholder_no_date">申請日を入力すると予測が生成されます</string>
+
+    <!-- ApplicationViewModel（バッチ6b） -->
+    <string name="app_wait_days_fmt">提出から %d 日</string>
+    <string name="app_stage_preparing">提出準備中</string>
+    <string name="app_stage_reviewing">審査待ち</string>
+    <string name="app_stage_approved">許可済み</string>
+    <string name="app_stage_rejected">不許可</string>
+    <string name="app_stage_withdrawn">取下げ済み</string>
+    <string name="app_stage_completed">終了</string>
+
+    <!-- DataViewModel（バッチ6b） -->
+    <string name="data_origin_live">最新データ</string>
+    <string name="data_origin_cached">キャッシュデータ</string>
+    <string name="data_origin_bundled">内蔵データ</string>
+    <string name="data_trend_yearly_title">年度永住許可件数</string>
+    <string name="data_trend_yearly_unit">件/年</string>
+    <string name="data_trend_monthly_title">直近月処理件数</string>
+    <string name="data_trend_monthly_unit">件/月</string>
+
+    <!-- PredictionDetailViewModel（バッチ6b） -->
+    <string name="pred_office_unspecified">入管未指定</string>
+    <string name="pred_supplement_received_status">受領済み</string>
+    <string name="pred_supplement_not_occurred">未発生</string>
+    <string name="pred_path_unspecified">未指定</string>
+    <string name="pred_source_updated_fmt">%s時点</string>
+    <string name="visa_abbr_engineer">技人国</string>
+    <string name="visa_abbr_highly_skilled">高度専門職</string>
+    <string name="visa_abbr_spouse_of_japanese">日本人配偶</string>
+    <string name="visa_abbr_spouse_of_pr">永住者配偶</string>
+    <string name="visa_abbr_long_term_resident">定住者</string>
+    <string name="visa_abbr_dependent">家族滞在</string>
+
+    <!-- RiskDetailViewModel（バッチ6b） -->
+    <string name="risk_summary_low">現在の問診では明確なリスク項目は見当たりません。書類と納付記録の維持を続けてください</string>
+    <string name="risk_summary_medium">問診に不確実または要確認の項目があります。下記のヒントに対応してください</string>
+    <string name="risk_summary_high">申請ファイルに明確なリスク項目があります。優先的に補強してから進めてください</string>
+    <string name="risk_updated_just_now">たった今更新</string>
+    <string name="risk_updated_today">本日更新</string>
+    <string name="risk_updated_recently">最近更新</string>
+    <string name="risk_section_conduct_title">素行</string>
+    <string name="risk_section_livelihood_title">生計</string>
+    <string name="risk_section_public_title">公益性</string>
+    <string name="risk_section_no_profile">申請ファイルがないため、判断できません</string>
+    <string name="risk_conduct_supplement_hint">追加書類の記録があります。期限内に提出し、証拠を保管したか確認してください</string>
+    <string name="risk_conduct_default_hint">問診に違法・違反の項目はありません。追加書類の状況のみ確認しており、その他は自己確認が必要です</string>
+    <string name="risk_status_no_data">データなし</string>
+    <string name="risk_status_check_ongoing">継続確認</string>
+    <string name="risk_status_self_check">自己確認</string>
+    <string name="risk_livelihood_income_issue">年収や扶養人数が安定性の判断に影響します</string>
+    <string name="risk_livelihood_no_income">年収を入力していないため、生計安定性の評価が慎重になります</string>
+    <string name="risk_livelihood_ok">現在の年収と扶養人数は明確なリスクルールに触れていません</string>
+    <string name="risk_status_pending_confirm">要確認</string>
+    <string name="risk_status_supplement_needed">要補充</string>
+    <string name="risk_status_stable">安定</string>
+    <string name="risk_public_issue">納税・年金・保険のいずれかが未確認または問題あり</string>
+    <string name="risk_public_ok">納税・年金・保険の3項目は問診の回答に基づき基本チェックを通過しました</string>
+    <string name="risk_status_confirm_needed">確認が必要</string>
+    <string name="risk_status_confirmed">確認済み</string>
+    <string name="risk_recommendation_note">これらの提案は、問診で未確認・未納・追加書類・生計不安定と判断された項目から直接生成されています。</string>
+    <string name="risk_source_no_profile">利用可能な申請ファイルがないため、空の状態のみ表示します。</string>
+    <string name="risk_source_summary_fmt">問診・申請ファイルに入力された納税・年金・健康保険・年収・扶養人数・申請経路・追加書類の状況に基づき生成。現在の経路：%s。</string>
+    <string name="risk_path_hsp">高度人材経路</string>
+    <string name="risk_path_not_filled">申請経路未入力</string>
+    <string name="risk_model_type">ルールモデル</string>
+
+    <!-- TimelineBuilder（バッチ6c） -->
+    <string name="timeline_date_pending">未記入</string>
+    <string name="timeline_submitted_title">申請書類提出</string>
+    <string name="timeline_submitted_subtitle">書類を入管へ提出</string>
+    <string name="timeline_accepted_title">入管受理</string>
+    <string name="timeline_accepted_subtitle">審査プロセス開始</string>
+    <string name="timeline_date_unknown">不明</string>
+    <string name="timeline_supplement_received_title">追加書類受領</string>
+    <string name="timeline_supplement_received_subtitle_empty">入管の要求を確認してください</string>
+    <string name="timeline_supplement_submitted_title">追加書類提出</string>
+    <string name="timeline_supplement_submitted_subtitle">期限内に入管へ提出済み</string>
+    <string name="timeline_result_title">審査結果</string>
+    <string name="timeline_result_subtitle_estimated">公開データに基づく推定</string>
+    <string name="timeline_result_subtitle_waiting">予測データ待ち</string>
+    <string name="timeline_date_future">未発生</string>
+    <string name="timeline_notice_title">通知書 / はがき / 追加書類</string>
+    <string name="timeline_notice_subtitle">新しい状況があれば通知します</string>
+    <string name="timeline_result_approved_subtitle">永住許可が承認されました</string>
+    <string name="timeline_result_rejected_subtitle">申請は承認されませんでした</string>
+    <string name="timeline_result_withdrawn_subtitle">申請が取り下げられました</string>
+    <string name="timeline_range_prefix">予定</string>
+
+    <!-- Shared date format -->
+    <string name="date_year_month_fmt">%1$s年%2$s月</string>
 </resources>

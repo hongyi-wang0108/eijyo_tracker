@@ -1,7 +1,9 @@
 package com.eijyo.tracker.feature.documents
 
+import androidx.annotation.StringRes
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.eijyo.tracker.R
 import com.eijyo.tracker.data.model.DocumentCategory
 import com.eijyo.tracker.data.model.DocumentItem
 import com.eijyo.tracker.data.model.DocumentStatus
@@ -14,11 +16,11 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-enum class DocumentFilter(val label: String) {
-    ALL("全部"),
-    INCOMPLETE("未完成"),
-    COMPLETE("已完成"),
-    NEEDS_UPDATE("需更新"),
+enum class DocumentFilter(@StringRes val labelRes: Int) {
+    ALL(R.string.filter_all),
+    INCOMPLETE(R.string.filter_incomplete),
+    COMPLETE(R.string.filter_complete),
+    NEEDS_UPDATE(R.string.filter_needs_update),
 }
 
 data class DocumentSection(

@@ -1,5 +1,6 @@
 package com.eijyo.tracker.domain.prediction
 
+import android.content.Context
 import com.eijyo.tracker.data.model.ApplicationProfile
 import com.eijyo.tracker.data.model.ApplicationStatus
 import com.eijyo.tracker.data.model.ConfidenceLevel
@@ -10,6 +11,7 @@ import com.eijyo.tracker.data.model.Prediction
 import com.eijyo.tracker.data.model.PublicDataDoc
 import com.eijyo.tracker.data.model.TriState
 import com.eijyo.tracker.data.staticdata.PublicData
+import dagger.hilt.android.qualifiers.ApplicationContext
 import java.time.LocalDate
 import java.time.temporal.ChronoUnit
 import javax.inject.Inject
@@ -25,7 +27,9 @@ import kotlin.math.roundToInt
  * unknown ([DatePrecision.UNKNOWN]) no review window can be computed and this returns
  * null so the UI can prompt the user to fill in the date.
  */
-class PredictionEngine @Inject constructor() {
+class PredictionEngine @Inject constructor(
+    @ApplicationContext private val context: Context,
+) {
 
     fun predict(
         profile: ApplicationProfile,
@@ -45,7 +49,7 @@ class PredictionEngine @Inject constructor() {
         reasons += "官方标准处理期间约 ${publicData.standardProcessingRange}（${publicData.sourceName}）"
 
         val officeBuffer = officeBuffer(profile.submittedOffice).also {
-            if (it > 0) reasons += "${(profile.submittedOffice ?: ImmigrationOffice.OTHER).label}受理量较大，保守区间相应延长"
+            if (it > 0) reasons += "${context.getString((profile.submittedOffice ?: ImmigrationOffice.OTHER).labelRes)}受理量较大，保守区间相应延长"
         }
 
         val hasSupplement = profile.hasSupplementRequest == TriState.YES
@@ -130,7 +134,7 @@ class PredictionEngine @Inject constructor() {
 
         val reasons = mutableListOf<String>()
         val officeData = publicDataDoc.officeData(office!!.name)
-        reasons += "基于${officeData?.displayName ?: office.label}真实受理处理数据（更新至 ${publicDataDoc.dataAsOf}）"
+        reasons += "基于${officeData?.displayName ?: context.getString(office.labelRes)}真实受理处理数据（更新至 ${publicDataDoc.dataAsOf}）"
 
         // Calibrate the raw FIFO wait to real observed latency (see OfficeData.calibrationFactor).
         // Applied to time only — rNow (people ahead) stays a real count.

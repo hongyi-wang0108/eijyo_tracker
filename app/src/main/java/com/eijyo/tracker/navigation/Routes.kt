@@ -1,5 +1,8 @@
 package com.eijyo.tracker.navigation
 
+import androidx.annotation.StringRes
+import com.eijyo.tracker.R
+
 /** Centralized navigation route keys. */
 object Routes {
     const val WELCOME = "welcome"
@@ -11,10 +14,10 @@ object Routes {
 }
 
 /** Bottom-tab destinations inside the main app shell. */
-enum class MainTab(val route: String, val label: String) {
-    HOME("home", "首页"),
-    APPLICATION("application", "申请"),
-    DOCUMENTS("documents", "材料"),
-    DATA("data", "数据"),
-    SETTINGS("settings", "我的"),
+enum class MainTab(val route: String, @StringRes val labelRes: Int) {
+    HOME("home", R.string.tab_home),
+    APPLICATION("application", R.string.tab_application),
+    DOCUMENTS("documents", R.string.tab_documents),
+    DATA("data", R.string.tab_data),
+    SETTINGS("settings", R.string.tab_settings),
 }

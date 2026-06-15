@@ -1,7 +1,9 @@
 package com.eijyo.tracker.feature.data
 
+import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.eijyo.tracker.R
 import com.eijyo.tracker.data.model.ApplicationProfile
 import com.eijyo.tracker.data.model.ImmigrationOffice
 import com.eijyo.tracker.data.model.OfficeData
@@ -11,6 +13,7 @@ import com.eijyo.tracker.data.repository.PublicDataRepository
 import com.eijyo.tracker.data.repository.PublicDataResult
 import com.eijyo.tracker.data.staticdata.PublicDataSource
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
@@ -53,6 +56,7 @@ data class DataUiState(
 
 @HiltViewModel
 class DataViewModel @Inject constructor(
+    @ApplicationContext private val context: Context,
     profileRepo: ProfileRepository,
     private val publicDataRepo: PublicDataRepository,
 ) : ViewModel() {
@@ -74,9 +78,9 @@ class DataViewModel @Inject constructor(
         result: PublicDataResult?,
     ): DataUiState {
         val office = app?.submittedOffice
-        val officeLabel = office?.label ?: ""
-        val visaTypeLabel = app?.visaType?.label ?: ""
-        val pathLabel = app?.applicationPath?.label ?: ""
+        val officeLabel = office?.let { context.getString(it.labelRes) } ?: ""
+        val visaTypeLabel = app?.visaType?.let { context.getString(it.labelRes) } ?: ""
+        val pathLabel = app?.applicationPath?.let { context.getString(it.labelRes) } ?: ""
 
         // Before the data resolves, show neutral defaults.
         val doc = result?.doc ?: return DataUiState(
@@ -112,13 +116,13 @@ class DataViewModel @Inject constructor(
         val permits = officeData?.permitsByYear.orEmpty()
         val (trendTitle, trendUnit, trend) = when {
             permits.isNotEmpty() -> Triple(
-                "年度永住许可人数",
-                "人/年",
+                context.getString(R.string.data_trend_yearly_title),
+                context.getString(R.string.data_trend_yearly_unit),
                 permits.takeLast(8).map { TrendBar("${it.year}", it.count) },
             )
             officeData != null && officeData.monthly.isNotEmpty() -> Triple(
-                "近月处理人数",
-                "人/月",
+                context.getString(R.string.data_trend_monthly_title),
+                context.getString(R.string.data_trend_monthly_unit),
                 officeData.monthly.takeLast(8).map { TrendBar(shortMonth(it.month), it.processed) },
             )
             else -> Triple("", "", emptyList())
@@ -145,17 +149,17 @@ class DataViewModel @Inject constructor(
     }
 
     private fun originLabel(origin: PublicDataOrigin): String = when (origin) {
-        PublicDataOrigin.NETWORK -> "最新数据"
-        PublicDataOrigin.CACHE -> "缓存数据"
-        PublicDataOrigin.BUNDLED -> "内置数据"
+        PublicDataOrigin.NETWORK -> context.getString(R.string.data_origin_live)
+        PublicDataOrigin.CACHE -> context.getString(R.string.data_origin_cached)
+        PublicDataOrigin.BUNDLED -> context.getString(R.string.data_origin_bundled)
     }
 
-    /** "2026-03" → "2026年3月"; passthrough if unparseable. */
+    /** "2026-03" → locale-formatted year-month; passthrough if unparseable. */
     private fun monthLabel(ym: String): String {
         val parts = ym.split("-")
         if (parts.size != 2) return ym
         val month = parts[1].toIntOrNull() ?: return ym
-        return "${parts[0]}年${month}月"
+        return context.getString(R.string.date_year_month_fmt, parts[0], month.toString())
     }
 
     /** "2026-03" → "26/3" for compact bar labels. */

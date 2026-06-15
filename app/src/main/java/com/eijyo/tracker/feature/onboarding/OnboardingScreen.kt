@@ -254,7 +254,7 @@ private fun QuestionContent(state: OnboardingUiState, viewModel: OnboardingViewM
         OnboardingStep.NICKNAME -> NicknameInput(a.nickname, viewModel::updateNickname)
 
         OnboardingStep.VISA -> ChoiceColumn(
-            options = VisaType.entries.map { it to it.label },
+            options = VisaType.entries.map { it to stringResource(it.labelRes) },
             selected = a.visaType,
             onSelect = viewModel::selectVisa,
         )
@@ -272,37 +272,37 @@ private fun QuestionContent(state: OnboardingUiState, viewModel: OnboardingViewM
         OnboardingStep.APP_DATE -> DateQuestion(state, viewModel)
 
         OnboardingStep.OFFICE -> ChoiceColumn(
-            options = ImmigrationOffice.entries.map { it to it.label },
+            options = ImmigrationOffice.entries.map { it to stringResource(it.labelRes) },
             selected = a.office,
             onSelect = viewModel::selectOffice,
         )
 
         OnboardingStep.PATH -> ChoiceColumn(
-            options = ApplicationPath.entries.map { it to it.label },
+            options = ApplicationPath.entries.map { it to stringResource(it.labelRes) },
             selected = a.path,
             onSelect = viewModel::selectPath,
         )
 
         OnboardingStep.TAX -> ChoiceColumn(
-            options = TriState.entries.map { it to it.label },
+            options = TriState.entries.map { it to stringResource(it.labelRes) },
             selected = a.tax,
             onSelect = viewModel::selectTax,
         )
 
         OnboardingStep.PENSION -> ChoiceColumn(
-            options = TriState.entries.map { it to it.label },
+            options = TriState.entries.map { it to stringResource(it.labelRes) },
             selected = a.pension,
             onSelect = viewModel::selectPension,
         )
 
         OnboardingStep.HEALTH -> ChoiceColumn(
-            options = TriState.entries.map { it to it.label },
+            options = TriState.entries.map { it to stringResource(it.labelRes) },
             selected = a.health,
             onSelect = viewModel::selectHealth,
         )
 
         OnboardingStep.INCOME -> ChoiceColumn(
-            options = IncomeRange.entries.map { it to it.label },
+            options = IncomeRange.entries.map { it to stringResource(it.labelRes) },
             selected = a.income,
             onSelect = viewModel::selectIncome,
         )

@@ -1,7 +1,9 @@
 package com.eijyo.tracker.feature.home
 
+import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.eijyo.tracker.R
 import com.eijyo.tracker.data.model.ApplicationProfile
 import com.eijyo.tracker.data.model.ApplicationStatus
 import com.eijyo.tracker.data.model.DocumentItem
@@ -20,6 +22,7 @@ import com.eijyo.tracker.data.repository.SupplementRepository
 import com.eijyo.tracker.domain.timeline.TimelineBuilder
 import com.eijyo.tracker.domain.timeline.TimelineDisplayItem
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
@@ -52,6 +55,7 @@ data class HomeUiState(
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
+    @ApplicationContext private val context: Context,
     profileRepository: ProfileRepository,
     documentRepository: DocumentRepository,
     analysisRepository: AnalysisRepository,
@@ -118,7 +122,7 @@ class HomeViewModel @Inject constructor(
             ?: officeData?.monthly?.takeLast(6)?.map { it.processed }
             ?: emptyList()
         val backlogLabel = officeData?.monthly?.lastOrNull()
-            ?.let { "约${formatWan(it.pending)}件" } ?: ""
+            ?.let { context.getString(R.string.home_backlog_fmt, formatWan(it.pending)) } ?: ""
         val hasResult = application.status == ApplicationStatus.COMPLETED &&
             application.resultType != ResultType.UNKNOWN
         return HomeUiState(
@@ -131,7 +135,7 @@ class HomeViewModel @Inject constructor(
             },
             predictionRange = prediction?.normalRange,
             predictionPlaceholder = placeholderFor(application, prediction),
-            confidenceLabel = prediction?.confidenceLevel?.label,
+            confidenceLabel = prediction?.confidenceLevel?.let { context.getString(it.labelRes) },
             progressPercent = prediction?.progressPercent,
             riskLevel = analysis.riskLevel,
             documentsPrepared = prepared,
@@ -140,18 +144,18 @@ class HomeViewModel @Inject constructor(
             publicDataAsOf = doc?.dataAsOf?.let { monthLabel(it) } ?: "",
             backlogLabel = backlogLabel,
             miniTrend = miniTrend,
-            resultLabel = if (hasResult) application.resultType.label else "",
+            resultLabel = if (hasResult) context.getString(application.resultType.labelRes) else "",
             resultDate = application.resultDate?.replace("-", ".") ?: "",
             resultApproved = application.resultType == ResultType.APPROVED,
         )
     }
 
-    /** "2026-03" → "2026年3月"; passthrough if unparseable. */
+    /** "2026-03" → locale-formatted year-month; passthrough if unparseable. */
     private fun monthLabel(ym: String): String {
         val parts = ym.split("-")
         if (parts.size != 2) return ym
         val month = parts[1].toIntOrNull() ?: return ym
-        return "${parts[0]}年${month}月"
+        return context.getString(R.string.date_year_month_fmt, parts[0], month.toString())
     }
 
     /** 46300 → "4.6万"; 565 → "565" (1 decimal of 万). */
@@ -161,27 +165,28 @@ class HomeViewModel @Inject constructor(
     } else n.toString()
 
     private fun greeting(nickname: String): String {
-        val name = nickname.ifBlank { "你" }
+        val name = nickname.ifBlank { context.getString(R.string.home_greeting_name_fallback) }
         val period = when (LocalTime.now().hour) {
-            in 5..10 -> "早上好"
-            in 11..13 -> "中午好"
-            in 14..18 -> "下午好"
-            else -> "晚上好"
+            in 5..10 -> context.getString(R.string.home_greeting_morning)
+            in 11..13 -> context.getString(R.string.home_greeting_noon)
+            in 14..18 -> context.getString(R.string.home_greeting_afternoon)
+            else -> context.getString(R.string.home_greeting_evening)
         }
-        return "$period，$name"
+        return context.getString(R.string.home_greeting_fmt, period, name)
     }
 
     private fun statusSummary(app: ApplicationProfile): String = when (app.status) {
-        ApplicationStatus.PREPARING -> "准备中"
-        ApplicationStatus.REVIEWING ->
-            app.submittedOffice?.let { "${it.label} · 审查中" } ?: "审查中"
-        ApplicationStatus.COMPLETED -> "结果已记录"
+        ApplicationStatus.PREPARING -> context.getString(R.string.appstatus_preparing)
+        ApplicationStatus.REVIEWING -> app.submittedOffice
+            ?.let { context.getString(R.string.home_status_reviewing_fmt, context.getString(it.labelRes)) }
+            ?: context.getString(R.string.home_status_reviewing)
+        ApplicationStatus.COMPLETED -> context.getString(R.string.home_status_completed)
     }
 
     private fun placeholderFor(app: ApplicationProfile, prediction: Prediction?): String? = when {
-        app.status == ApplicationStatus.PREPARING -> "先完成材料清单和风险确认"
-        app.status == ApplicationStatus.COMPLETED -> "结果记录已生成"
-        prediction == null -> "补充申请日期后，可以生成预计时间"
+        app.status == ApplicationStatus.PREPARING -> context.getString(R.string.home_placeholder_preparing)
+        app.status == ApplicationStatus.COMPLETED -> context.getString(R.string.home_placeholder_completed)
+        prediction == null -> context.getString(R.string.home_placeholder_no_date)
         else -> null
     }
 }

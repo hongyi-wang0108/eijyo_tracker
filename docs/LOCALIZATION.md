@@ -25,7 +25,7 @@
 | 3 | Onboarding 问答 | ~52 | ✅ 2026-06-15（zh/ja/en，OnboardingScreen + CompleteScreen） |
 | 4 | 数据页 + 预测页 + 风险页 | ~52 | ✅ 2026-06-15（zh/ja/en，DataScreen+PredictionDetailScreen+RiskDetailScreen） |
 | 5 | 材料页 + 申请页 + 各 Sheet | ~48 | ✅ 2026-06-15（zh/ja/en，MaterialsScreen+ApplicationScreen+AddEventSheet+WelcomeScreen） |
-| 6 | Enums + domain（架构改动集中于此） | ~110 | ⏳ |
+| 6 | Enums + domain（架构改动集中于此） | ~158 | ✅ 2026-06-15（zh/ja/en，Enums.kt/Routes.kt/MaterialsViewModel/AddEventSheet/MainScaffold/MaterialsScreen/OnboardingScreen/OnboardingCompleteScreen/HomeVM/ApplicationVM/DataVM/OnboardingCompleteVM/PredictionDetailVM/RiskDetailVM/SettingsVM/TimelineBuilder/PredictionEngine） |
 
 > 验证结论（批1）：语言入口已打开（`enabled=true`）；切 zh/ja/en 经 `recreate()` 即时生效；
 > 未抽取的字符串（导航/Enums/其他页）按设计回退原中文，App 不空白不崩。

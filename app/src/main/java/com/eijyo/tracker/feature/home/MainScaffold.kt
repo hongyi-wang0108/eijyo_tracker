@@ -22,6 +22,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
 import com.eijyo.tracker.core.ui.theme.EijyoTheme
 import com.eijyo.tracker.feature.application.ApplicationScreen
 import com.eijyo.tracker.feature.data.DataScreen
@@ -51,8 +52,8 @@ fun MainScaffold(
                     NavigationBarItem(
                         selected = selected == tab,
                         onClick = { selected = tab },
-                        icon = { Icon(iconFor(tab), contentDescription = tab.label) },
-                        label = { Text(tab.label, style = EijyoTheme.typography.labelSmall) },
+                        icon = { Icon(iconFor(tab), contentDescription = stringResource(tab.labelRes)) },
+                        label = { Text(stringResource(tab.labelRes), style = EijyoTheme.typography.labelSmall) },
                         colors = NavigationBarItemDefaults.colors(
                             selectedIconColor = colors.mint,
                             selectedTextColor = colors.mint,
