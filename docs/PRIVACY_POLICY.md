@@ -3,7 +3,7 @@
 **App / アプリ / 应用：永住 Tracker (Eijyo Tracker)**
 **Developer / 開発者 / 开发者：hongyi-wang0108**
 **Effective date / 施行日 / 生效日期：2026-06-16**
-**Contact / 連絡先 / 联系方式：<your-contact-email>**
+**Contact / 連絡先 / 联系方式：1092576787@qq.com**
 
 ---
 
@@ -38,7 +38,7 @@ The app is not directed at children and does not knowingly collect information f
 We may update this policy as the app evolves. The latest version will always be available at this URL, with an updated effective date.
 
 ### Contact
-Questions about this policy? Contact: <your-contact-email>
+Questions about this policy? Contact: 1092576787@qq.com
 
 ---
 
@@ -73,7 +73,7 @@ Questions about this policy? Contact: <your-contact-email>
 アプリの進化に伴い本ポリシーを更新する場合があります。最新版は常に本URLで、更新された施行日とともに公開されます。
 
 ### お問い合わせ
-本ポリシーに関するご質問は、<your-contact-email> までご連絡ください。
+本ポリシーに関するご質問は、1092576787@qq.com までご連絡ください。
 
 ---
 
@@ -108,4 +108,4 @@ Questions about this policy? Contact: <your-contact-email>
 我们可能随应用的演进更新本政策。最新版本将始终在此 URL 提供，并附更新后的生效日期。
 
 ### 联系方式
-对本政策有疑问？请联系：<your-contact-email>
+对本政策有疑问？请联系：1092576787@qq.com
