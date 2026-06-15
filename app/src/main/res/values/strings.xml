@@ -188,7 +188,7 @@
     <string name="pred_scenario_normal">正常</string>
     <string name="pred_scenario_conservative">保守</string>
     <string name="pred_factors_title">影响预测的因素</string>
-    <string name="pred_factor_processing">官方处理期间</string>
+    <string name="pred_factor_processing">标准处理期间</string>
     <string name="pred_factor_wait_days">当前等待天数</string>
     <string name="pred_factor_path">申请路径</string>
     <string name="pred_factor_supplement">补资料状态</string>

@@ -185,7 +185,7 @@
     <string name="pred_scenario_normal">通常</string>
     <string name="pred_scenario_conservative">保守的</string>
     <string name="pred_factors_title">予測に影響する要素</string>
-    <string name="pred_factor_processing">公式処理期間</string>
+    <string name="pred_factor_processing">標準処理期間</string>
     <string name="pred_factor_wait_days">現在の待機日数</string>
     <string name="pred_factor_path">申請ルート</string>
     <string name="pred_factor_supplement">追加資料状況</string>

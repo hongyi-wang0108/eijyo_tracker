@@ -112,7 +112,7 @@
     <string name="onboarding_supplement_unknown">Not sure</string>
 
     <string name="onboarding_title_nickname">What should we call you?</string>
-    <string name="onboarding_title_visa">What is your current visa status?</string>
+    <string name="onboarding_title_visa">What is your current residence status?</string>
     <string name="onboarding_title_status">Have you applied for permanent residence?</string>
     <string name="onboarding_title_date">When did you submit your PR application?</string>
     <string name="onboarding_title_office">Which immigration office did you apply to?</string>
@@ -185,7 +185,7 @@
     <string name="pred_scenario_normal">Normal</string>
     <string name="pred_scenario_conservative">Conservative</string>
     <string name="pred_factors_title">Factors affecting prediction</string>
-    <string name="pred_factor_processing">Official processing period</string>
+    <string name="pred_factor_processing">Standard processing period</string>
     <string name="pred_factor_wait_days">Days since submission</string>
     <string name="pred_factor_path">Application route</string>
     <string name="pred_factor_supplement">Supplementary docs</string>
