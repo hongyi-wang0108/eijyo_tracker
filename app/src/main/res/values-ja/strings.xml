@@ -88,4 +88,61 @@
     <string name="home_risk_unknown">リスク確認</string>
     <string name="home_material_empty">書類リスト未生成</string>
     <string name="home_material_count">書類 %1$d / %2$d</string>
+
+    <!-- オンボーディング（バッチ3） -->
+    <string name="onboarding_next">次へ</string>
+    <string name="onboarding_finish">完了</string>
+    <string name="onboarding_prev">戻る</string>
+    <string name="onboarding_back_cd">前の質問に戻る</string>
+    <string name="onboarding_helper_title">ワンちゃんが質問します</string>
+    <string name="onboarding_helper_subtitle">回答後、予測と書類リストを生成します</string>
+    <string name="onboarding_nickname_placeholder">例：田中 / Yuki</string>
+    <string name="onboarding_date_mode_day">日付まで</string>
+    <string name="onboarding_date_mode_month">月まで</string>
+    <string name="onboarding_date_mode_unknown">未定</string>
+    <string name="onboarding_date_unknown_hint">後で「申請」ページで日付を補完できます。日付入力後に予想期間が生成されます。</string>
+    <string name="onboarding_dependents_count">%d 人</string>
+    <string name="onboarding_status_preparing">まだ、準備中です</string>
+    <string name="onboarding_status_reviewing">提出済み</string>
+    <string name="onboarding_status_completed">結果を受け取りました</string>
+    <string name="onboarding_supplement_no">なし</string>
+    <string name="onboarding_supplement_yes">受け取ったことがある</string>
+    <string name="onboarding_supplement_unknown">わからない</string>
+
+    <string name="onboarding_title_nickname">お名前またはニックネームは？</string>
+    <string name="onboarding_title_visa">現在の在留資格は？</string>
+    <string name="onboarding_title_status">永住申請はしましたか？</string>
+    <string name="onboarding_title_date">永住申請をした日はいつですか？</string>
+    <string name="onboarding_title_office">どの入管に申請しましたか？</string>
+    <string name="onboarding_title_path">申請ルートは？</string>
+    <string name="onboarding_title_tax">近年の住民税は期限内に納付していますか？</string>
+    <string name="onboarding_title_pension">年金を継続して納付していますか？</string>
+    <string name="onboarding_title_health">健康保険を継続して納付していますか？</string>
+    <string name="onboarding_title_income">年収の範囲は？</string>
+    <string name="onboarding_title_dependents">扶養家族は何人いますか？</string>
+    <string name="onboarding_title_supplement">追加資料の通知を受け取ったことがありますか？</string>
+
+    <string name="onboarding_hint_nickname">これでお呼びします。ホームのあいさつにも使われます。</string>
+    <string name="onboarding_hint_visa">予測と書類リストに影響します</string>
+    <string name="onboarding_hint_status">進捗を教えてください。</string>
+    <string name="onboarding_hint_date">だいたいで大丈夫です。</string>
+    <string name="onboarding_hint_office">入管によって処理速度が異なります。</string>
+    <string name="onboarding_hint_path">不明な場合は「不明」を選んでください。</string>
+    <string name="onboarding_hint_tax">納税記録は審査の重要ポイントです。</string>
+    <string name="onboarding_hint_pension">年金の継続納付は重要です。正直に答えてください。</string>
+    <string name="onboarding_hint_health">健康保険も確認されます。</string>
+    <string name="onboarding_hint_income">生計安定の判断に使われます。スキップ可能です。</string>
+    <string name="onboarding_hint_dependents">扶養人数も生計判断に影響します。</string>
+    <string name="onboarding_hint_supplement">追加資料を受け取った場合、タイムラインに記録します。</string>
+
+    <string name="onboarding_complete_headline">申請ファイルが生成されました</string>
+    <string name="onboarding_complete_body">ワンちゃんが予測・書類・リスクを整理しました。</string>
+    <string name="onboarding_complete_prediction_pending">申請日を入力してください</string>
+    <string name="onboarding_complete_material_label">書類完成度</string>
+    <string name="onboarding_complete_risk_label">リスクレベル</string>
+    <string name="onboarding_complete_status_label">現在の状況</string>
+    <string name="onboarding_complete_preparing_fallback">準備中</string>
+    <string name="onboarding_complete_stage_done">整理完了</string>
+    <string name="onboarding_complete_prediction_title">初回予測期間</string>
+    <string name="onboarding_complete_enter_home">ホームへ進む</string>
 </resources>

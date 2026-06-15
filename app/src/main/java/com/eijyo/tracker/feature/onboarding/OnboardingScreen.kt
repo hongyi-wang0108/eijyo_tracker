@@ -1,5 +1,6 @@
 package com.eijyo.tracker.feature.onboarding
 
+import androidx.annotation.StringRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -32,10 +33,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.eijyo.tracker.R
 import com.eijyo.tracker.core.ui.component.DogFace
 import com.eijyo.tracker.core.ui.component.OnboardingBackground
 import com.eijyo.tracker.core.ui.component.PawPrint
@@ -90,13 +93,13 @@ fun OnboardingScreen(
                     .padding(top = 24.dp),
             ) {
                 Text(
-                    text = titleFor(state.currentStep),
+                    text = stringResource(titleFor(state.currentStep)),
                     style = EijyoTheme.typography.headlineMedium.copy(fontSize = 27.sp),
                     color = colors.ink,
                 )
                 Spacer(Modifier.height(8.dp))
                 Text(
-                    text = hintFor(state.currentStep),
+                    text = stringResource(hintFor(state.currentStep)),
                     style = EijyoTheme.typography.labelMedium.copy(fontSize = 13.sp),
                     color = colors.inkMuted,
                 )
@@ -106,7 +109,7 @@ fun OnboardingScreen(
             }
 
             BottomBar(
-                nextLabel = if (state.isLastStep) "完成" else "继续",
+                nextLabel = stringResource(if (state.isLastStep) R.string.onboarding_finish else R.string.onboarding_next),
                 nextEnabled = viewModel.canProceed() && !state.isSaving,
                 onPrev = { viewModel.back(onExit) },
                 onNext = { viewModel.next(onFinished) },
@@ -130,7 +133,7 @@ private fun TopBar(progress: Float, progressLabel: String, onBack: () -> Unit) {
         ) {
             Icon(
                 imageVector = Icons.AutoMirrored.Filled.KeyboardArrowLeft,
-                contentDescription = "返回上一题",
+                contentDescription = stringResource(R.string.onboarding_back_cd),
                 tint = colors.ink,
                 modifier = Modifier.size(26.dp),
             )
@@ -177,13 +180,13 @@ private fun HelperBubble() {
         Spacer(Modifier.width(16.dp))
         Column {
             Text(
-                text = "小狗先问你一个问题",
+                text = stringResource(R.string.onboarding_helper_title),
                 style = EijyoTheme.typography.labelLarge.copy(fontSize = 15.sp),
                 color = colors.ink,
             )
             Spacer(Modifier.height(4.dp))
             Text(
-                text = "选好后，我会帮你生成预测和材料清单",
+                text = stringResource(R.string.onboarding_helper_subtitle),
                 style = EijyoTheme.typography.labelMedium.copy(fontSize = 12.sp),
                 color = colors.inkMuted,
             )
@@ -214,7 +217,7 @@ private fun BottomBar(
                 .border(1.dp, colors.border, RoundedCornerShape(25.dp))
                 .clickable(onClick = onPrev),
         ) {
-            Text("上一步", style = EijyoTheme.typography.labelLarge, color = colors.inkMuted)
+            Text(stringResource(R.string.onboarding_prev), style = EijyoTheme.typography.labelLarge, color = colors.inkMuted)
         }
         Box(
             contentAlignment = Alignment.Center,
@@ -258,9 +261,9 @@ private fun QuestionContent(state: OnboardingUiState, viewModel: OnboardingViewM
 
         OnboardingStep.SUBMITTED_STATUS -> ChoiceColumn(
             options = listOf(
-                ApplicationStatus.PREPARING to "还没，正在准备",
-                ApplicationStatus.REVIEWING to "已经提交",
-                ApplicationStatus.COMPLETED to "已经收到结果",
+                ApplicationStatus.PREPARING to stringResource(R.string.onboarding_status_preparing),
+                ApplicationStatus.REVIEWING to stringResource(R.string.onboarding_status_reviewing),
+                ApplicationStatus.COMPLETED to stringResource(R.string.onboarding_status_completed),
             ),
             selected = a.submittedStatus,
             onSelect = viewModel::selectStatus,
@@ -308,9 +311,9 @@ private fun QuestionContent(state: OnboardingUiState, viewModel: OnboardingViewM
 
         OnboardingStep.SUPPLEMENT -> ChoiceColumn(
             options = listOf(
-                TriState.NO to "没有",
-                TriState.YES to "收到过",
-                TriState.UNKNOWN to "不确定",
+                TriState.NO to stringResource(R.string.onboarding_supplement_no),
+                TriState.YES to stringResource(R.string.onboarding_supplement_yes),
+                TriState.UNKNOWN to stringResource(R.string.onboarding_supplement_unknown),
             ),
             selected = a.supplement,
             onSelect = viewModel::selectSupplement,
@@ -324,7 +327,7 @@ private fun NicknameInput(value: String, onChange: (String) -> Unit) {
         value = value,
         onValueChange = onChange,
         singleLine = true,
-        placeholder = { Text("例如：小王 / Yuki") },
+        placeholder = { Text(stringResource(R.string.onboarding_nickname_placeholder)) },
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(16.dp),
     )
@@ -338,13 +341,13 @@ private fun DateQuestion(state: OnboardingUiState, viewModel: OnboardingViewMode
 
     Column {
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            DateModeChip("精确到日", a.dateMode == DatePrecision.DAY) {
+            DateModeChip(stringResource(R.string.onboarding_date_mode_day), a.dateMode == DatePrecision.DAY) {
                 viewModel.setDateMode(DatePrecision.DAY)
             }
-            DateModeChip("只记得月份", a.dateMode == DatePrecision.MONTH) {
+            DateModeChip(stringResource(R.string.onboarding_date_mode_month), a.dateMode == DatePrecision.MONTH) {
                 viewModel.setDateMode(DatePrecision.MONTH)
             }
-            DateModeChip("暂不确定", a.dateMode == DatePrecision.UNKNOWN) {
+            DateModeChip(stringResource(R.string.onboarding_date_mode_unknown), a.dateMode == DatePrecision.UNKNOWN) {
                 viewModel.setDateMode(DatePrecision.UNKNOWN)
             }
         }
@@ -353,7 +356,7 @@ private fun DateQuestion(state: OnboardingUiState, viewModel: OnboardingViewMode
 
         if (a.dateMode == DatePrecision.UNKNOWN) {
             Text(
-                text = "可以稍后在「申请」页补充具体日期。日期填写后才能生成预计时间。",
+                text = stringResource(R.string.onboarding_date_unknown_hint),
                 style = EijyoTheme.typography.bodyMedium,
                 color = colors.inkMuted,
             )
@@ -403,7 +406,7 @@ private fun DependentsStepper(count: Int, onChange: (Int) -> Unit) {
     Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(20.dp)) {
         StepperButton("－") { onChange(count - 1) }
         Text(
-            text = "$count 人",
+            text = stringResource(R.string.onboarding_dependents_count, count),
             style = EijyoTheme.typography.headlineMedium,
             color = colors.ink,
         )
@@ -477,32 +480,34 @@ private fun ChoiceRow(label: String, selected: Boolean, onClick: () -> Unit) {
     }
 }
 
-private fun titleFor(step: OnboardingStep): String = when (step) {
-    OnboardingStep.NICKNAME -> "我们怎么称呼你？"
-    OnboardingStep.VISA -> "你现在的在留资格是？"
-    OnboardingStep.SUBMITTED_STATUS -> "你申请永住了吗？"
-    OnboardingStep.APP_DATE -> "你的永住申请是哪天提交的？"
-    OnboardingStep.OFFICE -> "你提交到哪个入管？"
-    OnboardingStep.PATH -> "你按哪种路径申请？"
-    OnboardingStep.TAX -> "最近几年住民税是否按时缴纳？"
-    OnboardingStep.PENSION -> "年金是否连续缴纳？"
-    OnboardingStep.HEALTH -> "健康保险是否连续缴纳？"
-    OnboardingStep.INCOME -> "你的年收范围？"
-    OnboardingStep.DEPENDENTS -> "你有几位扶养人？"
-    OnboardingStep.SUPPLEMENT -> "是否收到过补资料通知？"
+@StringRes
+private fun titleFor(step: OnboardingStep): Int = when (step) {
+    OnboardingStep.NICKNAME -> R.string.onboarding_title_nickname
+    OnboardingStep.VISA -> R.string.onboarding_title_visa
+    OnboardingStep.SUBMITTED_STATUS -> R.string.onboarding_title_status
+    OnboardingStep.APP_DATE -> R.string.onboarding_title_date
+    OnboardingStep.OFFICE -> R.string.onboarding_title_office
+    OnboardingStep.PATH -> R.string.onboarding_title_path
+    OnboardingStep.TAX -> R.string.onboarding_title_tax
+    OnboardingStep.PENSION -> R.string.onboarding_title_pension
+    OnboardingStep.HEALTH -> R.string.onboarding_title_health
+    OnboardingStep.INCOME -> R.string.onboarding_title_income
+    OnboardingStep.DEPENDENTS -> R.string.onboarding_title_dependents
+    OnboardingStep.SUPPLEMENT -> R.string.onboarding_title_supplement
 }
 
-private fun hintFor(step: OnboardingStep): String = when (step) {
-    OnboardingStep.NICKNAME -> "我会用这个称呼你，首页问候也会用到～"
-    OnboardingStep.VISA -> "这个问题会影响预测和材料清单"
-    OnboardingStep.SUBMITTED_STATUS -> "告诉我进度，我才知道该陪你做什么。"
-    OnboardingStep.APP_DATE -> "记得大概就行，不确定也没关系。"
-    OnboardingStep.OFFICE -> "不同入管处理速度不太一样。"
-    OnboardingStep.PATH -> "不确定的话先选「不确定」也可以。"
-    OnboardingStep.TAX -> "纳税记录是永住审查的重点之一。"
-    OnboardingStep.PENSION -> "年金连续缴纳很重要，如实填写就好。"
-    OnboardingStep.HEALTH -> "健康保险也会被一起确认。"
-    OnboardingStep.INCOME -> "用于判断生计稳定性，不想填可以跳过。"
-    OnboardingStep.DEPENDENTS -> "扶养人数也会影响生计判断。"
-    OnboardingStep.SUPPLEMENT -> "收到过补资料的话，我帮你记进时间线。"
+@StringRes
+private fun hintFor(step: OnboardingStep): Int = when (step) {
+    OnboardingStep.NICKNAME -> R.string.onboarding_hint_nickname
+    OnboardingStep.VISA -> R.string.onboarding_hint_visa
+    OnboardingStep.SUBMITTED_STATUS -> R.string.onboarding_hint_status
+    OnboardingStep.APP_DATE -> R.string.onboarding_hint_date
+    OnboardingStep.OFFICE -> R.string.onboarding_hint_office
+    OnboardingStep.PATH -> R.string.onboarding_hint_path
+    OnboardingStep.TAX -> R.string.onboarding_hint_tax
+    OnboardingStep.PENSION -> R.string.onboarding_hint_pension
+    OnboardingStep.HEALTH -> R.string.onboarding_hint_health
+    OnboardingStep.INCOME -> R.string.onboarding_hint_income
+    OnboardingStep.DEPENDENTS -> R.string.onboarding_hint_dependents
+    OnboardingStep.SUPPLEMENT -> R.string.onboarding_hint_supplement
 }

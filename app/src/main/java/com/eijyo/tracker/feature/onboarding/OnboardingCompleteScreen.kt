@@ -28,12 +28,14 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.eijyo.tracker.R
 import com.eijyo.tracker.core.ui.component.DogFaceSmiling
 import com.eijyo.tracker.core.ui.component.PawButton
 import com.eijyo.tracker.core.ui.component.WelcomeBackground
@@ -80,14 +82,14 @@ fun OnboardingCompleteScreen(
 
                 Spacer(Modifier.height(32.dp))
                 Text(
-                    text = "申请档案已生成",
+                    text = stringResource(R.string.onboarding_complete_headline),
                     style = EijyoTheme.typography.headlineMedium.copy(fontSize = 29.sp),
                     color = colors.ink,
                     textAlign = TextAlign.Center,
                 )
                 Spacer(Modifier.height(10.dp))
                 Text(
-                    text = "小狗已经帮你整理好预测、材料和风险提醒。",
+                    text = stringResource(R.string.onboarding_complete_body),
                     style = EijyoTheme.typography.bodyLarge,
                     color = colors.inkMuted,
                     textAlign = TextAlign.Center,
@@ -96,7 +98,9 @@ fun OnboardingCompleteScreen(
 
                 Spacer(Modifier.height(28.dp))
                 PredictionSummaryCard(
-                    value = state.predictionRange ?: state.predictionPlaceholder ?: "待填写提交日期",
+                    value = state.predictionRange
+                        ?: state.predictionPlaceholder
+                        ?: stringResource(R.string.onboarding_complete_prediction_pending),
                 )
 
                 Spacer(Modifier.height(16.dp))
@@ -109,7 +113,7 @@ fun OnboardingCompleteScreen(
                         iconBg = MacaronPalette.LemonSoft,
                         iconMark = "□",
                         iconColor = colors.lemonAccent,
-                        title = "材料完整度",
+                        title = stringResource(R.string.onboarding_complete_material_label),
                         value = "0 / ${state.documentCount}",
                         valueColor = colors.inkMuted,
                     )
@@ -118,18 +122,18 @@ fun OnboardingCompleteScreen(
                         iconBg = colors.skySoft,
                         iconMark = "!",
                         iconColor = colors.skyAccent,
-                        title = "风险等级",
+                        title = stringResource(R.string.onboarding_complete_risk_label),
                         value = state.riskLevel?.label ?: "—",
                         valueColor = riskColor(state.riskLevel),
                     )
                 }
 
                 Spacer(Modifier.height(16.dp))
-                StatusSummaryCard(value = state.statusSummary.ifBlank { "准备中" })
+                StatusSummaryCard(value = state.statusSummary.ifBlank { stringResource(R.string.onboarding_complete_preparing_fallback) })
             }
 
             PawButton(
-                text = "进入首页",
+                text = stringResource(R.string.onboarding_complete_enter_home),
                 onClick = onEnterHome,
                 enabled = !state.loading,
                 modifier = Modifier.padding(top = 20.dp, bottom = 16.dp),
@@ -182,7 +186,7 @@ private fun GeneratedStageCard() {
                 .padding(horizontal = 18.dp, vertical = 6.dp),
         ) {
             Text(
-                text = "整理完成",
+                text = stringResource(R.string.onboarding_complete_stage_done),
                 style = EijyoTheme.typography.labelMedium.copy(fontSize = 13.sp),
                 color = colors.mint,
             )
@@ -222,7 +226,7 @@ private fun PredictionSummaryCard(value: String) {
         IconBadge(size = 40.dp, bg = colors.mintWash, mark = "✓", markColor = colors.mint, markSize = 22.sp)
         Spacer(Modifier.width(16.dp))
         Column {
-            Text("初步预测区间", style = EijyoTheme.typography.labelMedium.copy(fontSize = 13.sp), color = colors.inkMuted)
+            Text(stringResource(R.string.onboarding_complete_prediction_title), style = EijyoTheme.typography.labelMedium.copy(fontSize = 13.sp), color = colors.inkMuted)
             Spacer(Modifier.height(4.dp))
             Text(value, style = EijyoTheme.typography.labelLarge.copy(fontSize = 18.sp), color = colors.ink)
         }
@@ -272,7 +276,7 @@ private fun StatusSummaryCard(value: String) {
             .background(colors.card)
             .padding(horizontal = 20.dp, vertical = 18.dp),
     ) {
-        Text("当前状态", style = EijyoTheme.typography.labelMedium.copy(fontSize = 13.sp), color = colors.inkMuted)
+        Text(stringResource(R.string.onboarding_complete_status_label), style = EijyoTheme.typography.labelMedium.copy(fontSize = 13.sp), color = colors.inkMuted)
         Spacer(Modifier.weight(1f))
         Text(value, style = EijyoTheme.typography.labelLarge.copy(fontSize = 15.sp), color = colors.ink)
     }

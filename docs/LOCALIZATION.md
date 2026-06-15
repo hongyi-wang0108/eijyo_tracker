@@ -22,7 +22,7 @@
 | 0 | 基建：strings.xml 三语结构 + 语言切换端到端打通 | — | ✅ 2026-06-15 |
 | 1 | 设置页 + 通用词（确定/取消/按钮） | ~38 | ✅ 2026-06-15（zh/ja/en 实机验证切换） |
 | 2 | 首页 Dashboard | ~33 | ✅ 2026-06-15（zh/ja/en，HomeScreen.kt 全替换） |
-| 3 | Onboarding 问答 | ~41 | ⏳ |
+| 3 | Onboarding 问答 | ~52 | ✅ 2026-06-15（zh/ja/en，OnboardingScreen + CompleteScreen） |
 | 4 | 数据页 + 预测页 + 风险页 | ~70 | ⏳ |
 | 5 | 材料页 + 申请页 + 各 Sheet | ~60 | ⏳ |
 | 6 | Enums + domain（架构改动集中于此） | ~110 | ⏳ |

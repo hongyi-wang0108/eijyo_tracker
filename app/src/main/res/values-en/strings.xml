@@ -88,4 +88,61 @@
     <string name="home_risk_unknown">Risk check</string>
     <string name="home_material_empty">Documents not generated</string>
     <string name="home_material_count">Docs %1$d / %2$d</string>
+
+    <!-- Onboarding (batch 3) -->
+    <string name="onboarding_next">Next</string>
+    <string name="onboarding_finish">Done</string>
+    <string name="onboarding_prev">Back</string>
+    <string name="onboarding_back_cd">Go to previous question</string>
+    <string name="onboarding_helper_title">Let me ask you a few questions</string>
+    <string name="onboarding_helper_subtitle">I\'ll generate your estimate and document list after</string>
+    <string name="onboarding_nickname_placeholder">e.g. Wang / Yuki</string>
+    <string name="onboarding_date_mode_day">Exact date</string>
+    <string name="onboarding_date_mode_month">Month only</string>
+    <string name="onboarding_date_mode_unknown">Not sure yet</string>
+    <string name="onboarding_date_unknown_hint">You can add the date later in the Application page. The date is needed to generate an estimate.</string>
+    <string name="onboarding_dependents_count">%d dependents</string>
+    <string name="onboarding_status_preparing">Not yet, still preparing</string>
+    <string name="onboarding_status_reviewing">Already submitted</string>
+    <string name="onboarding_status_completed">Already received result</string>
+    <string name="onboarding_supplement_no">No</string>
+    <string name="onboarding_supplement_yes">Yes, received one</string>
+    <string name="onboarding_supplement_unknown">Not sure</string>
+
+    <string name="onboarding_title_nickname">What should we call you?</string>
+    <string name="onboarding_title_visa">What is your current visa status?</string>
+    <string name="onboarding_title_status">Have you applied for permanent residence?</string>
+    <string name="onboarding_title_date">When did you submit your PR application?</string>
+    <string name="onboarding_title_office">Which immigration office did you apply to?</string>
+    <string name="onboarding_title_path">Which application route did you take?</string>
+    <string name="onboarding_title_tax">Have you paid residence tax on time in recent years?</string>
+    <string name="onboarding_title_pension">Have you paid pension contributions continuously?</string>
+    <string name="onboarding_title_health">Have you maintained continuous health insurance?</string>
+    <string name="onboarding_title_income">What is your annual income range?</string>
+    <string name="onboarding_title_dependents">How many dependents do you have?</string>
+    <string name="onboarding_title_supplement">Have you received a supplementary document request?</string>
+
+    <string name="onboarding_hint_nickname">I\'ll use this to address you, including the home greeting.</string>
+    <string name="onboarding_hint_visa">This affects your prediction and document list</string>
+    <string name="onboarding_hint_status">Tell me your progress so I know how to help.</string>
+    <string name="onboarding_hint_date">An approximation is fine, don\'t worry if you\'re unsure.</string>
+    <string name="onboarding_hint_office">Processing speed varies by office.</string>
+    <string name="onboarding_hint_path">Choose "Unsure" if you\'re not sure.</string>
+    <string name="onboarding_hint_tax">Tax records are a key factor in the PR review.</string>
+    <string name="onboarding_hint_pension">Continuous pension payments matter. Answer honestly.</string>
+    <string name="onboarding_hint_health">Health insurance will also be checked.</string>
+    <string name="onboarding_hint_income">Used to assess financial stability. You can skip this.</string>
+    <string name="onboarding_hint_dependents">Number of dependents also affects the assessment.</string>
+    <string name="onboarding_hint_supplement">If you received one, I\'ll add it to your timeline.</string>
+
+    <string name="onboarding_complete_headline">Application profile generated</string>
+    <string name="onboarding_complete_body">Your estimate, documents &amp; risk check are ready.</string>
+    <string name="onboarding_complete_prediction_pending">Enter submit date to continue</string>
+    <string name="onboarding_complete_material_label">Documents</string>
+    <string name="onboarding_complete_risk_label">Risk level</string>
+    <string name="onboarding_complete_status_label">Current status</string>
+    <string name="onboarding_complete_preparing_fallback">Preparing</string>
+    <string name="onboarding_complete_stage_done">Ready</string>
+    <string name="onboarding_complete_prediction_title">Initial estimate</string>
+    <string name="onboarding_complete_enter_home">Enter home</string>
 </resources>

@@ -88,4 +88,64 @@
     <string name="home_risk_unknown">风险自检</string>
     <string name="home_material_empty">材料待生成</string>
     <string name="home_material_count">材料 %1$d / %2$d</string>
+
+    <!-- Onboarding 问答（批3） -->
+    <string name="onboarding_next">继续</string>
+    <string name="onboarding_finish">完成</string>
+    <string name="onboarding_prev">上一步</string>
+    <string name="onboarding_back_cd">返回上一题</string>
+    <string name="onboarding_helper_title">小狗先问你一个问题</string>
+    <string name="onboarding_helper_subtitle">选好后，我会帮你生成预测和材料清单</string>
+    <string name="onboarding_nickname_placeholder">例如：小王 / Yuki</string>
+    <string name="onboarding_date_mode_day">精确到日</string>
+    <string name="onboarding_date_mode_month">只记得月份</string>
+    <string name="onboarding_date_mode_unknown">暂不确定</string>
+    <string name="onboarding_date_unknown_hint">可以稍后在「申请」页补充具体日期。日期填写后才能生成预计时间。</string>
+    <string name="onboarding_dependents_count">%d 人</string>
+    <string name="onboarding_status_preparing">还没，正在准备</string>
+    <string name="onboarding_status_reviewing">已经提交</string>
+    <string name="onboarding_status_completed">已经收到结果</string>
+    <string name="onboarding_supplement_no">没有</string>
+    <string name="onboarding_supplement_yes">收到过</string>
+    <string name="onboarding_supplement_unknown">不确定</string>
+
+    <!-- Onboarding 问题标题 -->
+    <string name="onboarding_title_nickname">我们怎么称呼你？</string>
+    <string name="onboarding_title_visa">你现在的在留资格是？</string>
+    <string name="onboarding_title_status">你申请永住了吗？</string>
+    <string name="onboarding_title_date">你的永住申请是哪天提交的？</string>
+    <string name="onboarding_title_office">你提交到哪个入管？</string>
+    <string name="onboarding_title_path">你按哪种路径申请？</string>
+    <string name="onboarding_title_tax">最近几年住民税是否按时缴纳？</string>
+    <string name="onboarding_title_pension">年金是否连续缴纳？</string>
+    <string name="onboarding_title_health">健康保险是否连续缴纳？</string>
+    <string name="onboarding_title_income">你的年收范围？</string>
+    <string name="onboarding_title_dependents">你有几位扶养人？</string>
+    <string name="onboarding_title_supplement">是否收到过补资料通知？</string>
+
+    <!-- Onboarding 问题提示 -->
+    <string name="onboarding_hint_nickname">我会用这个称呼你，首页问候也会用到～</string>
+    <string name="onboarding_hint_visa">这个问题会影响预测和材料清单</string>
+    <string name="onboarding_hint_status">告诉我进度，我才知道该陪你做什么。</string>
+    <string name="onboarding_hint_date">记得大概就行，不确定也没关系。</string>
+    <string name="onboarding_hint_office">不同入管处理速度不太一样。</string>
+    <string name="onboarding_hint_path">不确定的话先选「不确定」也可以。</string>
+    <string name="onboarding_hint_tax">纳税记录是永住审查的重点之一。</string>
+    <string name="onboarding_hint_pension">年金连续缴纳很重要，如实填写就好。</string>
+    <string name="onboarding_hint_health">健康保险也会被一起确认。</string>
+    <string name="onboarding_hint_income">用于判断生计稳定性，不想填可以跳过。</string>
+    <string name="onboarding_hint_dependents">扶养人数也会影响生计判断。</string>
+    <string name="onboarding_hint_supplement">收到过补资料的话，我帮你记进时间线。</string>
+
+    <!-- Onboarding 完成页 -->
+    <string name="onboarding_complete_headline">申请档案已生成</string>
+    <string name="onboarding_complete_body">小狗已经帮你整理好预测、材料和风险提醒。</string>
+    <string name="onboarding_complete_prediction_pending">待填写提交日期</string>
+    <string name="onboarding_complete_material_label">材料完整度</string>
+    <string name="onboarding_complete_risk_label">风险等级</string>
+    <string name="onboarding_complete_status_label">当前状态</string>
+    <string name="onboarding_complete_preparing_fallback">准备中</string>
+    <string name="onboarding_complete_stage_done">整理完成</string>
+    <string name="onboarding_complete_prediction_title">初步预测区间</string>
+    <string name="onboarding_complete_enter_home">进入首页</string>
 </resources>
