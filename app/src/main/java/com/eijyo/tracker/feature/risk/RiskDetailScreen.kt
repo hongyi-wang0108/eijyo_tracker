@@ -1,6 +1,5 @@
 package com.eijyo.tracker.feature.risk
 
-import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -29,11 +28,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.StrokeCap
-import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -47,7 +42,6 @@ import com.eijyo.tracker.core.ui.theme.EijyoTheme
 import com.eijyo.tracker.data.model.RiskLevel
 
 private val ShadowTint = Color(0x1A8C5C3D)
-private val RingTrack = Color(0xFFF2EEE7)
 private val LemonBadge = Color(0xFFFFF0B8)
 private val CoralSoft = Color(0xFFFFD4C8)
 
@@ -57,7 +51,6 @@ private val mockState = RiskDetailUiState(
     available = true,
     levelLabel = "低风险",
     riskLevel = RiskLevel.LOW,
-    displayScore = 82,
     summary = "纳税、年金、保险状态均已确认",
     updatedLabel = "刚刚更新",
     sections = listOf(
@@ -169,37 +162,18 @@ private fun HeroCard(state: RiskDetailUiState) {
         RiskLevel.HIGH -> colors.coral
     }
     RiskCard(radius = 30.dp, padding = 22.dp) {
-        Row(modifier = Modifier.fillMaxWidth()) {
-            Column(modifier = Modifier.weight(1f)) {
-                Text(stringResource(R.string.risk_hero_label), style = EijyoTheme.typography.labelMedium.copy(fontSize = 14.sp), color = colors.inkMuted)
-                Spacer(Modifier.height(8.dp))
-                Text(state.levelLabel, style = EijyoTheme.typography.headlineMedium.copy(fontSize = 36.sp), color = levelColor)
-                Spacer(Modifier.height(8.dp))
-                Text(state.summary, style = EijyoTheme.typography.labelMedium.copy(fontSize = 13.sp), color = colors.inkMuted)
-                Spacer(Modifier.height(12.dp))
-                Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                    SmallPill(stringResource(R.string.risk_not_legal), LemonBadge, colors.lemonAccent, 96.dp)
-                    SmallPill(state.updatedLabel, colors.skySoft, colors.skyAccent, 82.dp)
-                }
+        Column(modifier = Modifier.fillMaxWidth()) {
+            Text(stringResource(R.string.risk_hero_label), style = EijyoTheme.typography.labelMedium.copy(fontSize = 14.sp), color = colors.inkMuted)
+            Spacer(Modifier.height(8.dp))
+            Text(state.levelLabel, style = EijyoTheme.typography.headlineMedium.copy(fontSize = 36.sp), color = levelColor)
+            Spacer(Modifier.height(8.dp))
+            Text(state.summary, style = EijyoTheme.typography.labelMedium.copy(fontSize = 13.sp), color = colors.inkMuted)
+            Spacer(Modifier.height(12.dp))
+            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                SmallPill(stringResource(R.string.risk_not_legal), LemonBadge, colors.lemonAccent, 96.dp)
+                SmallPill(state.updatedLabel, colors.skySoft, colors.skyAccent, 82.dp)
             }
-            Spacer(Modifier.width(12.dp))
-            ScoreRing(score = state.displayScore, ringColor = levelColor)
         }
-    }
-}
-
-@Composable
-private fun ScoreRing(score: Int, ringColor: Color, ringSize: Dp = 72.dp) {
-    val colors = EijyoTheme.colors
-    Box(contentAlignment = Alignment.Center, modifier = Modifier.size(ringSize)) {
-        Canvas(modifier = Modifier.fillMaxSize()) {
-            val stroke = 10.dp.toPx()
-            val inset = stroke / 2f
-            val arcSize = Size(size.width - stroke, size.height - stroke)
-            drawArc(RingTrack, -90f, 360f, false, topLeft = Offset(inset, inset), size = arcSize, style = Stroke(stroke))
-            drawArc(ringColor, -90f, 360f * score / 100f, false, topLeft = Offset(inset, inset), size = arcSize, style = Stroke(stroke, cap = StrokeCap.Round))
-        }
-        Text("$score", style = EijyoTheme.typography.labelLarge.copy(fontSize = 18.sp), color = colors.ink)
     }
 }
 

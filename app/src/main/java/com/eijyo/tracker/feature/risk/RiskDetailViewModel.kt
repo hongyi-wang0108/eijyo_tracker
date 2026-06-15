@@ -33,7 +33,6 @@ data class RiskDetailUiState(
     val available: Boolean = false,
     val levelLabel: String = "",
     val riskLevel: RiskLevel = RiskLevel.LOW,
-    val displayScore: Int = 0,
     val summary: String = "",
     val updatedLabel: String = "",
     val sections: List<RiskSectionItem> = emptyList(),
@@ -62,7 +61,6 @@ class RiskDetailViewModel @Inject constructor(
             available = true,
             levelLabel = context.getString(risk.level.labelRes),
             riskLevel = risk.level,
-            displayScore = displayScore(risk.level, risk.score),
             summary = summaryFor(risk, profile),
             updatedLabel = relativeTime(risk.createdAt),
             sections = deriveSections(risk, profile),
@@ -71,15 +69,6 @@ class RiskDetailViewModel @Inject constructor(
             sourceSummary = sourceSummary(profile),
             modelType = context.getString(R.string.risk_model_type),
         )
-    }
-
-    private fun displayScore(level: RiskLevel, rawScore: Int): Int {
-        if (rawScore == 0) return 100
-        return when (level) {
-            RiskLevel.LOW -> (100 - rawScore * 12).coerceIn(80, 99)
-            RiskLevel.MEDIUM -> (78 - rawScore * 9).coerceIn(50, 78)
-            RiskLevel.HIGH -> (48 - rawScore * 6).coerceIn(15, 48)
-        }
     }
 
     private fun summaryFor(risk: RiskAssessment, profile: ApplicationProfile?): String = when (risk.level) {
