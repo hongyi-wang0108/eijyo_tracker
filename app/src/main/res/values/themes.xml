@@ -11,4 +11,11 @@
              to dark; full dark mode is deferred (see docs/DECISIONS). -->
         <item name="android:forceDarkAllowed" tools:targetApi="q">false</item>
     </style>
+
+    <style name="Theme.EijyoTracker.Splash" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@color/cream</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/ic_launcher_foreground</item>
+        <item name="windowSplashScreenIconBackgroundColor">@color/cream</item>
+        <item name="postSplashScreenTheme">@style/Theme.EijyoTracker</item>
+    </style>
 </resources>

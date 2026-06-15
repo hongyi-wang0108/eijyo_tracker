@@ -2,18 +2,149 @@
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
     android:width="108dp"
     android:height="108dp"
-    android:viewportWidth="108"
-    android:viewportHeight="108">
-    <!-- Ears -->
-    <path android:fillColor="#B5835A" android:pathData="M24,44 a10,16 0 1,0 20,0 a10,16 0 1,0 -20,0 z" />
-    <path android:fillColor="#B5835A" android:pathData="M64,44 a10,16 0 1,0 20,0 a10,16 0 1,0 -20,0 z" />
-    <!-- Head -->
-    <path android:fillColor="#D9B08C" android:pathData="M30,56 a24,24 0 1,0 48,0 a24,24 0 1,0 -48,0 z" />
+    android:viewportWidth="322"
+    android:viewportHeight="288">
+
+    <!-- Mint circle (top-left) -->
+    <path
+        android:fillColor="#B8F2D3"
+        android:pathData="M104,90 m-52,0 a52,52 0 1,0 104,0 a52,52 0 1,0 -104,0" />
+
+    <!-- Pink circle (top-right) -->
+    <path
+        android:fillColor="#FFDCEB"
+        android:pathData="M225,87 m-41,0 a41,41 0 1,0 82,0 a41,41 0 1,0 -82,0" />
+
+    <!-- Sky-blue ellipse (bottom-center) -->
+    <path
+        android:fillColor="#D8F0FF"
+        android:pathData="M186,174 m-52,0 a52,36 0 1,0 104,0 a52,36 0 1,0 -104,0" />
+
+    <!-- Dog lower body -->
+    <path
+        android:fillColor="#F4C99D"
+        android:pathData="M162,170 m-33,0 a33,24 0 1,0 66,0 a33,24 0 1,0 -66,0" />
+
+    <!-- Dog head -->
+    <path
+        android:fillColor="#F4C99D"
+        android:pathData="M161,125 m-41,0 a41,35 0 1,0 82,0 a41,35 0 1,0 -82,0" />
+
+    <!-- Left ear (rotated 14°) -->
+    <group
+        android:pivotX="112.023"
+        android:pivotY="131.827"
+        android:rotation="14">
+        <path
+            android:fillColor="#B87449"
+            android:pathData="M112.023,131.827 m-15,0 a15,27 0 1,0 30,0 a15,27 0 1,0 -30,0" />
+    </group>
+
+    <!-- Right ear (rotated -14°) -->
+    <group
+        android:pivotX="208.086"
+        android:pivotY="124.569"
+        android:rotation="-14">
+        <path
+            android:fillColor="#B87449"
+            android:pathData="M208.086,124.569 m-15,0 a15,27 0 1,0 30,0 a15,27 0 1,0 -30,0" />
+    </group>
+
     <!-- Snout -->
-    <path android:fillColor="#FDF1E6" android:pathData="M44,64 a10,9 0 1,0 20,0 a10,9 0 1,0 -20,0 z" />
-    <!-- Eyes -->
-    <path android:fillColor="#4A3F38" android:pathData="M42,53 a3,3 0 1,0 6,0 a3,3 0 1,0 -6,0 z" />
-    <path android:fillColor="#4A3F38" android:pathData="M60,53 a3,3 0 1,0 6,0 a3,3 0 1,0 -6,0 z" />
+    <path
+        android:fillColor="#FFF6E9"
+        android:pathData="M162,137.5 m-18,0 a18,11.5 0 1,0 36,0 a18,11.5 0 1,0 -36,0" />
+
+    <!-- Left eye -->
+    <path
+        android:fillColor="#8B573B"
+        android:pathData="M145,119.5 m-4,0 a4,4.5 0 1,0 8,0 a4,4.5 0 1,0 -8,0" />
+
+    <!-- Right eye -->
+    <path
+        android:fillColor="#8B573B"
+        android:pathData="M178,119.5 m-4,0 a4,4.5 0 1,0 8,0 a4,4.5 0 1,0 -8,0" />
+
     <!-- Nose -->
-    <path android:fillColor="#4A3F38" android:pathData="M50,60 a4,3.2 0 1,0 8,0 a4,3.2 0 1,0 -8,0 z" />
+    <path
+        android:fillColor="#8B573B"
+        android:pathData="M163.5,137 m-5.5,0 a5.5,4 0 1,0 11,0 a5.5,4 0 1,0 -11,0" />
+
+    <!-- Left cheek -->
+    <path
+        android:fillColor="#FFB8C7"
+        android:pathData="M134,134 m-8,0 a8,4 0 1,0 16,0 a8,4 0 1,0 -16,0" />
+
+    <!-- Right cheek -->
+    <path
+        android:fillColor="#FFB8C7"
+        android:pathData="M190,134 m-8,0 a8,4 0 1,0 16,0 a8,4 0 1,0 -16,0" />
+
+    <!-- Mouth lines -->
+    <path
+        android:fillColor="#00000000"
+        android:strokeColor="#8B573B"
+        android:strokeWidth="2"
+        android:strokeLineCap="round"
+        android:pathData="M155,143 L163,151" />
+    <path
+        android:fillColor="#00000000"
+        android:strokeColor="#8B573B"
+        android:strokeWidth="2"
+        android:strokeLineCap="round"
+        android:pathData="M168,143 L176,151" />
+
+    <!-- Paw (main) -->
+    <path
+        android:fillColor="#00000000"
+        android:strokeColor="#D8945D"
+        android:strokeWidth="8"
+        android:strokeLineCap="round"
+        android:pathData="M198,161 L220,183" />
+
+    <!-- Paw (upper faint) -->
+    <group android:alpha="0.28">
+        <path
+            android:fillColor="#00000000"
+            android:strokeColor="#D8945D"
+            android:strokeWidth="5"
+            android:strokeLineCap="round"
+            android:pathData="M199.5,154.5 L225.5,164.5" />
+    </group>
+
+    <!-- Paw (lower faint) -->
+    <group android:alpha="0.22">
+        <path
+            android:fillColor="#00000000"
+            android:strokeColor="#D8945D"
+            android:strokeWidth="5"
+            android:strokeLineCap="round"
+            android:pathData="M197.5,173.5 L221.5,201.5" />
+    </group>
+
+    <!-- Left paw spot -->
+    <path
+        android:fillColor="#FFF6E9"
+        android:pathData="M144,191.5 m-9,0 a9,7.5 0 1,0 18,0 a9,7.5 0 1,0 -18,0" />
+
+    <!-- Right paw spot -->
+    <path
+        android:fillColor="#FFF6E9"
+        android:pathData="M180,191.5 m-9,0 a9,7.5 0 1,0 18,0 a9,7.5 0 1,0 -18,0" />
+
+    <!-- Sparkle: pink -->
+    <path
+        android:fillColor="#DB6A9A"
+        android:pathData="M75.87,62.72 m-2.22,0 a2.22,2.22 0 1,0 4.44,0 a2.22,2.22 0 1,0 -4.44,0" />
+
+    <!-- Sparkle: purple -->
+    <path
+        android:fillColor="#7464D8"
+        android:pathData="M246.68,82.27 m-1.54,0 a1.54,1.54 0 1,0 3.08,0 a1.54,1.54 0 1,0 -3.08,0" />
+
+    <!-- Sparkle: sky blue -->
+    <path
+        android:fillColor="#4A9ED8"
+        android:pathData="M245.27,194.99 m-1.87,0 a1.87,1.87 0 1,0 3.74,0 a1.87,1.87 0 1,0 -3.74,0" />
+
 </vector>
