@@ -219,7 +219,7 @@ private fun PredictionSummaryCard(value: String) {
     }
 }
 
-/** A half-width metric card: an icon badge, a title and a value. */
+/** Full-width metric card: an icon badge on the left, a label and a prominent value. */
 @Composable
 private fun MetricCard(
     modifier: Modifier,
@@ -231,25 +231,20 @@ private fun MetricCard(
     valueColor: Color,
 ) {
     val colors = EijyoTheme.colors
-    Column(
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
         modifier = modifier
-            .height(86.dp)
             .shadow(12.dp, RoundedCornerShape(24.dp), spotColor = ShadowTint, ambientColor = ShadowTint)
             .clip(RoundedCornerShape(24.dp))
             .background(colors.card)
             .padding(horizontal = 18.dp, vertical = 16.dp),
     ) {
-        IconBadge(size = 34.dp, bg = iconBg, mark = iconMark, markColor = iconColor, markSize = 20.sp)
-        Spacer(Modifier.weight(1f))
-        Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.fillMaxWidth()) {
-            Text(title, style = EijyoTheme.typography.labelLarge.copy(fontSize = 14.sp), color = colors.ink)
-            Spacer(Modifier.weight(1f))
-            Text(
-                value,
-                style = EijyoTheme.typography.labelMedium.copy(fontSize = 12.sp),
-                color = valueColor,
-                textAlign = TextAlign.End,
-            )
+        IconBadge(size = 40.dp, bg = iconBg, mark = iconMark, markColor = iconColor, markSize = 22.sp)
+        Spacer(Modifier.width(16.dp))
+        Column {
+            Text(title, style = EijyoTheme.typography.labelMedium.copy(fontSize = 13.sp), color = colors.inkMuted)
+            Spacer(Modifier.height(4.dp))
+            Text(value, style = EijyoTheme.typography.headlineMedium.copy(fontSize = 22.sp), color = valueColor)
         }
     }
 }
