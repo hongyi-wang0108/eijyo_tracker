@@ -34,10 +34,12 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.eijyo.tracker.R
 import com.eijyo.tracker.core.ui.component.DogFace
 import com.eijyo.tracker.core.ui.component.OnboardingBackground
 import com.eijyo.tracker.core.ui.theme.EijyoTheme
@@ -129,8 +131,8 @@ private fun Header() {
         verticalAlignment = Alignment.Bottom,
     ) {
         Column(modifier = Modifier.weight(1f)) {
-            Text("申请", style = EijyoTheme.typography.headlineMedium.copy(fontSize = 28.sp), color = colors.ink)
-            Text("申请进度档案", style = EijyoTheme.typography.labelMedium.copy(fontSize = 14.sp), color = colors.inkMuted)
+            Text(stringResource(R.string.application_title), style = EijyoTheme.typography.headlineMedium.copy(fontSize = 28.sp), color = colors.ink)
+            Text(stringResource(R.string.application_subtitle), style = EijyoTheme.typography.labelMedium.copy(fontSize = 14.sp), color = colors.inkMuted)
         }
         DogFace(size = 36.dp)
     }
@@ -175,10 +177,10 @@ private fun StatusCard(state: ApplicationUiState) {
     AppCard(radius = 30.dp) {
         Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
             Column(modifier = Modifier.weight(1f)) {
-                Text("当前进度", style = EijyoTheme.typography.labelMedium.copy(fontSize = 14.sp), color = colors.inkMuted)
+                Text(stringResource(R.string.application_status_label), style = EijyoTheme.typography.labelMedium.copy(fontSize = 14.sp), color = colors.inkMuted)
                 Spacer(Modifier.height(6.dp))
                 val statusText = if (state.officeName.isNotEmpty() && state.statusLabel.isNotEmpty())
-                    "${state.officeName} · ${state.statusLabel}" else state.statusLabel.ifEmpty { "暂无申请记录" }
+                    "${state.officeName} · ${state.statusLabel}" else state.statusLabel.ifEmpty { stringResource(R.string.application_no_record) }
                 Text(statusText, style = EijyoTheme.typography.headlineMedium.copy(fontSize = 22.sp), color = colors.ink)
                 if (state.waitDaysLabel.isNotEmpty() || state.stagePillLabel.isNotEmpty()) {
                     Spacer(Modifier.height(10.dp))
@@ -199,7 +201,7 @@ private fun TimelineCard(state: ApplicationUiState, onAddEvent: () -> Unit) {
     val colors = EijyoTheme.colors
     AppCard(radius = 28.dp, padding = 20.dp) {
         Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
-            Text("完整时间线", style = EijyoTheme.typography.labelLarge.copy(fontSize = 17.sp), color = colors.ink, modifier = Modifier.weight(1f))
+            Text(stringResource(R.string.application_timeline_title), style = EijyoTheme.typography.labelLarge.copy(fontSize = 17.sp), color = colors.ink, modifier = Modifier.weight(1f))
             Box(
                 contentAlignment = Alignment.Center,
                 modifier = Modifier
@@ -209,7 +211,7 @@ private fun TimelineCard(state: ApplicationUiState, onAddEvent: () -> Unit) {
                     .padding(horizontal = 10.dp)
                     .clickable { onAddEvent() },
             ) {
-                Text("添加事件", style = EijyoTheme.typography.labelMedium.copy(fontSize = 12.sp), color = colors.coral)
+                Text(stringResource(R.string.application_add_event), style = EijyoTheme.typography.labelMedium.copy(fontSize = 12.sp), color = colors.coral)
             }
         }
         Spacer(Modifier.height(14.dp))
@@ -226,7 +228,7 @@ private fun TimelineCard(state: ApplicationUiState, onAddEvent: () -> Unit) {
                     .padding(horizontal = 18.dp, vertical = 10.dp),
             ) {
                 Text(
-                    "补资料、通知书、结果都通过「添加事件」记录",
+                    stringResource(R.string.application_timeline_hint),
                     style = EijyoTheme.typography.labelMedium.copy(fontSize = 11.sp),
                     color = colors.coral,
                 )
@@ -283,22 +285,22 @@ private fun InfoCard(state: ApplicationUiState) {
     val colors = EijyoTheme.colors
     AppCard(radius = 26.dp) {
         Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
-            Text("申请信息摘要", style = EijyoTheme.typography.labelLarge.copy(fontSize = 16.sp), color = colors.ink, modifier = Modifier.weight(1f))
+            Text(stringResource(R.string.application_info_title), style = EijyoTheme.typography.labelLarge.copy(fontSize = 16.sp), color = colors.ink, modifier = Modifier.weight(1f))
             Box(
                 contentAlignment = Alignment.Center,
                 modifier = Modifier.clip(RoundedCornerShape(13.dp)).background(LavendPill).height(26.dp).padding(horizontal = 10.dp),
             ) {
-                Text("只读", style = EijyoTheme.typography.labelSmall.copy(fontSize = 12.sp), color = colors.lavenderAccent)
+                Text(stringResource(R.string.application_info_readonly), style = EijyoTheme.typography.labelSmall.copy(fontSize = 12.sp), color = colors.lavenderAccent)
             }
         }
         Spacer(Modifier.height(14.dp))
-        InfoRow("在留资格", state.visaTypeLabel.ifEmpty { "—" })
+        InfoRow(stringResource(R.string.application_info_visa), state.visaTypeLabel.ifEmpty { "—" })
         Spacer(Modifier.height(12.dp))
-        InfoRow("申请路径", state.pathLabel.ifEmpty { "—" })
+        InfoRow(stringResource(R.string.application_info_path), state.pathLabel.ifEmpty { "—" })
         Spacer(Modifier.height(12.dp))
-        InfoRow("提交日期", state.submittedDateDisplay.ifEmpty { "—" })
+        InfoRow(stringResource(R.string.application_info_submit_date), state.submittedDateDisplay.ifEmpty { "—" })
         Spacer(Modifier.height(12.dp))
-        InfoRow("提交入管", state.officeName.ifEmpty { "—" })
+        InfoRow(stringResource(R.string.application_info_office), state.officeName.ifEmpty { "—" })
     }
 }
 
@@ -316,7 +318,7 @@ private fun InfoRow(label: String, value: String) {
 private fun InfoNote() {
     val colors = EijyoTheme.colors
     Text(
-        "材料状态和文件上传请前往「材料」Tab",
+        stringResource(R.string.application_info_note),
         style = EijyoTheme.typography.labelSmall.copy(fontSize = 10.sp),
         color = colors.inkMuted,
         modifier = Modifier.fillMaxWidth(),

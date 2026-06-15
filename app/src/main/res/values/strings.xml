@@ -207,4 +207,61 @@
     <string name="risk_source_title">分析依据</string>
     <string name="risk_source_description">基于问卷答案、申请档案、材料状态和补资料记录生成。</string>
     <string name="risk_disclaimer">风险自检仅用于整理注意点，不构成法律意见。</string>
+
+    <!-- 材料页（批5） -->
+    <string name="materials_title">材料</string>
+    <string name="materials_header_summary">%1$d 项材料 · %2$d 项待确认</string>
+    <string name="materials_empty_no_data">暂无材料\n完成问卷后自动生成材料清单</string>
+    <string name="materials_empty_filtered">该筛选条件下暂无材料</string>
+    <string name="materials_progress_title">材料准备进度</string>
+    <string name="materials_needs_update_badge">%d 项需更新</string>
+    <string name="materials_update_status_title">更新状态</string>
+    <string name="materials_update_status_hint">点选状态后确认，不跳转新页面</string>
+    <string name="materials_confirm_selection">确认选择</string>
+    <string name="materials_section_count">%d 项</string>
+    <string name="materials_item_selected">当前选择中</string>
+    <string name="materials_status_not_started">未准备</string>
+    <string name="materials_status_prepared">已准备</string>
+    <string name="materials_status_submitted">已提交</string>
+    <string name="materials_status_needs_update">需更新</string>
+
+    <!-- 申请页（批5） -->
+    <string name="application_title">申请</string>
+    <string name="application_subtitle">申请进度档案</string>
+    <string name="application_status_label">当前进度</string>
+    <string name="application_no_record">暂无申请记录</string>
+    <string name="application_timeline_title">完整时间线</string>
+    <string name="application_add_event">添加事件</string>
+    <string name="application_timeline_hint">补资料、通知书、结果都通过「添加事件」记录</string>
+    <string name="application_info_title">申请信息摘要</string>
+    <string name="application_info_readonly">只读</string>
+    <string name="application_info_visa">在留资格</string>
+    <string name="application_info_path">申请路径</string>
+    <string name="application_info_submit_date">提交日期</string>
+    <string name="application_info_office">提交入管</string>
+    <string name="application_info_note">材料状态和文件上传请前往「材料」Tab</string>
+
+    <!-- 添加事件 Sheet（批5） -->
+    <string name="event_sheet_title">添加事件</string>
+    <string name="event_sheet_subtitle">选择发生了什么</string>
+    <string name="event_field_received_date">收到日期</string>
+    <string name="event_field_date_format_hint">YYYY-MM-DD</string>
+    <string name="event_field_deadline_optional">提交期限（可选）</string>
+    <string name="event_field_supplement_desc">补资料内容</string>
+    <string name="event_field_brief_hint">简要描述</string>
+    <string name="event_field_submit_date">提交日期</string>
+    <string name="event_field_note_optional">备注（可选）</string>
+    <string name="event_field_notice_hint">通知内容描述</string>
+    <string name="event_field_other_hint">其他备注</string>
+    <string name="event_field_result_date">结果日期</string>
+    <string name="event_field_date">日期</string>
+    <string name="event_field_content">内容</string>
+    <string name="event_field_record_hint">记录内容</string>
+    <string name="event_save">保存</string>
+
+    <!-- 欢迎页（批5） -->
+    <string name="welcome_headline">小狗陪你等永住结果</string>
+    <string name="welcome_body">记录申请进度、整理材料清单，帮你预测大概什么时候收到通知。</string>
+    <string name="welcome_start_cta">开始创建申请档案</string>
+    <string name="welcome_disclaimer">预测仅供参考，不构成法律意见</string>
 </resources>

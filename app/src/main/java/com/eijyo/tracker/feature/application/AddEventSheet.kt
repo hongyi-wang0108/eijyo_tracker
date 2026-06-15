@@ -28,8 +28,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.eijyo.tracker.R
 import com.eijyo.tracker.core.ui.component.PawButton
 import com.eijyo.tracker.core.ui.theme.EijyoTheme
 import com.eijyo.tracker.data.model.ResultType
@@ -104,12 +106,12 @@ fun AddEventSheet(
 private fun TypePickerStep(onSelect: (EventType) -> Unit) {
     val colors = EijyoTheme.colors
     Text(
-        "添加事件",
+        stringResource(R.string.event_sheet_title),
         style = EijyoTheme.typography.headlineMedium.copy(fontSize = 20.sp),
         color = colors.ink,
     )
     Text(
-        "选择发生了什么",
+        stringResource(R.string.event_sheet_subtitle),
         style = EijyoTheme.typography.labelMedium.copy(fontSize = 13.sp),
         color = colors.inkMuted,
         modifier = Modifier.padding(top = 4.dp, bottom = 16.dp),
@@ -171,35 +173,35 @@ private fun EventFormStep(
 
     when (type) {
         EventType.SUPPLEMENT_RECEIVED -> {
-            FormField("收到日期", "YYYY-MM-DD", field1) { field1 = it }
+            FormField(stringResource(R.string.event_field_received_date), stringResource(R.string.event_field_date_format_hint), field1) { field1 = it }
             Spacer(Modifier.height(12.dp))
-            FormField("提交期限（可选）", "YYYY-MM-DD", field2) { field2 = it }
+            FormField(stringResource(R.string.event_field_deadline_optional), stringResource(R.string.event_field_date_format_hint), field2) { field2 = it }
             Spacer(Modifier.height(12.dp))
-            FormField("补资料内容", "简要描述", field3) { field3 = it }
+            FormField(stringResource(R.string.event_field_supplement_desc), stringResource(R.string.event_field_brief_hint), field3) { field3 = it }
         }
         EventType.SUPPLEMENT_SUBMITTED -> {
-            FormField("提交日期", "YYYY-MM-DD", field1) { field1 = it }
+            FormField(stringResource(R.string.event_field_submit_date), stringResource(R.string.event_field_date_format_hint), field1) { field1 = it }
         }
         EventType.NOTICE_RECEIVED -> {
-            FormField("收到日期", "YYYY-MM-DD", field1) { field1 = it }
+            FormField(stringResource(R.string.event_field_received_date), stringResource(R.string.event_field_date_format_hint), field1) { field1 = it }
             Spacer(Modifier.height(12.dp))
-            FormField("备注（可选）", "通知内容描述", field2) { field2 = it }
+            FormField(stringResource(R.string.event_field_note_optional), stringResource(R.string.event_field_notice_hint), field2) { field2 = it }
         }
         EventType.APPROVED, EventType.REJECTED, EventType.WITHDRAWN -> {
-            FormField("结果日期", "YYYY-MM-DD", field1) { field1 = it }
+            FormField(stringResource(R.string.event_field_result_date), stringResource(R.string.event_field_date_format_hint), field1) { field1 = it }
             Spacer(Modifier.height(12.dp))
-            FormField("备注（可选）", "其他备注", field2) { field2 = it }
+            FormField(stringResource(R.string.event_field_note_optional), stringResource(R.string.event_field_other_hint), field2) { field2 = it }
         }
         EventType.CUSTOM_NOTE -> {
-            FormField("日期", "YYYY-MM-DD", field1) { field1 = it }
+            FormField(stringResource(R.string.event_field_date), stringResource(R.string.event_field_date_format_hint), field1) { field1 = it }
             Spacer(Modifier.height(12.dp))
-            FormField("内容", "记录内容", field2) { field2 = it }
+            FormField(stringResource(R.string.event_field_content), stringResource(R.string.event_field_record_hint), field2) { field2 = it }
         }
     }
 
     Spacer(Modifier.height(24.dp))
     PawButton(
-        text = "保存",
+        text = stringResource(R.string.event_save),
         modifier = Modifier.fillMaxWidth(),
         onClick = { onSave(type, field1, field2, field3) },
     )

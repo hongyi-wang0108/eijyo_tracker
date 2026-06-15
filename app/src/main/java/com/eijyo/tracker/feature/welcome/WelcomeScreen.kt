@@ -26,9 +26,11 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.eijyo.tracker.R
 import com.eijyo.tracker.core.ui.component.DogMascot
 import com.eijyo.tracker.core.ui.component.PawPrint
 import com.eijyo.tracker.core.ui.component.WelcomeBackground
@@ -68,7 +70,7 @@ fun WelcomeScreen(onStart: () -> Unit) {
 
             Spacer(Modifier.height(38.dp))
             Text(
-                text = "小狗陪你等永住结果",
+                text = stringResource(R.string.welcome_headline),
                 style = EijyoTheme.typography.displaySmall,
                 color = colors.ink,
                 textAlign = TextAlign.Center,
@@ -76,7 +78,7 @@ fun WelcomeScreen(onStart: () -> Unit) {
             )
             Spacer(Modifier.height(10.dp))
             Text(
-                text = "记录申请进度、整理材料清单，帮你预测大概什么时候收到通知。",
+                text = stringResource(R.string.welcome_body),
                 style = EijyoTheme.typography.bodyLarge,
                 color = colors.inkMuted,
                 textAlign = TextAlign.Center,
@@ -175,7 +177,7 @@ private fun StartButton(onClick: () -> Unit) {
             .clickable(onClick = onClick),
     ) {
         Text(
-            text = "开始创建申请档案",
+            text = stringResource(R.string.welcome_start_cta),
             style = EijyoTheme.typography.labelLarge.copy(fontSize = 17.sp),
             color = Color.White,
         )
@@ -203,7 +205,7 @@ private fun DisclaimerPill() {
             .padding(vertical = 12.dp),
     ) {
         Text(
-            text = "预测仅供参考，不构成法律意见",
+            text = stringResource(R.string.welcome_disclaimer),
             style = EijyoTheme.typography.labelMedium,
             color = colors.inkMuted,
             textAlign = TextAlign.Center,

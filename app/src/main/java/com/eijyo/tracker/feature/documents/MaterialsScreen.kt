@@ -25,6 +25,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.res.stringResource
+import com.eijyo.tracker.R
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -95,13 +97,13 @@ fun MaterialsScreen(viewModel: MaterialsViewModel = hiltViewModel()) {
                 ) {
                     Column {
                         Text(
-                            "材料",
+                            stringResource(R.string.materials_title),
                             style = TextStyle(fontSize = 28.sp, fontWeight = FontWeight.Bold),
                             color = MacaronPalette.Ink,
                         )
                         Spacer(Modifier.height(4.dp))
                         Text(
-                            "${state.totalCount} 项材料 · ${state.pendingCount} 项待确认",
+                            stringResource(R.string.materials_header_summary, state.totalCount, state.pendingCount),
                             style = EijyoTheme.typography.bodyMedium,
                             color = MacaronPalette.InkMuted,
                         )
@@ -139,7 +141,7 @@ fun MaterialsScreen(viewModel: MaterialsViewModel = hiltViewModel()) {
                 item {
                     Spacer(Modifier.height(56.dp))
                     Text(
-                        "暂无材料\n完成问卷后自动生成材料清单",
+                        stringResource(R.string.materials_empty_no_data),
                         modifier = Modifier.fillMaxWidth(),
                         style = EijyoTheme.typography.bodyMedium,
                         color = MacaronPalette.InkMuted,
@@ -150,7 +152,7 @@ fun MaterialsScreen(viewModel: MaterialsViewModel = hiltViewModel()) {
                 item {
                     Spacer(Modifier.height(56.dp))
                     Text(
-                        "该筛选条件下暂无材料",
+                        stringResource(R.string.materials_empty_filtered),
                         modifier = Modifier.fillMaxWidth(),
                         style = EijyoTheme.typography.bodyMedium,
                         color = MacaronPalette.InkMuted,
@@ -231,7 +233,7 @@ private fun MaterialsProgressCard(
 
         Column {
             Text(
-                "材料准备进度",
+                stringResource(R.string.materials_progress_title),
                 style = EijyoTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Bold),
                 color = MacaronPalette.InkMuted,
             )
@@ -251,7 +253,7 @@ private fun MaterialsProgressCard(
                             .padding(horizontal = 10.dp, vertical = 4.dp),
                     ) {
                         Text(
-                            "$needsUpdateCount 项需更新",
+                            stringResource(R.string.materials_needs_update_badge, needsUpdateCount),
                             style = EijyoTheme.typography.labelMedium,
                             color = MacaronPalette.LemonAccent,
                         )
@@ -359,7 +361,7 @@ private fun DocumentSectionCard(
                 contentAlignment = Alignment.Center,
             ) {
                 Text(
-                    "${section.items.size} 项",
+                    stringResource(R.string.materials_section_count, section.items.size),
                     style = EijyoTheme.typography.labelMedium,
                     color = MacaronPalette.SkyAccent,
                 )
@@ -488,7 +490,7 @@ private fun ExpandedDocumentRow(
                 maxLines = 1,
             )
             Text(
-                "当前选择中",
+                stringResource(R.string.materials_item_selected),
                 style = TextStyle(fontSize = 10.sp, fontWeight = FontWeight.SemiBold),
                 color = MacaronPalette.InkMuted,
             )
@@ -520,13 +522,13 @@ private fun InlineStatusSelector(
             // Title + hint
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Text(
-                    "更新状态",
+                    stringResource(R.string.materials_update_status_title),
                     style = EijyoTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Bold),
                     color = MacaronPalette.Ink,
                 )
                 Spacer(Modifier.width(8.dp))
                 Text(
-                    "点选状态后确认，不跳转新页面",
+                    stringResource(R.string.materials_update_status_hint),
                     style = TextStyle(fontSize = 10.sp, fontWeight = FontWeight.SemiBold),
                     color = MacaronPalette.InkMuted,
                 )
@@ -571,7 +573,7 @@ private fun InlineStatusSelector(
                     contentAlignment = Alignment.Center,
                 ) {
                     Text(
-                        "确认选择",
+                        stringResource(R.string.materials_confirm_selection),
                         style = EijyoTheme.typography.labelMedium.copy(fontWeight = FontWeight.Bold),
                         color = Color.White,
                     )
@@ -598,7 +600,7 @@ private fun StatusOptionChip(
         contentAlignment = Alignment.Center,
     ) {
         Text(
-            status.displayLabel,
+            stringResource(status.displayLabelRes),
             style = TextStyle(fontSize = 12.sp, fontWeight = FontWeight.Bold),
             color = colors.chipTextColor.copy(alpha = if (selected) 1f else 0.7f),
         )
@@ -622,7 +624,7 @@ private fun StatusPill(
         contentAlignment = Alignment.Center,
     ) {
         Text(
-            status.displayLabel,
+            stringResource(status.displayLabelRes),
             style = EijyoTheme.typography.labelMedium,
             color = colors.pillTextColor,
         )
@@ -706,10 +708,11 @@ private fun PawPrintDecoration(
 
 // ── Extension ─────────────────────────────────────────────────────────────────
 
-private val DocumentStatus.displayLabel: String
+@get:androidx.annotation.StringRes
+private val DocumentStatus.displayLabelRes: Int
     get() = when (this) {
-        DocumentStatus.NOT_STARTED -> "未准备"
-        DocumentStatus.PREPARED -> "已准备"
-        DocumentStatus.SUBMITTED -> "已提交"
-        DocumentStatus.NEEDS_UPDATE -> "需更新"
+        DocumentStatus.NOT_STARTED -> R.string.materials_status_not_started
+        DocumentStatus.PREPARED -> R.string.materials_status_prepared
+        DocumentStatus.SUBMITTED -> R.string.materials_status_submitted
+        DocumentStatus.NEEDS_UPDATE -> R.string.materials_status_needs_update
     }

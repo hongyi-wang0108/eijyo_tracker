@@ -24,7 +24,7 @@
 | 2 | 首页 Dashboard | ~33 | ✅ 2026-06-15（zh/ja/en，HomeScreen.kt 全替换） |
 | 3 | Onboarding 问答 | ~52 | ✅ 2026-06-15（zh/ja/en，OnboardingScreen + CompleteScreen） |
 | 4 | 数据页 + 预测页 + 风险页 | ~52 | ✅ 2026-06-15（zh/ja/en，DataScreen+PredictionDetailScreen+RiskDetailScreen） |
-| 5 | 材料页 + 申请页 + 各 Sheet | ~60 | ⏳ |
+| 5 | 材料页 + 申请页 + 各 Sheet | ~48 | ✅ 2026-06-15（zh/ja/en，MaterialsScreen+ApplicationScreen+AddEventSheet+WelcomeScreen） |
 | 6 | Enums + domain（架构改动集中于此） | ~110 | ⏳ |
 
 > 验证结论（批1）：语言入口已打开（`enabled=true`）；切 zh/ja/en 经 `recreate()` 即时生效；
@@ -33,6 +33,9 @@
 > 批2 注意：`HomeViewModel.greeting()` / `statusSummary()` / `placeholderFor()` / `backlogLabel` 里的中文（约10条）
 > 留批6处理（需注入 Context 或上移到 UI 层）。`officeName()` 的 `contains("入管")` 检查在批6 ViewModel 改造后需同步更新。
 
+> 批5 注意：`EventType` enum 的 `label`（6 条）留批6；`DocumentFilter.label` / `DocumentCategory.label`
+> 也留批6。`PlaceholderScreen` 无活跃调用方，暂跳过。
+>
 > 状态：⏳ 待做 / 🔧 进行中 / ✅ 完成。每批完成后回填本表 + commit。
 
 ## 每批固定流程

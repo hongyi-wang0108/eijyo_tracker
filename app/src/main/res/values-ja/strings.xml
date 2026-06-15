@@ -204,4 +204,61 @@
     <string name="risk_source_title">分析依拠</string>
     <string name="risk_source_description">問診・申請ファイル・書類状況・追加資料記録に基づき生成。</string>
     <string name="risk_disclaimer">リスク確認はあくまで注意点の整理であり、法的助言ではありません。</string>
+
+    <!-- 材料ページ（バッチ5） -->
+    <string name="materials_title">書類</string>
+    <string name="materials_header_summary">%1$d 件の書類 · %2$d 件確認待ち</string>
+    <string name="materials_empty_no_data">書類なし\nアンケート完了後、自動生成されます</string>
+    <string name="materials_empty_filtered">この絞り込み条件では書類がありません</string>
+    <string name="materials_progress_title">書類準備状況</string>
+    <string name="materials_needs_update_badge">%d 件更新が必要</string>
+    <string name="materials_update_status_title">ステータスを更新</string>
+    <string name="materials_update_status_hint">選択後に確認。別ページへは移動しません</string>
+    <string name="materials_confirm_selection">確認する</string>
+    <string name="materials_section_count">%d 件</string>
+    <string name="materials_item_selected">選択中</string>
+    <string name="materials_status_not_started">未準備</string>
+    <string name="materials_status_prepared">準備済み</string>
+    <string name="materials_status_submitted">提出済み</string>
+    <string name="materials_status_needs_update">更新が必要</string>
+
+    <!-- 申請ページ（バッチ5） -->
+    <string name="application_title">申請</string>
+    <string name="application_subtitle">申請進捗ファイル</string>
+    <string name="application_status_label">現在のステータス</string>
+    <string name="application_no_record">申請記録なし</string>
+    <string name="application_timeline_title">タイムライン一覧</string>
+    <string name="application_add_event">イベントを追加</string>
+    <string name="application_timeline_hint">追資料・通知書・結果は「イベントを追加」で記録</string>
+    <string name="application_info_title">申請情報サマリー</string>
+    <string name="application_info_readonly">読み取り専用</string>
+    <string name="application_info_visa">在留資格</string>
+    <string name="application_info_path">申請経路</string>
+    <string name="application_info_submit_date">提出日</string>
+    <string name="application_info_office">提出入管</string>
+    <string name="application_info_note">書類状況とアップロードは「書類」タブで確認</string>
+
+    <!-- イベント追加シート（バッチ5） -->
+    <string name="event_sheet_title">イベントを追加</string>
+    <string name="event_sheet_subtitle">何が起きたかを選択</string>
+    <string name="event_field_received_date">受取日</string>
+    <string name="event_field_date_format_hint">YYYY-MM-DD</string>
+    <string name="event_field_deadline_optional">提出期限（任意）</string>
+    <string name="event_field_supplement_desc">追加資料の内容</string>
+    <string name="event_field_brief_hint">簡単な説明</string>
+    <string name="event_field_submit_date">提出日</string>
+    <string name="event_field_note_optional">備考（任意）</string>
+    <string name="event_field_notice_hint">通知内容の説明</string>
+    <string name="event_field_other_hint">その他の備考</string>
+    <string name="event_field_result_date">結果日</string>
+    <string name="event_field_date">日付</string>
+    <string name="event_field_content">内容</string>
+    <string name="event_field_record_hint">記録内容</string>
+    <string name="event_save">保存</string>
+
+    <!-- ウェルカム画面（バッチ5） -->
+    <string name="welcome_headline">永住申請をあなたと一緒に</string>
+    <string name="welcome_body">申請の進捗記録、書類整理、審査結果の目安予測をサポートします。</string>
+    <string name="welcome_start_cta">申請ファイルを作成する</string>
+    <string name="welcome_disclaimer">予測は参考のみです。法律上のアドバイスではありません</string>
 </resources>

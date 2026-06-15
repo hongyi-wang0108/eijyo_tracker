@@ -204,4 +204,61 @@
     <string name="risk_source_title">Analysis basis</string>
     <string name="risk_source_description">Generated from questionnaire answers, application profile, document status, and supplement history.</string>
     <string name="risk_disclaimer">Risk check is for organizing attention points only, not legal advice.</string>
+
+    <!-- Materials page (batch 5) -->
+    <string name="materials_title">Documents</string>
+    <string name="materials_header_summary">%1$d items · %2$d pending</string>
+    <string name="materials_empty_no_data">No documents\nComplete the questionnaire to generate your list</string>
+    <string name="materials_empty_filtered">No documents match this filter</string>
+    <string name="materials_progress_title">Document readiness</string>
+    <string name="materials_needs_update_badge">%d need updating</string>
+    <string name="materials_update_status_title">Update status</string>
+    <string name="materials_update_status_hint">Tap a status then confirm — no page change</string>
+    <string name="materials_confirm_selection">Confirm</string>
+    <string name="materials_section_count">%d items</string>
+    <string name="materials_item_selected">Selected</string>
+    <string name="materials_status_not_started">Not started</string>
+    <string name="materials_status_prepared">Ready</string>
+    <string name="materials_status_submitted">Submitted</string>
+    <string name="materials_status_needs_update">Needs update</string>
+
+    <!-- Application page (batch 5) -->
+    <string name="application_title">Application</string>
+    <string name="application_subtitle">Application progress file</string>
+    <string name="application_status_label">Current status</string>
+    <string name="application_no_record">No application record</string>
+    <string name="application_timeline_title">Full timeline</string>
+    <string name="application_add_event">Add event</string>
+    <string name="application_timeline_hint">Log supplements, notices, and results with "Add event"</string>
+    <string name="application_info_title">Application info</string>
+    <string name="application_info_readonly">Read-only</string>
+    <string name="application_info_visa">Visa status</string>
+    <string name="application_info_path">Application route</string>
+    <string name="application_info_submit_date">Submission date</string>
+    <string name="application_info_office">Immigration office</string>
+    <string name="application_info_note">Document status and uploads are in the "Documents" tab</string>
+
+    <!-- Add event sheet (batch 5) -->
+    <string name="event_sheet_title">Add event</string>
+    <string name="event_sheet_subtitle">Choose what happened</string>
+    <string name="event_field_received_date">Received date</string>
+    <string name="event_field_date_format_hint">YYYY-MM-DD</string>
+    <string name="event_field_deadline_optional">Deadline (optional)</string>
+    <string name="event_field_supplement_desc">Supplement description</string>
+    <string name="event_field_brief_hint">Brief description</string>
+    <string name="event_field_submit_date">Submission date</string>
+    <string name="event_field_note_optional">Notes (optional)</string>
+    <string name="event_field_notice_hint">Describe the notice</string>
+    <string name="event_field_other_hint">Other notes</string>
+    <string name="event_field_result_date">Result date</string>
+    <string name="event_field_date">Date</string>
+    <string name="event_field_content">Content</string>
+    <string name="event_field_record_hint">Note content</string>
+    <string name="event_save">Save</string>
+
+    <!-- Welcome screen (batch 5) -->
+    <string name="welcome_headline">Your PR application companion</string>
+    <string name="welcome_body">Track your application progress, organize your documents, and estimate when you\'ll hear back.</string>
+    <string name="welcome_start_cta">Create application profile</string>
+    <string name="welcome_disclaimer">Predictions are for reference only, not legal advice</string>
 </resources>
