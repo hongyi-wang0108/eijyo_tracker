@@ -55,7 +55,7 @@ Debug 包名：`com.eijyo.tracker.debug` · 远端：https://github.com/hongyi-w
 - [x] **5. 其他局校准系数** — 2026-06-15：确认现状即正解，仅东京=1.65 有 ground truth，其余局无实测保持 1.0（在数据脚本 CALIBRATION dict，有实测随时加）
 
 🟢 锦上添花
-- [ ] **6. 全 App 本地化**：分批推进，方案+批次表见 `docs/LOCALIZATION.md`（592条/36文件，中文兜底不破坏构建）
+- [x] **6. 全 App 本地化** — 2026-06-16：批 0-6 全完成（zh/ja/en，含 Enums/ViewModel/domain）；ViewModel/domain 经 `EijyoApp.attachBaseContext` 本地化 application context；语言入口已开；详见 `docs/LOCALIZATION.md`
 - [x] **7. 上架准备** — 2026-06-15：Inter 可变字体打包+wght 实例化（中文系统回退）；暗色模式刻意 light-only（已锁定 forceDarkAllowed=false，详见 DECISIONS）
 
 ---
@@ -98,7 +98,7 @@ Debug 包名：`com.eijyo.tracker.debug` · 远端：https://github.com/hongyi-w
 | `feature/application/ApplicationScreen.kt` | `MOCK_PREVIEW` | `false` ✅ | 时间线已接 TimelineBuilder 真实数据 |
 | `feature/home/HomeScreen.kt` | `MOCK_PREVIEW` | `false` ✅ | 真实数据；保留 `.copy()` 补缺字段逻辑 |
 | `feature/settings/SettingsScreen.kt` | — | 真实数据 ✅ | 已无 MOCK，读 ProfileRepository 真名/状态 |
-| 我的页 语言设置入口 | `enabled` | `false` ⚠️ | 暂灰；本地化做完后改 `true` |
+| 我的页 语言设置入口 | `enabled` | `true` ✅ | 本地化完成，入口已开；zh/ja/en 实机切换生效 |
 | 首页 申请时间线卡 | — | 真实数据 ✅ | 接 TimelineBuilder.summary（提交/受理/预测/结果） |
 | 首页 公开数据卡 | — | 真实数据 ✅ | 接 PublicDataRepository（更新月 + 真实 mini 趋势） |
 | 材料 Tab | — | 真实数据 ✅ | 已实现，内联更新 + 筛选 |
@@ -108,7 +108,7 @@ Debug 包名：`com.eijyo.tracker.debug` · 远端：https://github.com/hongyi-w
 
 ## 已知问题 / 待办细节
 
-- [ ] 首页预测卡目前永远可点；按 §7 应仅「审查中」态可点进详情
+- [x] 首页预测卡仅「审查中」且有预测区间可点（PredictionCard 按状态分流；准备中/已结束不可点）— 2026-06-16
 - [x] 首页数据卡「准备中」态标题 fallback → 显示「入管处理数据」— 2026-06-11
 - [x] 三参考区间卡等高 — 2026-06-11
 
