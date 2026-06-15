@@ -145,4 +145,63 @@
     <string name="onboarding_complete_stage_done">Ready</string>
     <string name="onboarding_complete_prediction_title">Initial estimate</string>
     <string name="onboarding_complete_enter_home">Enter home</string>
+
+    <!-- Data page (batch 4) -->
+    <string name="data_title">Data</string>
+    <string name="data_subtitle_with_office">%s · PR public data</string>
+    <string name="data_subtitle_no_office">PR public data</string>
+    <string name="data_backlog_title_with_office">%s Reception &amp; Processing</string>
+    <string name="data_backlog_title_no_office">Reception &amp; Processing</string>
+    <string name="data_backlog_subtitle">%s · Permanent residence (excl. sub-offices)</string>
+    <string name="data_stat_pending">Backlog</string>
+    <string name="data_stat_processed">Processed</string>
+    <string name="data_stat_received">New applications</string>
+    <string name="data_queue_estimate">At the current processing speed, a submission today would likely take about %s months to receive a result. General reference only — not your specific case timeline.</string>
+    <string name="data_bureau_reference">Ref.: %1$s backlog %2$s (incl. sub-offices, overall faster)</string>
+    <string name="data_trend_fallback_title">Processing reference trend</string>
+    <string name="data_trend_subtitle_with_data">Source: %1$s (unit: %2$s)</string>
+    <string name="data_trend_no_data_subtitle">No public trend data for this region</string>
+    <string name="data_trend_empty_hint">No region specified or no confirmed data — no fabricated numbers shown</string>
+    <string name="data_region_chip">Region ref.</string>
+    <string name="data_region_title_with_office">%s Regional Info</string>
+    <string name="data_region_title_no_office">Regional Info</string>
+    <string name="data_region_description">Showing confirmed official data and processing reference for your submitted region.</string>
+    <string name="data_path_title">Application route</string>
+    <string name="data_path_key_points">Key checks: tax, pension, insurance, income stability</string>
+    <string name="data_source1_title">Permanent Residence Application — Official Guide</string>
+    <string name="data_source1_summary">Procedures, documents, processing period</string>
+    <string name="data_source2_title">Japan Immigration Services Agency Statistics</string>
+    <string name="data_source2_summary">e-Stat monthly reception/processing &amp; permit counts</string>
+
+    <!-- Prediction detail page (batch 4) -->
+    <string name="pred_back_cd">Go back</string>
+    <string name="pred_title">Prediction details</string>
+    <string name="pred_hero_title">Estimated result window</string>
+    <string name="pred_confidence_fmt">Confidence: %s</string>
+    <string name="pred_scenarios_title">Three reference scenarios</string>
+    <string name="pred_scenario_optimistic">Optimistic</string>
+    <string name="pred_scenario_normal">Normal</string>
+    <string name="pred_scenario_conservative">Conservative</string>
+    <string name="pred_factors_title">Factors affecting prediction</string>
+    <string name="pred_factor_processing">Official processing period</string>
+    <string name="pred_factor_wait_days">Days since submission</string>
+    <string name="pred_factor_path">Application route</string>
+    <string name="pred_factor_supplement">Supplementary docs</string>
+    <string name="pred_factor_wait_days_fmt">%d days</string>
+    <string name="pred_data_basis_title">Data basis</string>
+    <string name="pred_data_basis_subtitle_fmt">Source: %s / Official public data</string>
+    <string name="pred_data_no_count_note">If no regional approval count is available, no fabricated numbers are shown.</string>
+    <string name="pred_disclaimer">Predictions are for reference only, not legal advice, and do not guarantee a result.</string>
+
+    <!-- Risk detail page (batch 4) -->
+    <string name="risk_back_cd">Go back</string>
+    <string name="risk_title">Risk check</string>
+    <string name="risk_hero_label">Current risk level</string>
+    <string name="risk_not_legal">Not a legal judgment</string>
+    <string name="risk_factors_title">Three review areas</string>
+    <string name="risk_recommendation_title">Recommendations</string>
+    <string name="risk_recommendation_empty">No recommendations at this time. Keep up the current status.</string>
+    <string name="risk_source_title">Analysis basis</string>
+    <string name="risk_source_description">Generated from questionnaire answers, application profile, document status, and supplement history.</string>
+    <string name="risk_disclaimer">Risk check is for organizing attention points only, not legal advice.</string>
 </resources>

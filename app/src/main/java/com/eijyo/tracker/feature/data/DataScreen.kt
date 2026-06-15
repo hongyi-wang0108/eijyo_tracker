@@ -26,6 +26,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -33,6 +34,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.eijyo.tracker.R
 import com.eijyo.tracker.core.ui.component.DogFace
 import com.eijyo.tracker.core.ui.theme.EijyoTheme
 import com.eijyo.tracker.core.ui.theme.MacaronPalette
@@ -82,15 +84,15 @@ fun DataScreen(viewModel: DataViewModel = hiltViewModel()) {
                 ) {
                     Column {
                         Text(
-                            "数据",
+                            stringResource(R.string.data_title),
                             style = TextStyle(fontSize = 28.sp, fontWeight = FontWeight.Bold),
                             color = MacaronPalette.Ink,
                         )
                         Spacer(Modifier.height(4.dp))
                         val subtitle = if (state.officeLabel.isNotBlank())
-                            "${state.officeLabel} · 永住相关公开资料"
+                            stringResource(R.string.data_subtitle_with_office, state.officeLabel)
                         else
-                            "永住相关公开资料"
+                            stringResource(R.string.data_subtitle_no_office)
                         Text(
                             subtitle,
                             style = EijyoTheme.typography.bodyMedium,
@@ -154,8 +156,8 @@ fun DataScreen(viewModel: DataViewModel = hiltViewModel()) {
                     iconBg = MacaronPalette.MintWash,
                     iconText = "✓",
                     iconTextColor = MacaronPalette.Mint,
-                    title = "永住許可申請 官方说明",
-                    summary = "申请手续、材料、处理期间",
+                    title = stringResource(R.string.data_source1_title),
+                    summary = stringResource(R.string.data_source1_summary),
                     modifier = Modifier.padding(horizontal = 20.dp),
                 )
             }
@@ -167,8 +169,8 @@ fun DataScreen(viewModel: DataViewModel = hiltViewModel()) {
                     iconBg = MacaronPalette.SkySoft,
                     iconText = "i",
                     iconTextColor = MacaronPalette.SkyAccent,
-                    title = "出入国在留管理庁 出入国管理統計",
-                    summary = "e-Stat 受理处理・许可人数（每月更新）",
+                    title = stringResource(R.string.data_source2_title),
+                    summary = stringResource(R.string.data_source2_summary),
                     modifier = Modifier.padding(horizontal = 20.dp),
                 )
             }
@@ -198,13 +200,14 @@ private fun BacklogCard(
             .padding(horizontal = 20.dp, vertical = 18.dp),
     ) {
         Text(
-            if (officeLabel.isNotBlank()) "${officeLabel}受理处理情况" else "受理处理情况",
+            if (officeLabel.isNotBlank()) stringResource(R.string.data_backlog_title_with_office, officeLabel)
+            else stringResource(R.string.data_backlog_title_no_office),
             style = EijyoTheme.typography.titleMedium,
             color = MacaronPalette.Ink,
         )
         Spacer(Modifier.height(2.dp))
         Text(
-            "${stats.latestMonthLabel} · 永住（已扣除管内支局）",
+            stringResource(R.string.data_backlog_subtitle, stats.latestMonthLabel),
             style = EijyoTheme.typography.labelMedium,
             color = MacaronPalette.InkMuted,
         )
@@ -212,19 +215,19 @@ private fun BacklogCard(
 
         Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
             StatBox(
-                label = "积压待处理",
+                label = stringResource(R.string.data_stat_pending),
                 value = formatCount(stats.pending),
                 accent = MacaronPalette.Coral,
                 modifier = Modifier.weight(1f),
             )
             StatBox(
-                label = "本月处理",
+                label = stringResource(R.string.data_stat_processed),
                 value = formatCount(stats.processed),
                 accent = MacaronPalette.Mint,
                 modifier = Modifier.weight(1f),
             )
             StatBox(
-                label = "本月新申请",
+                label = stringResource(R.string.data_stat_received),
                 value = formatCount(stats.received),
                 accent = MacaronPalette.SkyAccent,
                 modifier = Modifier.weight(1f),
@@ -241,8 +244,7 @@ private fun BacklogCard(
                     .padding(horizontal = 14.dp, vertical = 12.dp),
             ) {
                 Text(
-                    "按实际处理速度估算，目前提交大约需要 ${formatMonths(months)} 个月出结果。" +
-                        "仅为整体参考，非你个案的实际进度。",
+                    stringResource(R.string.data_queue_estimate, formatMonths(months)),
                     style = TextStyle(fontSize = 12.sp, fontWeight = FontWeight.Medium),
                     color = MacaronPalette.Ink,
                 )
@@ -252,7 +254,7 @@ private fun BacklogCard(
         if (stats.bureauLabel != null && stats.bureauPending != null) {
             Spacer(Modifier.height(8.dp))
             Text(
-                "参考：${stats.bureauLabel}积压 ${formatCount(stats.bureauPending)}（含支局，整体看更快）",
+                stringResource(R.string.data_bureau_reference, stats.bureauLabel, formatCount(stats.bureauPending)),
                 style = TextStyle(fontSize = 11.sp, fontWeight = FontWeight.Medium),
                 color = MacaronPalette.InkMuted,
             )
@@ -310,14 +312,14 @@ private fun TrendChartCard(
     ) {
         val hasTrend = state.trend.isNotEmpty()
         Text(
-            if (hasTrend) state.trendTitle else "处理参考趋势",
+            if (hasTrend) state.trendTitle else stringResource(R.string.data_trend_fallback_title),
             style = EijyoTheme.typography.titleMedium,
             color = MacaronPalette.Ink,
         )
         Spacer(Modifier.height(4.dp))
         Text(
-            if (hasTrend) "数据来源：${state.sourceName}（单位：${state.trendUnit}）"
-            else "暂无所选地区的公开趋势数据",
+            if (hasTrend) stringResource(R.string.data_trend_subtitle_with_data, state.sourceName, state.trendUnit)
+            else stringResource(R.string.data_trend_no_data_subtitle),
             style = EijyoTheme.typography.labelMedium,
             color = MacaronPalette.InkMuted,
         )
@@ -338,7 +340,7 @@ private fun TrendChartCard(
                 contentAlignment = Alignment.Center,
             ) {
                 Text(
-                    "未指定地区或暂无可确认数据，不展示虚构数字",
+                    stringResource(R.string.data_trend_empty_hint),
                     style = TextStyle(fontSize = 12.sp, fontWeight = FontWeight.Medium),
                     color = MacaronPalette.InkMuted,
                 )
@@ -404,7 +406,10 @@ private fun RegionInfoCard(
     regionalNote: String,
     modifier: Modifier = Modifier,
 ) {
-    val title = if (officeLabel.isNotBlank()) "${officeLabel}地区信息" else "地区信息"
+    val title = if (officeLabel.isNotBlank())
+        stringResource(R.string.data_region_title_with_office, officeLabel)
+    else
+        stringResource(R.string.data_region_title_no_office)
 
     Box(
         modifier = modifier
@@ -428,7 +433,7 @@ private fun RegionInfoCard(
                 .padding(horizontal = 10.dp, vertical = 4.dp),
         ) {
             Text(
-                "地区参考",
+                stringResource(R.string.data_region_chip),
                 style = TextStyle(fontSize = 11.sp, fontWeight = FontWeight.Bold),
                 color = MacaronPalette.Coral,
             )
@@ -442,7 +447,7 @@ private fun RegionInfoCard(
             )
             Spacer(Modifier.height(6.dp))
             Text(
-                "用于匹配你的提交地区，展示可确认的官方资料和处理参考。",
+                stringResource(R.string.data_region_description),
                 style = EijyoTheme.typography.labelMedium,
                 color = MacaronPalette.InkMuted,
             )
@@ -480,7 +485,7 @@ private fun PathInfoCard(
             .padding(horizontal = 20.dp, vertical = 18.dp),
     ) {
         Text(
-            "申请路径说明",
+            stringResource(R.string.data_path_title),
             style = EijyoTheme.typography.titleMedium,
             color = MacaronPalette.Ink,
         )
@@ -506,7 +511,7 @@ private fun PathInfoCard(
             Spacer(Modifier.height(6.dp))
         }
         Text(
-            "重点确认：纳税、年金、保险、收入稳定性",
+            stringResource(R.string.data_path_key_points),
             style = EijyoTheme.typography.labelMedium,
             color = MacaronPalette.InkMuted,
         )

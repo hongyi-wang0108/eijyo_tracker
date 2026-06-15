@@ -145,4 +145,63 @@
     <string name="onboarding_complete_stage_done">整理完了</string>
     <string name="onboarding_complete_prediction_title">初回予測期間</string>
     <string name="onboarding_complete_enter_home">ホームへ進む</string>
+
+    <!-- データページ（バッチ4） -->
+    <string name="data_title">データ</string>
+    <string name="data_subtitle_with_office">%s · 永住関連公開資料</string>
+    <string name="data_subtitle_no_office">永住関連公開資料</string>
+    <string name="data_backlog_title_with_office">%s受付処理状況</string>
+    <string name="data_backlog_title_no_office">受付処理状況</string>
+    <string name="data_backlog_subtitle">%s · 永住（支局除く）</string>
+    <string name="data_stat_pending">積滞件数</string>
+    <string name="data_stat_processed">当月処理</string>
+    <string name="data_stat_received">当月新規申請</string>
+    <string name="data_queue_estimate">現在の処理速度に基づくと、今提出すると結果まで約 %s ヶ月かかる見込みです。あくまで全体の参考で、個別の進捗を示すものではありません。</string>
+    <string name="data_bureau_reference">参考：%1$s積滞 %2$s（支局含む、全体的には早め）</string>
+    <string name="data_trend_fallback_title">処理参考トレンド</string>
+    <string name="data_trend_subtitle_with_data">データ出典：%1$s（単位：%2$s）</string>
+    <string name="data_trend_no_data_subtitle">この地域の公開トレンドデータはありません</string>
+    <string name="data_trend_empty_hint">地域未指定またはデータなし、架空の数字は表示しません</string>
+    <string name="data_region_chip">地域参考</string>
+    <string name="data_region_title_with_office">%s地域情報</string>
+    <string name="data_region_title_no_office">地域情報</string>
+    <string name="data_region_description">申請地域に一致する公式資料と処理参考を表示しています。</string>
+    <string name="data_path_title">申請ルート説明</string>
+    <string name="data_path_key_points">重点確認：納税・年金・保険・収入安定性</string>
+    <string name="data_source1_title">永住許可申請 公式説明</string>
+    <string name="data_source1_summary">申請手続・書類・処理期間</string>
+    <string name="data_source2_title">出入国在留管理庁 出入国管理統計</string>
+    <string name="data_source2_summary">e-Stat 受付処理・許可人数（毎月更新）</string>
+
+    <!-- 予測詳細ページ（バッチ4） -->
+    <string name="pred_back_cd">ホームに戻る</string>
+    <string name="pred_title">予測詳細</string>
+    <string name="pred_hero_title">予想結果期間</string>
+    <string name="pred_confidence_fmt">信頼度 %s</string>
+    <string name="pred_scenarios_title">3つの参考期間</string>
+    <string name="pred_scenario_optimistic">楽観</string>
+    <string name="pred_scenario_normal">通常</string>
+    <string name="pred_scenario_conservative">保守的</string>
+    <string name="pred_factors_title">予測に影響する要素</string>
+    <string name="pred_factor_processing">公式処理期間</string>
+    <string name="pred_factor_wait_days">現在の待機日数</string>
+    <string name="pred_factor_path">申請ルート</string>
+    <string name="pred_factor_supplement">追加資料状況</string>
+    <string name="pred_factor_wait_days_fmt">%d 日</string>
+    <string name="pred_data_basis_title">公開データ依拠</string>
+    <string name="pred_data_basis_subtitle_fmt">出典：%s / 公式公開資料</string>
+    <string name="pred_data_no_count_note">地域の通過人数がない場合、架空の数字は表示しません。</string>
+    <string name="pred_disclaimer">予測はあくまで参考であり、法的助言ではなく、結果を保証するものでもありません。</string>
+
+    <!-- リスク確認ページ（バッチ4） -->
+    <string name="risk_back_cd">ホームに戻る</string>
+    <string name="risk_title">リスク確認</string>
+    <string name="risk_hero_label">現在のリスクレベル</string>
+    <string name="risk_not_legal">法的判断ではない</string>
+    <string name="risk_factors_title">3つの審査項目</string>
+    <string name="risk_recommendation_title">改善提案</string>
+    <string name="risk_recommendation_empty">改善提案はありません。現状を維持してください。</string>
+    <string name="risk_source_title">分析依拠</string>
+    <string name="risk_source_description">問診・申請ファイル・書類状況・追加資料記録に基づき生成。</string>
+    <string name="risk_disclaimer">リスク確認はあくまで注意点の整理であり、法的助言ではありません。</string>
 </resources>

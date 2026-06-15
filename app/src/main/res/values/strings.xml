@@ -148,4 +148,63 @@
     <string name="onboarding_complete_stage_done">整理完成</string>
     <string name="onboarding_complete_prediction_title">初步预测区间</string>
     <string name="onboarding_complete_enter_home">进入首页</string>
+
+    <!-- 数据页（批4） -->
+    <string name="data_title">数据</string>
+    <string name="data_subtitle_with_office">%s · 永住相关公开资料</string>
+    <string name="data_subtitle_no_office">永住相关公开资料</string>
+    <string name="data_backlog_title_with_office">%s受理处理情况</string>
+    <string name="data_backlog_title_no_office">受理处理情况</string>
+    <string name="data_backlog_subtitle">%s · 永住（已扣除管内支局）</string>
+    <string name="data_stat_pending">积压待处理</string>
+    <string name="data_stat_processed">本月处理</string>
+    <string name="data_stat_received">本月新申请</string>
+    <string name="data_queue_estimate">按实际处理速度估算，目前提交大约需要 %s 个月出结果。仅为整体参考，非你个案的实际进度。</string>
+    <string name="data_bureau_reference">参考：%1$s积压 %2$s（含支局，整体看更快）</string>
+    <string name="data_trend_fallback_title">处理参考趋势</string>
+    <string name="data_trend_subtitle_with_data">数据来源：%1$s（单位：%2$s）</string>
+    <string name="data_trend_no_data_subtitle">暂无所选地区的公开趋势数据</string>
+    <string name="data_trend_empty_hint">未指定地区或暂无可确认数据，不展示虚构数字</string>
+    <string name="data_region_chip">地区参考</string>
+    <string name="data_region_title_with_office">%s地区信息</string>
+    <string name="data_region_title_no_office">地区信息</string>
+    <string name="data_region_description">用于匹配你的提交地区，展示可确认的官方资料和处理参考。</string>
+    <string name="data_path_title">申请路径说明</string>
+    <string name="data_path_key_points">重点确认：纳税、年金、保险、收入稳定性</string>
+    <string name="data_source1_title">永住許可申請 官方说明</string>
+    <string name="data_source1_summary">申请手续、材料、处理期间</string>
+    <string name="data_source2_title">出入国在留管理庁 出入国管理統計</string>
+    <string name="data_source2_summary">e-Stat 受理处理・许可人数（每月更新）</string>
+
+    <!-- 预测详情页（批4） -->
+    <string name="pred_back_cd">返回首页</string>
+    <string name="pred_title">预测详情</string>
+    <string name="pred_hero_title">预计结果区间</string>
+    <string name="pred_confidence_fmt">置信度 %s</string>
+    <string name="pred_scenarios_title">三种参考区间</string>
+    <string name="pred_scenario_optimistic">乐观</string>
+    <string name="pred_scenario_normal">正常</string>
+    <string name="pred_scenario_conservative">保守</string>
+    <string name="pred_factors_title">影响预测的因素</string>
+    <string name="pred_factor_processing">官方处理期间</string>
+    <string name="pred_factor_wait_days">当前等待天数</string>
+    <string name="pred_factor_path">申请路径</string>
+    <string name="pred_factor_supplement">补资料状态</string>
+    <string name="pred_factor_wait_days_fmt">%d 天</string>
+    <string name="pred_data_basis_title">公开数据依据</string>
+    <string name="pred_data_basis_subtitle_fmt">来源：%s / 官方公开资料</string>
+    <string name="pred_data_no_count_note">如无地区通过人数，不展示虚构数字。</string>
+    <string name="pred_disclaimer">预测仅供参考，不构成法律意见，也不保证结果。</string>
+
+    <!-- 风险自检页（批4） -->
+    <string name="risk_back_cd">返回首页</string>
+    <string name="risk_title">风险自检</string>
+    <string name="risk_hero_label">当前风险等级</string>
+    <string name="risk_not_legal">非法律判断</string>
+    <string name="risk_factors_title">三大检查项</string>
+    <string name="risk_recommendation_title">建议补强</string>
+    <string name="risk_recommendation_empty">暂无改善建议，继续保持当前状态。</string>
+    <string name="risk_source_title">分析依据</string>
+    <string name="risk_source_description">基于问卷答案、申请档案、材料状态和补资料记录生成。</string>
+    <string name="risk_disclaimer">风险自检仅用于整理注意点，不构成法律意见。</string>
 </resources>

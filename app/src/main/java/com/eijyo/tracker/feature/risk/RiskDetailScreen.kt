@@ -34,11 +34,13 @@ import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.eijyo.tracker.R
 import com.eijyo.tracker.core.ui.component.DogFace
 import com.eijyo.tracker.core.ui.component.OnboardingBackground
 import com.eijyo.tracker.core.ui.theme.EijyoTheme
@@ -118,10 +120,10 @@ private fun TopNav(onBack: () -> Unit) {
                 .background(colors.card)
                 .clickable(onClick = onBack),
         ) {
-            Icon(Icons.AutoMirrored.Filled.KeyboardArrowLeft, contentDescription = "返回首页", tint = colors.ink, modifier = Modifier.size(26.dp))
+            Icon(Icons.AutoMirrored.Filled.KeyboardArrowLeft, contentDescription = stringResource(R.string.risk_back_cd), tint = colors.ink, modifier = Modifier.size(26.dp))
         }
         Spacer(Modifier.width(16.dp))
-        Text("风险自检", style = EijyoTheme.typography.headlineMedium.copy(fontSize = 22.sp), color = colors.ink)
+        Text(stringResource(R.string.risk_title), style = EijyoTheme.typography.headlineMedium.copy(fontSize = 22.sp), color = colors.ink)
         Spacer(Modifier.weight(1f))
         DogFace(size = 34.dp)
     }
@@ -170,14 +172,14 @@ private fun HeroCard(state: RiskDetailUiState) {
     RiskCard(radius = 30.dp, padding = 22.dp) {
         Row(modifier = Modifier.fillMaxWidth()) {
             Column(modifier = Modifier.weight(1f)) {
-                Text("当前风险等级", style = EijyoTheme.typography.labelMedium.copy(fontSize = 14.sp), color = colors.inkMuted)
+                Text(stringResource(R.string.risk_hero_label), style = EijyoTheme.typography.labelMedium.copy(fontSize = 14.sp), color = colors.inkMuted)
                 Spacer(Modifier.height(8.dp))
                 Text(state.levelLabel, style = EijyoTheme.typography.headlineMedium.copy(fontSize = 36.sp), color = levelColor)
                 Spacer(Modifier.height(8.dp))
                 Text(state.summary, style = EijyoTheme.typography.labelMedium.copy(fontSize = 13.sp), color = colors.inkMuted)
                 Spacer(Modifier.height(12.dp))
                 Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                    SmallPill("非法律判断", LemonBadge, colors.lemonAccent, 96.dp)
+                    SmallPill(stringResource(R.string.risk_not_legal), LemonBadge, colors.lemonAccent, 96.dp)
                     SmallPill(state.updatedLabel, colors.skySoft, colors.skyAccent, 82.dp)
                 }
             }
@@ -206,7 +208,7 @@ private fun ScoreRing(score: Int, ringColor: Color, ringSize: Dp = 72.dp) {
 private fun FactorsCard(state: RiskDetailUiState) {
     val colors = EijyoTheme.colors
     RiskCard {
-        Text("三大检查项", style = EijyoTheme.typography.labelLarge.copy(fontSize = 16.sp), color = colors.ink)
+        Text(stringResource(R.string.risk_factors_title), style = EijyoTheme.typography.labelLarge.copy(fontSize = 16.sp), color = colors.ink)
         Spacer(Modifier.height(14.dp))
         state.sections.forEachIndexed { i, section ->
             if (i > 0) Spacer(Modifier.height(14.dp))
@@ -261,10 +263,10 @@ private data class SectionColors(
 private fun RecommendationCard(state: RiskDetailUiState) {
     val colors = EijyoTheme.colors
     RiskCard {
-        Text("建议补强", style = EijyoTheme.typography.labelLarge.copy(fontSize = 16.sp), color = colors.ink)
+        Text(stringResource(R.string.risk_recommendation_title), style = EijyoTheme.typography.labelLarge.copy(fontSize = 16.sp), color = colors.ink)
         Spacer(Modifier.height(14.dp))
         if (state.recommendations.isEmpty()) {
-            Text("暂无改善建议，继续保持当前状态。", style = EijyoTheme.typography.labelSmall.copy(fontSize = 13.sp), color = colors.inkMuted)
+            Text(stringResource(R.string.risk_recommendation_empty), style = EijyoTheme.typography.labelSmall.copy(fontSize = 13.sp), color = colors.inkMuted)
         } else {
             state.recommendations.forEach { rec ->
                 Row(verticalAlignment = Alignment.Top) {
@@ -293,7 +295,7 @@ private fun SourceCard(state: RiskDetailUiState) {
     val colors = EijyoTheme.colors
     RiskCard(radius = 24.dp, padding = 18.dp) {
         Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
-            Text("分析依据", style = EijyoTheme.typography.labelLarge.copy(fontSize = 16.sp), color = colors.ink, modifier = Modifier.weight(1f))
+            Text(stringResource(R.string.risk_source_title), style = EijyoTheme.typography.labelLarge.copy(fontSize = 16.sp), color = colors.ink, modifier = Modifier.weight(1f))
             Box(
                 contentAlignment = Alignment.Center,
                 modifier = Modifier
@@ -306,7 +308,7 @@ private fun SourceCard(state: RiskDetailUiState) {
         }
         Spacer(Modifier.height(8.dp))
         Text(
-            "基于问卷答案、申请档案、材料状态和补资料记录生成。",
+            stringResource(R.string.risk_source_description),
             style = EijyoTheme.typography.labelSmall.copy(fontSize = 12.sp),
             color = colors.inkMuted,
         )
@@ -326,7 +328,7 @@ private fun DisclaimerCard() {
             }
             Spacer(Modifier.width(14.dp))
             Text(
-                "风险自检仅用于整理注意点，不构成法律意见。",
+                stringResource(R.string.risk_disclaimer),
                 style = EijyoTheme.typography.labelSmall.copy(fontSize = 12.sp),
                 color = colors.inkMuted,
             )

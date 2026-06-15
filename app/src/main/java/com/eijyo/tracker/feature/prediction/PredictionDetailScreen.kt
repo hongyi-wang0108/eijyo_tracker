@@ -36,11 +36,13 @@ import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.eijyo.tracker.R
 import com.eijyo.tracker.core.ui.component.DogFace
 import com.eijyo.tracker.core.ui.component.OnboardingBackground
 import com.eijyo.tracker.core.ui.theme.EijyoTheme
@@ -121,10 +123,10 @@ private fun TopNav(onBack: () -> Unit) {
                 .background(colors.card)
                 .clickable(onClick = onBack),
         ) {
-            Icon(Icons.AutoMirrored.Filled.KeyboardArrowLeft, contentDescription = "返回首页", tint = colors.ink, modifier = Modifier.size(26.dp))
+            Icon(Icons.AutoMirrored.Filled.KeyboardArrowLeft, contentDescription = stringResource(R.string.pred_back_cd), tint = colors.ink, modifier = Modifier.size(26.dp))
         }
         Spacer(Modifier.width(16.dp))
-        Text("预测详情", style = EijyoTheme.typography.headlineMedium.copy(fontSize = 22.sp), color = colors.ink)
+        Text(stringResource(R.string.pred_title), style = EijyoTheme.typography.headlineMedium.copy(fontSize = 22.sp), color = colors.ink)
         Spacer(Modifier.weight(1f))
         DogFace(size = 34.dp)
     }
@@ -164,7 +166,7 @@ private fun HeroCard(state: PredictionDetailUiState) {
     DetailCard(radius = 30.dp, padding = 22.dp) {
         Row(modifier = Modifier.fillMaxWidth()) {
             Column(modifier = Modifier.weight(1f)) {
-                Text("预计结果区间", style = EijyoTheme.typography.labelMedium.copy(fontSize = 14.sp), color = colors.inkMuted)
+                Text(stringResource(R.string.pred_hero_title), style = EijyoTheme.typography.labelMedium.copy(fontSize = 14.sp), color = colors.inkMuted)
                 Spacer(Modifier.height(10.dp))
                 val parts = state.normalRange.split(" - ", " – ", "-").map { it.trim() }
                 Text(parts.getOrElse(0) { state.normalRange }, style = EijyoTheme.typography.headlineMedium.copy(fontSize = 29.sp), color = colors.ink)
@@ -176,7 +178,7 @@ private fun HeroCard(state: PredictionDetailUiState) {
         }
         Spacer(Modifier.height(16.dp))
         Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-            Pill("置信度 ${state.confidenceLabel}", colors.pink, colors.pinkAccent)
+            Pill(stringResource(R.string.pred_confidence_fmt, state.confidenceLabel), colors.pink, colors.pinkAccent)
             Pill(state.office, colors.skySoft, colors.skyAccent)
         }
     }
@@ -201,15 +203,15 @@ private fun DetailRing(percent: Int, ringSize: Dp = 66.dp) {
 private fun ScenarioCard(state: PredictionDetailUiState) {
     val colors = EijyoTheme.colors
     DetailCard {
-        Text("三种参考区间", style = EijyoTheme.typography.labelLarge.copy(fontSize = 16.sp), color = colors.ink)
+        Text(stringResource(R.string.pred_scenarios_title), style = EijyoTheme.typography.labelLarge.copy(fontSize = 16.sp), color = colors.ink)
         Spacer(Modifier.height(12.dp))
         Row(
             modifier = Modifier.fillMaxWidth().height(IntrinsicSize.Max),
             horizontalArrangement = Arrangement.spacedBy(10.dp),
         ) {
-            Scenario(Modifier.weight(1f).fillMaxHeight(), "乐观", state.optimisticRange, colors.mintWash, colors.mint)
-            Scenario(Modifier.weight(1f).fillMaxHeight(), "正常", state.normalRange, colors.skySoft, colors.skyAccent)
-            Scenario(Modifier.weight(1f).fillMaxHeight(), "保守", state.conservativeRange, LemonBadge, colors.lemonAccent)
+            Scenario(Modifier.weight(1f).fillMaxHeight(), stringResource(R.string.pred_scenario_optimistic), state.optimisticRange, colors.mintWash, colors.mint)
+            Scenario(Modifier.weight(1f).fillMaxHeight(), stringResource(R.string.pred_scenario_normal), state.normalRange, colors.skySoft, colors.skyAccent)
+            Scenario(Modifier.weight(1f).fillMaxHeight(), stringResource(R.string.pred_scenario_conservative), state.conservativeRange, LemonBadge, colors.lemonAccent)
         }
     }
 }
@@ -233,13 +235,13 @@ private fun Scenario(modifier: Modifier, label: String, date: String, bg: Color,
 private fun FactorsCard(state: PredictionDetailUiState) {
     val colors = EijyoTheme.colors
     DetailCard {
-        Text("影响预测的因素", style = EijyoTheme.typography.labelLarge.copy(fontSize = 16.sp), color = colors.ink)
+        Text(stringResource(R.string.pred_factors_title), style = EijyoTheme.typography.labelLarge.copy(fontSize = 16.sp), color = colors.ink)
         Spacer(Modifier.height(14.dp))
         val rows = listOf(
-            Triple(colors.mint, "官方处理期间", state.processingRange),
-            Triple(colors.coral, "当前等待天数", "${state.waitDays} 天"),
-            Triple(colors.skyAccent, "申请路径", state.pathLabel),
-            Triple(colors.lavenderAccent, "补资料状态", state.supplementStatus),
+            Triple(colors.mint, stringResource(R.string.pred_factor_processing), state.processingRange),
+            Triple(colors.coral, stringResource(R.string.pred_factor_wait_days), stringResource(R.string.pred_factor_wait_days_fmt, state.waitDays)),
+            Triple(colors.skyAccent, stringResource(R.string.pred_factor_path), state.pathLabel),
+            Triple(colors.lavenderAccent, stringResource(R.string.pred_factor_supplement), state.supplementStatus),
         )
         rows.forEachIndexed { i, (dot, label, value) ->
             if (i > 0) Spacer(Modifier.height(13.dp))
@@ -260,11 +262,11 @@ private fun DataBasisCard(state: PredictionDetailUiState) {
     DetailCard {
         Row(modifier = Modifier.fillMaxWidth()) {
             Column(modifier = Modifier.weight(1f)) {
-                Text("公开数据依据", style = EijyoTheme.typography.labelLarge.copy(fontSize = 16.sp), color = colors.ink)
+                Text(stringResource(R.string.pred_data_basis_title), style = EijyoTheme.typography.labelLarge.copy(fontSize = 16.sp), color = colors.ink)
                 Spacer(Modifier.height(8.dp))
-                Text("来源：${state.sourceName} / 官方公开资料", style = EijyoTheme.typography.labelSmall.copy(fontSize = 12.sp), color = colors.inkMuted)
+                Text(stringResource(R.string.pred_data_basis_subtitle_fmt, state.sourceName), style = EijyoTheme.typography.labelSmall.copy(fontSize = 12.sp), color = colors.inkMuted)
                 Spacer(Modifier.height(6.dp))
-                Text("如无地区通过人数，不展示虚构数字。", style = EijyoTheme.typography.labelSmall.copy(fontSize = 12.sp), color = colors.coral)
+                Text(stringResource(R.string.pred_data_no_count_note), style = EijyoTheme.typography.labelSmall.copy(fontSize = 12.sp), color = colors.coral)
             }
             TinyUpChart(modifier = Modifier.size(width = 48.dp, height = 40.dp))
         }
@@ -298,7 +300,7 @@ private fun DisclaimerCard() {
             }
             Spacer(Modifier.width(14.dp))
             Text(
-                "预测仅供参考，不构成法律意见，也不保证结果。",
+                stringResource(R.string.pred_disclaimer),
                 style = EijyoTheme.typography.labelSmall.copy(fontSize = 12.sp),
                 color = colors.inkMuted,
             )
