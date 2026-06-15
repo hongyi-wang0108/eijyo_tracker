@@ -67,6 +67,7 @@
     <string name="home_preparing_subtitle">Complete documents &amp; risk check</string>
     <string name="home_preparing_date_hint">Enter submit date to generate estimate</string>
     <string name="home_preparing_docs_progress">Documents ready: %1$d / %2$d</string>
+    <string name="home_preparing_docs_generated">%1$d documents generated</string>
     <string name="home_result_title">Review result</string>
     <string name="home_result_fallback">Closed</string>
     <string name="home_result_date">Result date: %s</string>
@@ -88,6 +89,7 @@
     <string name="home_risk_unknown">Risk check</string>
     <string name="home_material_empty">Documents not generated</string>
     <string name="home_material_count">Docs %1$d / %2$d</string>
+    <string name="home_material_generated">%1$d ready</string>
 
     <!-- Onboarding (batch 3) -->
     <string name="onboarding_next">Next</string>

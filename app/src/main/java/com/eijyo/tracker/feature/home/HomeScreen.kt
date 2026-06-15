@@ -189,7 +189,7 @@ private fun Header(state: HomeUiState) {
 @Composable
 private fun AssistantCard() {
     val colors = EijyoTheme.colors
-    HomeCard(modifier = Modifier.width(242.dp), radius = 24.dp, padding = 16.dp) {
+    HomeCard(modifier = Modifier.width(212.dp), radius = 44.dp, padding = 10.dp) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             AssistantDog(boxSize = 62.dp)
             Spacer(Modifier.width(14.dp))
@@ -210,7 +210,7 @@ private fun AssistantDog(boxSize: Dp = 46.dp) {
             drawOval(MacaronPalette.MintContainer, Offset(size.width * 0.06f, size.height * 0.18f), Size(size.width * 0.62f, size.height * 0.62f))
             drawOval(Color(0xFFFFD4C8), Offset(size.width * 0.52f, size.height * 0.10f), Size(size.width * 0.40f, size.height * 0.40f))
         }
-        DogFace(size = boxSize * 0.92f)
+        DogFace(size = boxSize * 0.96f)
         Text("·", style = EijyoTheme.typography.labelLarge.copy(fontSize = 16.sp), color = MacaronPalette.PinkAccent, modifier = Modifier.offset(x = boxSize * 0.30f, y = -boxSize * 0.30f))
         Text("·", style = EijyoTheme.typography.labelLarge.copy(fontSize = 12.sp), color = MacaronPalette.LavenderAccent, modifier = Modifier.offset(x = boxSize * 0.40f, y = -boxSize * 0.12f))
     }
@@ -307,28 +307,38 @@ private fun PreparingHeroCard(state: HomeUiState) {
         )
         if (state.documentsTotal > 0) {
             Spacer(Modifier.height(16.dp))
-            val frac = state.documentsPrepared.toFloat() / state.documentsTotal
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(10.dp)
-                    .clip(RoundedCornerShape(5.dp))
-                    .background(CandyTrack),
-            ) {
+            // PM 6.3.3: until the user confirms a material, show "已生成 N 项材料" rather
+            // than a 0/N progress bar (the numerator is meaningless before any confirmation).
+            if (state.documentsPrepared == 0) {
+                Text(
+                    stringResource(R.string.home_preparing_docs_generated, state.documentsTotal),
+                    style = EijyoTheme.typography.labelSmall.copy(fontSize = 12.sp),
+                    color = colors.inkMuted,
+                )
+            } else {
+                val frac = state.documentsPrepared.toFloat() / state.documentsTotal
                 Box(
                     modifier = Modifier
-                        .fillMaxWidth(frac.coerceIn(0f, 1f))
-                        .fillMaxHeight()
+                        .fillMaxWidth()
+                        .height(10.dp)
                         .clip(RoundedCornerShape(5.dp))
-                        .background(colors.mintContainer),
+                        .background(CandyTrack),
+                ) {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth(frac.coerceIn(0f, 1f))
+                            .fillMaxHeight()
+                            .clip(RoundedCornerShape(5.dp))
+                            .background(colors.mintContainer),
+                    )
+                }
+                Spacer(Modifier.height(8.dp))
+                Text(
+                    stringResource(R.string.home_preparing_docs_progress, state.documentsPrepared, state.documentsTotal),
+                    style = EijyoTheme.typography.labelSmall.copy(fontSize = 12.sp),
+                    color = colors.inkMuted,
                 )
             }
-            Spacer(Modifier.height(8.dp))
-            Text(
-                stringResource(R.string.home_preparing_docs_progress, state.documentsPrepared, state.documentsTotal),
-                style = EijyoTheme.typography.labelSmall.copy(fontSize = 12.sp),
-                color = colors.inkMuted,
-            )
         }
     }
 }
@@ -537,8 +547,13 @@ private fun MaterialMiniCard(modifier: Modifier, prepared: Int, total: Int, onCl
             Badge(colors.lemonSoft, "□", colors.lemonAccent)
             Spacer(Modifier.width(10.dp))
             Text(
-                if (total == 0) stringResource(R.string.home_material_empty)
-                else stringResource(R.string.home_material_count, prepared, total),
+                when {
+                    total == 0 -> stringResource(R.string.home_material_empty)
+                    // PM 6.3.3: before the user confirms any material in the docs tab,
+                    // show "已生成 N 项" instead of a misleading X/XX completion ratio.
+                    prepared == 0 -> stringResource(R.string.home_material_generated, total)
+                    else -> stringResource(R.string.home_material_count, prepared, total)
+                },
                 style = EijyoTheme.typography.labelLarge.copy(fontSize = 14.sp),
                 color = colors.ink,
             )

@@ -67,6 +67,7 @@
     <string name="home_preparing_subtitle">書類と審査確認を完了してください</string>
     <string name="home_preparing_date_hint">申請日を入力後、予想期間を生成できます</string>
     <string name="home_preparing_docs_progress">書類準備完了：%1$d / %2$d</string>
+    <string name="home_preparing_docs_generated">書類 %1$d 項を作成しました</string>
     <string name="home_result_title">審査結果</string>
     <string name="home_result_fallback">終了</string>
     <string name="home_result_date">結果日：%s</string>
@@ -88,6 +89,7 @@
     <string name="home_risk_unknown">リスク確認</string>
     <string name="home_material_empty">書類リスト未生成</string>
     <string name="home_material_count">書類 %1$d / %2$d</string>
+    <string name="home_material_generated">%1$d 項作成済み</string>
 
     <!-- オンボーディング（バッチ3） -->
     <string name="onboarding_next">次へ</string>
