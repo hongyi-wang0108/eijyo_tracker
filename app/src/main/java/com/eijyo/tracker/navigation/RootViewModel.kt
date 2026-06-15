@@ -18,8 +18,8 @@ import javax.inject.Inject
  * go straight to [Routes.MAIN]; first-time users see [Routes.WELCOME]. Emits null
  * while the flag is still loading so the host can show a blank splash briefly.
  *
- * Also refreshes the prediction once on launch so the FIFO windows track the current
- * date + freshest public data, rather than staying frozen at the last profile edit.
+ * Also refreshes derived analysis once on launch so risk rules and FIFO windows reflect
+ * the current code/date/data, rather than staying frozen at the last profile edit.
  */
 @HiltViewModel
 class RootViewModel @Inject constructor(
@@ -30,7 +30,7 @@ class RootViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            profileRepository.getApplication()?.let { analysisRepository.refreshPrediction(it) }
+            profileRepository.getApplication()?.let { analysisRepository.regenerate(it) }
         }
     }
 

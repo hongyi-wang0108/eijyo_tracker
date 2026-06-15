@@ -14,7 +14,16 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.CheckCircle
+import androidx.compose.material.icons.filled.Description
+import androidx.compose.material.icons.filled.Drafts
+import androidx.compose.material.icons.filled.EditNote
+import androidx.compose.material.icons.filled.Mail
+import androidx.compose.material.icons.filled.Undo
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.SheetState
@@ -28,25 +37,30 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.eijyo.tracker.R
+import com.eijyo.tracker.core.ui.component.DogFace
+import com.eijyo.tracker.core.ui.component.PawPrint
 import com.eijyo.tracker.core.ui.component.PawButton
+import com.eijyo.tracker.core.ui.theme.MacaronPalette
 import com.eijyo.tracker.core.ui.theme.EijyoTheme
 import com.eijyo.tracker.data.model.ResultType
 
 private val CoralSoft = Color(0xFFFFD4C8)
 private val LemonBadge = Color(0xFFFFF0B8)
+private val DragHandleColor = Color(0xFFE7D8CA)
 
-enum class EventType(val label: String, val emoji: String) {
-    SUPPLEMENT_RECEIVED("收到补资料", "📩"),
-    SUPPLEMENT_SUBMITTED("补资料已提交", "✉️"),
-    NOTICE_RECEIVED("收到通知书", "📬"),
-    APPROVED("许可", "✅"),
-    REJECTED("不许可", "❌"),
-    WITHDRAWN("撤回", "↩️"),
-    CUSTOM_NOTE("自定义备注", "📝"),
+enum class EventType(val label: String, val icon: ImageVector) {
+    SUPPLEMENT_RECEIVED("收到补资料", Icons.Filled.Mail),
+    SUPPLEMENT_SUBMITTED("补资料已提交", Icons.Filled.Drafts),
+    NOTICE_RECEIVED("收到通知书", Icons.Filled.Description),
+    APPROVED("许可", Icons.Filled.CheckCircle),
+    REJECTED("不许可", Icons.Filled.Undo),
+    WITHDRAWN("撤回", Icons.Filled.Undo),
+    CUSTOM_NOTE("自定义备注", Icons.Filled.EditNote),
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -67,12 +81,14 @@ fun AddEventSheet(
             onDismiss()
         },
         sheetState = sheetState,
-        containerColor = EijyoTheme.colors.screen,
+        containerColor = Color(0xFFFFFEFB),
+        shape = RoundedCornerShape(topStart = 30.dp, topEnd = 30.dp),
+        dragHandle = { EventSheetDragHandle() },
     ) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 20.dp)
+                .padding(horizontal = 24.dp)
                 .navigationBarsPadding(),
         ) {
             if (selectedType == null) {
@@ -105,17 +121,11 @@ fun AddEventSheet(
 @Composable
 private fun TypePickerStep(onSelect: (EventType) -> Unit) {
     val colors = EijyoTheme.colors
-    Text(
-        stringResource(R.string.event_sheet_title),
-        style = EijyoTheme.typography.headlineMedium.copy(fontSize = 20.sp),
-        color = colors.ink,
+    EventSheetHeader(
+        title = stringResource(R.string.event_sheet_title),
+        subtitle = stringResource(R.string.event_sheet_subtitle),
     )
-    Text(
-        stringResource(R.string.event_sheet_subtitle),
-        style = EijyoTheme.typography.labelMedium.copy(fontSize = 13.sp),
-        color = colors.inkMuted,
-        modifier = Modifier.padding(top = 4.dp, bottom = 16.dp),
-    )
+    Spacer(Modifier.height(10.dp))
     EventType.entries.forEach { type ->
         val (bg, textColor) = when (type) {
             EventType.SUPPLEMENT_RECEIVED, EventType.NOTICE_RECEIVED -> CoralSoft to colors.coral
@@ -126,22 +136,34 @@ private fun TypePickerStep(onSelect: (EventType) -> Unit) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(vertical = 5.dp)
-                .clip(RoundedCornerShape(18.dp))
+                .padding(vertical = 4.dp)
+                .clip(RoundedCornerShape(20.dp))
                 .background(bg)
                 .clickable { onSelect(type) }
-                .padding(horizontal = 18.dp, vertical = 14.dp),
+                .height(54.dp)
+                .padding(horizontal = 18.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            Text(type.emoji, fontSize = 18.sp)
-            Spacer(Modifier.width(14.dp))
+            Box(
+                modifier = Modifier
+                    .size(28.dp)
+                    .clip(RoundedCornerShape(14.dp))
+                    .background(Color.White.copy(alpha = 0.45f)),
+                contentAlignment = Alignment.Center,
+            ) {
+                Icon(type.icon, contentDescription = type.label, tint = textColor, modifier = Modifier.size(16.dp))
+            }
+            Spacer(Modifier.width(12.dp))
             Text(
                 type.label,
                 style = EijyoTheme.typography.labelLarge.copy(fontSize = 15.sp),
                 color = textColor,
+                modifier = Modifier.weight(1f),
             )
+            Text("›", style = EijyoTheme.typography.labelLarge.copy(fontSize = 19.sp), color = textColor.copy(alpha = 0.8f))
         }
     }
+    Spacer(Modifier.height(24.dp))
 }
 
 @Composable
@@ -155,20 +177,11 @@ private fun EventFormStep(
     var field2 by remember { mutableStateOf("") }
     var field3 by remember { mutableStateOf("") }
 
-    Row(verticalAlignment = Alignment.CenterVertically) {
-        Box(
-            contentAlignment = Alignment.Center,
-            modifier = Modifier
-                .size(32.dp)
-                .clip(RoundedCornerShape(16.dp))
-                .background(colors.mintWash)
-                .clickable(onClick = onBack),
-        ) {
-            Text("‹", style = EijyoTheme.typography.labelLarge.copy(fontSize = 20.sp), color = colors.mint)
-        }
-        Spacer(Modifier.width(12.dp))
-        Text(type.label, style = EijyoTheme.typography.headlineMedium.copy(fontSize = 20.sp), color = colors.ink)
-    }
+    EventSheetHeader(
+        title = type.label,
+        subtitle = stringResource(R.string.event_sheet_subtitle),
+        onBack = onBack,
+    )
     Spacer(Modifier.height(20.dp))
 
     when (type) {
@@ -205,6 +218,77 @@ private fun EventFormStep(
         modifier = Modifier.fillMaxWidth(),
         onClick = { onSave(type, field1, field2, field3) },
     )
+}
+
+@Composable
+private fun EventSheetDragHandle() {
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(top = 12.dp, bottom = 4.dp),
+        contentAlignment = Alignment.Center,
+    ) {
+        Box(
+            modifier = Modifier
+                .size(width = 55.dp, height = 5.dp)
+                .clip(RoundedCornerShape(3.dp))
+                .background(DragHandleColor),
+        )
+    }
+}
+
+@Composable
+private fun EventSheetHeader(title: String, subtitle: String, onBack: (() -> Unit)? = null) {
+    val colors = EijyoTheme.colors
+    Box(modifier = Modifier.fillMaxWidth()) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(start = 4.dp, end = 28.dp, top = 8.dp, bottom = 4.dp),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            if (onBack != null) {
+                Box(
+                    contentAlignment = Alignment.Center,
+                    modifier = Modifier
+                        .size(32.dp)
+                        .clip(RoundedCornerShape(16.dp))
+                        .background(colors.mintWash)
+                        .clickable(onClick = onBack),
+                ) {
+                    Icon(
+                        Icons.AutoMirrored.Filled.ArrowBack,
+                        contentDescription = title,
+                        tint = colors.mint,
+                        modifier = Modifier.size(18.dp),
+                    )
+                }
+                Spacer(Modifier.width(10.dp))
+            } else {
+                DogFace(size = 32.dp)
+                Spacer(Modifier.width(14.dp))
+            }
+            Column(modifier = Modifier.weight(1f)) {
+                Text(
+                    title,
+                    style = EijyoTheme.typography.headlineMedium.copy(fontSize = 20.sp),
+                    color = colors.ink,
+                )
+                Text(
+                    subtitle,
+                    style = EijyoTheme.typography.labelMedium.copy(fontSize = 12.sp),
+                    color = colors.inkMuted,
+                )
+            }
+        }
+        PawPrint(
+            color = MacaronPalette.DogPaw,
+            size = 12.dp,
+            modifier = Modifier
+                .align(Alignment.TopEnd)
+                .padding(end = 8.dp, top = 8.dp),
+        )
+    }
 }
 
 @Composable

@@ -70,6 +70,9 @@ fun MainScaffold(
                 MainTab.HOME -> HomeScreen(
                     onOpenPredictionDetail = onOpenPredictionDetail,
                     onOpenRiskDetail = onOpenRiskDetail,
+                    onOpenApplicationTab = { selected = MainTab.APPLICATION },
+                    onOpenDocumentsTab = { selected = MainTab.DOCUMENTS },
+                    onOpenDataTab = { selected = MainTab.DATA },
                 )
                 MainTab.APPLICATION -> ApplicationScreen()
                 MainTab.DOCUMENTS -> MaterialsScreen()

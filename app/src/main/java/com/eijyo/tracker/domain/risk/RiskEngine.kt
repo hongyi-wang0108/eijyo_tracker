@@ -60,7 +60,7 @@ class RiskEngine @Inject constructor() {
         }
 
         if (factors.isEmpty()) {
-            factors += "未发现明显风险项，材料状态良好"
+            factors += "当前问卷里没有发现明显风险项"
         }
 
         return RiskAssessment(
@@ -95,7 +95,7 @@ class RiskEngine @Inject constructor() {
         income == IncomeRange.BELOW_300 || income == IncomeRange.R300_400
 
     private fun toLevel(score: Int): RiskLevel = when {
-        score <= 1 -> RiskLevel.LOW
+        score == 0 -> RiskLevel.LOW
         score <= 3 -> RiskLevel.MEDIUM
         else -> RiskLevel.HIGH
     }

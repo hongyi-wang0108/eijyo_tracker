@@ -143,6 +143,16 @@ private fun DogStage() {
         Sparkle("·", 26.sp, MacaronPalette.PinkAccent, 50.dp, 30.dp)
         Sparkle("·", 18.sp, MacaronPalette.LavenderAccent, 222.dp, 55.dp)
         Sparkle("·", 22.sp, MacaronPalette.SkyAccent, 220.dp, 166.dp)
+        PawPrint(
+            color = MacaronPalette.DogPaw,
+            size = 12.dp,
+            modifier = Modifier.offset(x = 235.dp, y = 28.dp),
+        )
+        PawPrint(
+            color = MacaronPalette.DogPaw,
+            size = 10.dp,
+            modifier = Modifier.offset(x = 228.dp, y = 152.dp),
+        )
     }
 }
 

@@ -18,7 +18,6 @@ import javax.inject.Inject
 data class CompleteUiState(
     val loading: Boolean = true,
     val statusSummary: String = "",
-    val documentCount: Int = 0,
     val riskLevel: RiskLevel? = null,
     val predictionRange: String? = null,
     val predictionPlaceholder: String? = null,
@@ -43,7 +42,6 @@ class OnboardingCompleteViewModel @Inject constructor(
             CompleteUiState(
                 loading = false,
                 statusSummary = statusSummary(application),
-                documentCount = documents.size,
                 riskLevel = risk?.level,
                 predictionRange = prediction?.normalRange.takeIf {
                     application.status == ApplicationStatus.REVIEWING

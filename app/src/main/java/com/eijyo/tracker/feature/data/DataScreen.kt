@@ -1,6 +1,7 @@
 package com.eijyo.tracker.feature.data
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -16,6 +17,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
@@ -330,7 +332,7 @@ private fun TrendChartCard(
                 bars = state.trend,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(120.dp),
+                    .height(146.dp),
             )
         } else {
             Box(
@@ -356,39 +358,47 @@ private fun TrendBarChart(
 ) {
     val maxValue = (bars.maxOfOrNull { it.value } ?: 1).coerceAtLeast(1)
     Row(
-        modifier = modifier,
-        horizontalArrangement = Arrangement.spacedBy(6.dp),
+        modifier = modifier.horizontalScroll(rememberScrollState()),
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
         verticalAlignment = Alignment.Bottom,
     ) {
         bars.forEachIndexed { index, bar ->
             val frac = (bar.value.toFloat() / maxValue).coerceIn(0.04f, 1f)
             val isLatest = index == bars.lastIndex
             Column(
-                modifier = Modifier.weight(1f),
+                modifier = Modifier.width(44.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Bottom,
             ) {
-                Text(
-                    formatCount(bar.value),
-                    style = TextStyle(fontSize = 8.sp, fontWeight = FontWeight.SemiBold),
-                    color = MacaronPalette.InkMuted,
-                    maxLines = 1,
-                )
-                Spacer(Modifier.height(3.dp))
-                Box(
+                Column(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .fillMaxHeight(frac)
-                        .clip(RoundedCornerShape(topStart = 4.dp, topEnd = 4.dp))
-                        .background(
-                            if (isLatest) MacaronPalette.Mint
-                            else MacaronPalette.MintContainer.copy(alpha = 0.55f)
-                        ),
-                )
-                Spacer(Modifier.height(4.dp))
+                        .height(112.dp),
+                    verticalArrangement = Arrangement.Bottom,
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                ) {
+                    Text(
+                        formatCount(bar.value),
+                        style = TextStyle(fontSize = 8.sp, fontWeight = FontWeight.SemiBold),
+                        color = MacaronPalette.InkMuted,
+                        maxLines = 1,
+                    )
+                    Spacer(Modifier.height(4.dp))
+                    Box(
+                        modifier = Modifier
+                            .width(28.dp)
+                            .height((84.dp * frac).coerceAtLeast(10.dp))
+                            .clip(RoundedCornerShape(topStart = 4.dp, topEnd = 4.dp))
+                            .background(
+                                if (isLatest) MacaronPalette.Mint
+                                else MacaronPalette.MintContainer.copy(alpha = 0.55f)
+                            ),
+                    )
+                }
+                Spacer(Modifier.height(6.dp))
                 Text(
                     bar.label,
-                    style = TextStyle(fontSize = 8.sp, fontWeight = FontWeight.Medium),
+                    style = TextStyle(fontSize = 9.sp, fontWeight = FontWeight.Medium),
                     color = MacaronPalette.InkMuted,
                     maxLines = 1,
                     textAlign = TextAlign.Center,

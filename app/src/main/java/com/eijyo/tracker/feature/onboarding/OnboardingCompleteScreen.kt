@@ -104,29 +104,15 @@ fun OnboardingCompleteScreen(
                 )
 
                 Spacer(Modifier.height(16.dp))
-                Row(
+                MetricCard(
                     modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(13.dp),
-                ) {
-                    MetricCard(
-                        modifier = Modifier.weight(1f),
-                        iconBg = MacaronPalette.LemonSoft,
-                        iconMark = "□",
-                        iconColor = colors.lemonAccent,
-                        title = stringResource(R.string.onboarding_complete_material_label),
-                        value = "0 / ${state.documentCount}",
-                        valueColor = colors.inkMuted,
-                    )
-                    MetricCard(
-                        modifier = Modifier.weight(1f),
-                        iconBg = colors.skySoft,
-                        iconMark = "!",
-                        iconColor = colors.skyAccent,
-                        title = stringResource(R.string.onboarding_complete_risk_label),
-                        value = state.riskLevel?.label ?: "—",
-                        valueColor = riskColor(state.riskLevel),
-                    )
-                }
+                    iconBg = colors.skySoft,
+                    iconMark = "!",
+                    iconColor = colors.skyAccent,
+                    title = stringResource(R.string.onboarding_complete_risk_label),
+                    value = state.riskLevel?.label ?: "—",
+                    valueColor = riskColor(state.riskLevel),
+                )
 
                 Spacer(Modifier.height(16.dp))
                 StatusSummaryCard(value = state.statusSummary.ifBlank { stringResource(R.string.onboarding_complete_preparing_fallback) })
@@ -136,7 +122,7 @@ fun OnboardingCompleteScreen(
                 text = stringResource(R.string.onboarding_complete_enter_home),
                 onClick = onEnterHome,
                 enabled = !state.loading,
-                modifier = Modifier.padding(top = 20.dp, bottom = 16.dp),
+                modifier = Modifier.padding(top = 16.dp, bottom = 24.dp),
             )
         }
     }
@@ -258,7 +244,12 @@ private fun MetricCard(
         Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.fillMaxWidth()) {
             Text(title, style = EijyoTheme.typography.labelLarge.copy(fontSize = 14.sp), color = colors.ink)
             Spacer(Modifier.weight(1f))
-            Text(value, style = EijyoTheme.typography.labelMedium.copy(fontSize = 12.sp), color = valueColor)
+            Text(
+                value,
+                style = EijyoTheme.typography.labelMedium.copy(fontSize = 12.sp),
+                color = valueColor,
+                textAlign = TextAlign.End,
+            )
         }
     }
 }

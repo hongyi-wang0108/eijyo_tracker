@@ -57,6 +57,9 @@ private const val MOCK_PREVIEW = false
 fun HomeScreen(
     onOpenPredictionDetail: () -> Unit = {},
     onOpenRiskDetail: () -> Unit = {},
+    onOpenApplicationTab: () -> Unit = {},
+    onOpenDocumentsTab: () -> Unit = {},
+    onOpenDataTab: () -> Unit = {},
     viewModel: HomeViewModel = hiltViewModel(),
 ) {
     val realState by viewModel.state.collectAsStateWithLifecycle()
@@ -86,8 +89,12 @@ fun HomeScreen(
         ) {
             Header(state)
             PredictionCard(state, onClick = onOpenPredictionDetail)
-            PublicDataCard(office = officeName(state, officeFallback), state = state)
-            TimelineCard(state)
+            PublicDataCard(
+                office = officeName(state, officeFallback),
+                state = state,
+                onClick = onOpenDataTab,
+            )
+            TimelineCard(state = state, onClick = onOpenApplicationTab)
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.spacedBy(13.dp),
@@ -97,6 +104,7 @@ fun HomeScreen(
                     modifier = Modifier.weight(1f),
                     prepared = state.documentsPrepared,
                     total = state.documentsTotal,
+                    onClick = onOpenDocumentsTab,
                 )
             }
             Spacer(Modifier.height(4.dp))
@@ -181,14 +189,14 @@ private fun Header(state: HomeUiState) {
 @Composable
 private fun AssistantCard() {
     val colors = EijyoTheme.colors
-    HomeCard(modifier = Modifier.width(200.dp), radius = 24.dp, padding = 12.dp) {
+    HomeCard(modifier = Modifier.width(242.dp), radius = 24.dp, padding = 16.dp) {
         Row(verticalAlignment = Alignment.CenterVertically) {
-            AssistantDog()
-            Spacer(Modifier.width(10.dp))
+            AssistantDog(boxSize = 62.dp)
+            Spacer(Modifier.width(14.dp))
             Column {
-                Text(stringResource(R.string.home_assistant_title), style = EijyoTheme.typography.labelMedium.copy(fontSize = 13.sp), color = colors.ink)
-                Spacer(Modifier.height(2.dp))
-                Text(stringResource(R.string.home_assistant_subtitle), style = EijyoTheme.typography.labelSmall.copy(fontSize = 10.sp), color = colors.inkMuted)
+                Text(stringResource(R.string.home_assistant_title), style = EijyoTheme.typography.labelMedium.copy(fontSize = 14.sp), color = colors.ink)
+                Spacer(Modifier.height(3.dp))
+                Text(stringResource(R.string.home_assistant_subtitle), style = EijyoTheme.typography.labelSmall.copy(fontSize = 11.sp), color = colors.inkMuted)
             }
         }
     }
@@ -381,13 +389,13 @@ private fun ProgressRing(percent: Int, ringSize: Dp = 66.dp) {
 }
 
 @Composable
-private fun PublicDataCard(office: String, state: HomeUiState) {
+private fun PublicDataCard(office: String, state: HomeUiState, onClick: () -> Unit) {
     val colors = EijyoTheme.colors
     val updateLabel = if (state.publicDataAsOf.isNotBlank())
         stringResource(R.string.home_data_update_label, state.publicDataAsOf)
     else
         stringResource(R.string.home_data_official_stats)
-    HomeCard(modifier = Modifier.fillMaxWidth(), radius = 26.dp) {
+    HomeCard(modifier = Modifier.fillMaxWidth(), radius = 26.dp, onClick = onClick) {
         Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
             Column(modifier = Modifier.weight(1f)) {
                 Text(stringResource(R.string.home_data_title_fmt, office), style = EijyoTheme.typography.labelLarge.copy(fontSize = 16.sp), color = colors.ink)
@@ -447,9 +455,9 @@ private fun MiniBarChart(values: List<Int>, modifier: Modifier = Modifier) {
 }
 
 @Composable
-private fun TimelineCard(state: HomeUiState) {
+private fun TimelineCard(state: HomeUiState, onClick: () -> Unit) {
     val colors = EijyoTheme.colors
-    HomeCard(modifier = Modifier.fillMaxWidth(), radius = 26.dp) {
+    HomeCard(modifier = Modifier.fillMaxWidth(), radius = 26.dp, onClick = onClick) {
         Text(stringResource(R.string.home_timeline_title), style = EijyoTheme.typography.labelLarge.copy(fontSize = 16.sp), color = colors.ink)
         Spacer(Modifier.height(12.dp))
         if (state.timeline.isEmpty()) {
@@ -522,9 +530,9 @@ private fun RiskMiniCard(modifier: Modifier, level: RiskLevel?, onClick: () -> U
 }
 
 @Composable
-private fun MaterialMiniCard(modifier: Modifier, prepared: Int, total: Int) {
+private fun MaterialMiniCard(modifier: Modifier, prepared: Int, total: Int, onClick: () -> Unit) {
     val colors = EijyoTheme.colors
-    HomeCard(modifier = modifier, radius = 24.dp, padding = 14.dp) {
+    HomeCard(modifier = modifier, radius = 24.dp, padding = 14.dp, onClick = onClick) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             Badge(colors.lemonSoft, "□", colors.lemonAccent)
             Spacer(Modifier.width(10.dp))

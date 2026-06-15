@@ -147,16 +147,17 @@ private fun DrawScope.drawDog(tailAngle: Float) {
         )
     }
 
-    // Ears (slightly splayed outward, matching the design's ±14° tilt).
+    // Body & head
+    ovalAt(76f, 104f, 66f, 48f, MacaronPalette.DogBody)
+    ovalAt(75f, 59f, 82f, 70f, MacaronPalette.DogBody)
+    // Ears sit on top of the head in the welcome-screen design; drawing them after the
+    // head avoids the "bear" silhouette where the ears visually disappear behind it.
     rotate(degrees = -14f, pivot = p(33f, 63f)) {
         ovalAt(33f, 63f, 30f, 54f, MacaronPalette.DogEar)
     }
     rotate(degrees = 14f, pivot = p(116f, 63f)) {
         ovalAt(116f, 63f, 30f, 54f, MacaronPalette.DogEar)
     }
-    // Body & head
-    ovalAt(76f, 104f, 66f, 48f, MacaronPalette.DogBody)
-    ovalAt(75f, 59f, 82f, 70f, MacaronPalette.DogBody)
     // Muzzle
     ovalAt(76f, 71f, 36f, 23f, MacaronPalette.DogMuzzle)
     // Blush
@@ -167,6 +168,20 @@ private fun DrawScope.drawDog(tailAngle: Float) {
     ovalAt(92f, 53f, 8f, 9f, MacaronPalette.DogFeature)
     // Nose
     ovalAt(77f, 71f, 11f, 8f, MacaronPalette.DogFeature)
+    drawLine(
+        color = MacaronPalette.DogFeature,
+        start = p(68f, 78f),
+        end = p(78f, 86f),
+        strokeWidth = 2f * sx,
+        cap = StrokeCap.Round,
+    )
+    drawLine(
+        color = MacaronPalette.DogFeature,
+        start = p(81f, 78f),
+        end = p(91f, 86f),
+        strokeWidth = 2f * sx,
+        cap = StrokeCap.Round,
+    )
     // Paws
     ovalAt(58f, 125f, 18f, 15f, MacaronPalette.DogMuzzle)
     ovalAt(94f, 125f, 18f, 15f, MacaronPalette.DogMuzzle)

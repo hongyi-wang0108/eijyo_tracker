@@ -50,7 +50,6 @@ private val ShadowTint = Color(0x1A8C5C3D)
 private val RingTrack = Color(0xFFF2EEE7)
 private val LemonBadge = Color(0xFFFFF0B8)
 private val CoralSoft = Color(0xFFFFD4C8)
-private val LavendPill = Color(0xFFE4DBFF)
 
 // UI 验收用假数据预览开关。已接 RiskEngine 真实评估，关闭。
 private const val MOCK_PREVIEW = false
@@ -296,15 +295,7 @@ private fun SourceCard(state: RiskDetailUiState) {
     RiskCard(radius = 24.dp, padding = 18.dp) {
         Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
             Text(stringResource(R.string.risk_source_title), style = EijyoTheme.typography.labelLarge.copy(fontSize = 16.sp), color = colors.ink, modifier = Modifier.weight(1f))
-            Box(
-                contentAlignment = Alignment.Center,
-                modifier = Modifier
-                    .clip(RoundedCornerShape(13.dp))
-                    .background(LavendPill)
-                    .size(width = 78.dp, height = 26.dp),
-            ) {
-                Text(state.modelType, style = EijyoTheme.typography.labelSmall.copy(fontSize = 12.sp), color = colors.lavenderAccent)
-            }
+            Text(state.modelType, style = EijyoTheme.typography.labelSmall.copy(fontSize = 12.sp), color = colors.lavenderAccent)
         }
         Spacer(Modifier.height(8.dp))
         Text(
@@ -312,6 +303,14 @@ private fun SourceCard(state: RiskDetailUiState) {
             style = EijyoTheme.typography.labelSmall.copy(fontSize = 12.sp),
             color = colors.inkMuted,
         )
+        if (state.sourceSummary.isNotBlank()) {
+            Spacer(Modifier.height(8.dp))
+            Text(
+                state.sourceSummary,
+                style = EijyoTheme.typography.labelSmall.copy(fontSize = 12.sp),
+                color = colors.inkMuted,
+            )
+        }
     }
 }
 
