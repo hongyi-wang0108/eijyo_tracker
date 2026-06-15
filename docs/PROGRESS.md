@@ -51,8 +51,8 @@ Debug 包名：`com.eijyo.tracker.debug` · 远端：https://github.com/hongyi-w
 - [x] **3. release 签名** — 2026-06-15：signingConfigs 读 keystore.properties(gitignored)，`assembleRelease` 出已签名 APK（apksigner 验证通过）；详见 `docs/RELEASE_SIGNING.md`
 
 🟡 体验完整性
-- [ ] **4. 首页「准备中」「已结束」两态**（现仅审查中态）
-- [ ] **5. 其他局校准系数**：仅东京=1.65 有 ground truth，其余暂 1.0（无实测，保持 1.0 是正确做法，待实测再调）
+- [x] **4. 首页「准备中」「已结束」两态** — 2026-06-15：英雄卡按状态分流——准备中(完成材料/风险+材料进度条)、审查中(预计区间+进度环)、已结束(审查结果+结果日期+颜色)；三态均实机验证
+- [x] **5. 其他局校准系数** — 2026-06-15：确认现状即正解，仅东京=1.65 有 ground truth，其余局无实测保持 1.0（在数据脚本 CALIBRATION dict，有实测随时加）
 
 🟢 锦上添花
 - [ ] **6. 全 App 本地化**：抽 strings.xml + 日英翻译 → 打开语言入口（大工程）

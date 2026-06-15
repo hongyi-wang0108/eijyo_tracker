@@ -9,6 +9,7 @@ import com.eijyo.tracker.data.model.DocumentStatus
 import com.eijyo.tracker.data.model.ImmigrationOffice
 import com.eijyo.tracker.data.model.Prediction
 import com.eijyo.tracker.data.model.PublicDataDoc
+import com.eijyo.tracker.data.model.ResultType
 import com.eijyo.tracker.data.model.RiskLevel
 import com.eijyo.tracker.data.model.SupplementRequest
 import com.eijyo.tracker.data.repository.AnalysisRepository
@@ -44,6 +45,9 @@ data class HomeUiState(
     val publicDataAsOf: String = "",
     val backlogLabel: String = "",
     val miniTrend: List<Int> = emptyList(),
+    val resultLabel: String = "",
+    val resultDate: String = "",
+    val resultApproved: Boolean = false,
 )
 
 @HiltViewModel
@@ -115,6 +119,8 @@ class HomeViewModel @Inject constructor(
             ?: emptyList()
         val backlogLabel = officeData?.monthly?.lastOrNull()
             ?.let { "约${formatWan(it.pending)}件" } ?: ""
+        val hasResult = application.status == ApplicationStatus.COMPLETED &&
+            application.resultType != ResultType.UNKNOWN
         return HomeUiState(
             loading = false,
             greeting = greeting(nickname),
@@ -134,6 +140,9 @@ class HomeViewModel @Inject constructor(
             publicDataAsOf = doc?.dataAsOf?.let { monthLabel(it) } ?: "",
             backlogLabel = backlogLabel,
             miniTrend = miniTrend,
+            resultLabel = if (hasResult) application.resultType.label else "",
+            resultDate = application.resultDate?.replace("-", ".") ?: "",
+            resultApproved = application.resultType == ResultType.APPROVED,
         )
     }
 

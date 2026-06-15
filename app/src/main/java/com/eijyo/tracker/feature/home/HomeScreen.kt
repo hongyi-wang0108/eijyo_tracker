@@ -207,49 +207,50 @@ private fun AssistantDog(boxSize: Dp = 46.dp) {
 
 @Composable
 private fun PredictionCard(state: HomeUiState, onClick: () -> Unit) {
+    when (state.status) {
+        ApplicationStatus.COMPLETED -> ResultHeroCard(state)
+        ApplicationStatus.PREPARING -> PreparingHeroCard(state)
+        ApplicationStatus.REVIEWING ->
+            if (state.predictionRange != null) ReviewingHeroCard(state, onClick)
+            else PreparingHeroCard(state) // reviewing but date unknown → guide to fill it in
+    }
+}
+
+/** REVIEWING: predicted result window + progress ring + confidence. */
+@Composable
+private fun ReviewingHeroCard(state: HomeUiState, onClick: () -> Unit) {
     val colors = EijyoTheme.colors
-    val reviewing = state.status == ApplicationStatus.REVIEWING && state.predictionRange != null
     HomeCard(modifier = Modifier.fillMaxWidth(), radius = 28.dp, padding = 22.dp, onClick = onClick) {
         Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
             Column(modifier = Modifier.weight(1f)) {
                 Text("预计结果区间", style = EijyoTheme.typography.labelMedium.copy(fontSize = 14.sp), color = colors.inkMuted)
                 Spacer(Modifier.height(8.dp))
-                if (reviewing) {
-                    val parts = state.predictionRange!!.split(" - ", " – ", "-").map { it.trim() }
-                    Text(parts.getOrElse(0) { state.predictionRange!! }, style = EijyoTheme.typography.headlineMedium.copy(fontSize = 28.sp), color = colors.ink)
-                    if (parts.size > 1) {
-                        Text("- ${parts[1]}", style = EijyoTheme.typography.headlineMedium.copy(fontSize = 28.sp), color = colors.ink)
-                    }
-                } else {
-                    Text(
-                        state.predictionPlaceholder ?: "暂无预测",
-                        style = EijyoTheme.typography.titleMedium,
-                        color = colors.inkMuted,
-                    )
+                val parts = state.predictionRange!!.split(" - ", " – ", "-").map { it.trim() }
+                Text(parts.getOrElse(0) { state.predictionRange!! }, style = EijyoTheme.typography.headlineMedium.copy(fontSize = 28.sp), color = colors.ink)
+                if (parts.size > 1) {
+                    Text("- ${parts[1]}", style = EijyoTheme.typography.headlineMedium.copy(fontSize = 28.sp), color = colors.ink)
                 }
             }
-            if (reviewing && state.progressPercent != null) {
+            if (state.progressPercent != null) {
                 ProgressRing(percent = state.progressPercent)
             }
         }
 
-        if (reviewing) {
-            Spacer(Modifier.height(16.dp))
+        Spacer(Modifier.height(16.dp))
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(10.dp)
+                .clip(RoundedCornerShape(5.dp))
+                .background(CandyTrack),
+        ) {
             Box(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .height(10.dp)
+                    .fillMaxWidth(((state.progressPercent ?: 0) / 100f))
+                    .fillMaxHeight()
                     .clip(RoundedCornerShape(5.dp))
-                    .background(CandyTrack),
-            ) {
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth(((state.progressPercent ?: 0) / 100f))
-                        .fillMaxHeight()
-                        .clip(RoundedCornerShape(5.dp))
-                        .background(colors.mintContainer),
-                )
-            }
+                    .background(colors.mintContainer),
+            )
         }
 
         Spacer(Modifier.height(14.dp))
@@ -272,6 +273,82 @@ private fun PredictionCard(state: HomeUiState, onClick: () -> Unit) {
                 }
             }
         }
+    }
+}
+
+/** PREPARING: guide the user toward completing materials & risk check (no fake prediction). */
+@Composable
+private fun PreparingHeroCard(state: HomeUiState) {
+    val colors = EijyoTheme.colors
+    HomeCard(modifier = Modifier.fillMaxWidth(), radius = 28.dp, padding = 22.dp) {
+        Text("申请准备中", style = EijyoTheme.typography.labelMedium.copy(fontSize = 14.sp), color = colors.inkMuted)
+        Spacer(Modifier.height(8.dp))
+        Text(
+            "完成材料与风险确认",
+            style = EijyoTheme.typography.headlineMedium.copy(fontSize = 26.sp),
+            color = colors.ink,
+        )
+        Spacer(Modifier.height(8.dp))
+        Text(
+            state.predictionPlaceholder ?: "补充提交日期后，可生成预计时间",
+            style = EijyoTheme.typography.labelMedium.copy(fontSize = 13.sp),
+            color = colors.inkMuted,
+        )
+        if (state.documentsTotal > 0) {
+            Spacer(Modifier.height(16.dp))
+            val frac = state.documentsPrepared.toFloat() / state.documentsTotal
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(10.dp)
+                    .clip(RoundedCornerShape(5.dp))
+                    .background(CandyTrack),
+            ) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth(frac.coerceIn(0f, 1f))
+                        .fillMaxHeight()
+                        .clip(RoundedCornerShape(5.dp))
+                        .background(colors.mintContainer),
+                )
+            }
+            Spacer(Modifier.height(8.dp))
+            Text(
+                "材料已准备 ${state.documentsPrepared} / ${state.documentsTotal}",
+                style = EijyoTheme.typography.labelSmall.copy(fontSize = 12.sp),
+                color = colors.inkMuted,
+            )
+        }
+    }
+}
+
+/** COMPLETED: show the recorded final result. */
+@Composable
+private fun ResultHeroCard(state: HomeUiState) {
+    val colors = EijyoTheme.colors
+    val accent = if (state.resultApproved) colors.mint else colors.coral
+    HomeCard(modifier = Modifier.fillMaxWidth(), radius = 28.dp, padding = 22.dp) {
+        Text("审查结果", style = EijyoTheme.typography.labelMedium.copy(fontSize = 14.sp), color = colors.inkMuted)
+        Spacer(Modifier.height(8.dp))
+        Text(
+            state.resultLabel.ifBlank { "已结束" },
+            style = EijyoTheme.typography.headlineMedium.copy(fontSize = 30.sp),
+            color = accent,
+        )
+        if (state.resultDate.isNotBlank()) {
+            Spacer(Modifier.height(8.dp))
+            Text(
+                "结果日期：${state.resultDate}",
+                style = EijyoTheme.typography.labelMedium.copy(fontSize = 13.sp),
+                color = colors.inkMuted,
+            )
+        }
+        Spacer(Modifier.height(10.dp))
+        Text(
+            if (state.resultApproved) "恭喜！永住许可已记录。" else "结果已记录，可在申请页查看详情。",
+            style = EijyoTheme.typography.labelSmall.copy(fontSize = 12.sp),
+            color = colors.inkMuted,
+        )
     }
 }
 
