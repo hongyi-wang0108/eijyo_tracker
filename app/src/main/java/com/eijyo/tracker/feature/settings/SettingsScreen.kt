@@ -3,6 +3,9 @@ package com.eijyo.tracker.feature.settings
 import android.app.Activity
 import android.content.Context
 import android.content.ContextWrapper
+import android.widget.Toast
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -23,9 +26,11 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -80,7 +85,22 @@ fun SettingsScreen(viewModel: SettingsViewModel = hiltViewModel()) {
     val context = LocalContext.current
 
     var activeSheet by remember { mutableStateOf<SettingsSheet?>(null) }
+    var showDeleteConfirm by remember { mutableStateOf(false) }
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+
+    val exportLauncher = rememberLauncherForActivityResult(
+        ActivityResultContracts.CreateDocument("application/json"),
+    ) { uri ->
+        if (uri != null) {
+            viewModel.exportTo(uri) { ok ->
+                Toast.makeText(
+                    context,
+                    if (ok) "已导出本地备份" else "导出失败，请重试",
+                    Toast.LENGTH_SHORT,
+                ).show()
+            }
+        }
+    }
 
     Box(modifier = Modifier.fillMaxSize().background(colors.screen)) {
         WelcomeBackground()
@@ -119,11 +139,39 @@ fun SettingsScreen(viewModel: SettingsViewModel = hiltViewModel()) {
                         context.findActivity()?.recreate()
                     },
                 )
-                SettingsSheet.PRIVACY -> PrivacySheetContent(onDismiss = { activeSheet = null })
+                SettingsSheet.PRIVACY -> PrivacySheetContent(
+                    onExport = {
+                        activeSheet = null
+                        exportLauncher.launch(viewModel.exportFileName())
+                    },
+                    onDelete = {
+                        activeSheet = null
+                        showDeleteConfirm = true
+                    },
+                )
                 SettingsSheet.DISCLAIMER -> DisclaimerSheetContent(onDismiss = { activeSheet = null })
                 SettingsSheet.ABOUT -> AboutSheetContent(onDismiss = { activeSheet = null })
             }
         }
+    }
+
+    if (showDeleteConfirm) {
+        AlertDialog(
+            onDismissRequest = { showDeleteConfirm = false },
+            title = { Text("删除申请档案？") },
+            text = { Text("将清除本机所有申请数据（档案、材料、补资料、预测）。删除后不可恢复。") },
+            confirmButton = {
+                TextButton(onClick = {
+                    showDeleteConfirm = false
+                    viewModel.deleteAll { context.findActivity()?.recreate() }
+                }) {
+                    Text("删除", color = PrivacyDeleteText)
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { showDeleteConfirm = false }) { Text("取消") }
+            },
+        )
     }
 }
 
@@ -506,7 +554,7 @@ private fun LanguageSheetContent(currentLanguage: String, onConfirm: (String) ->
 // ─── Privacy Sheet ─────────────────────────────────────────────────────────────
 
 @Composable
-private fun PrivacySheetContent(onDismiss: () -> Unit) {
+private fun PrivacySheetContent(onExport: () -> Unit, onDelete: () -> Unit) {
     val colors = EijyoTheme.colors
     SheetHeader("隐私与数据", "管理本机申请档案数据")
     Spacer(Modifier.height(14.dp))
@@ -514,9 +562,9 @@ private fun PrivacySheetContent(onDismiss: () -> Unit) {
         bg = colors.skySoft,
         title = "导出数据",
         titleColor = colors.ink,
-        subtitle = "保存一份本地备份",
+        subtitle = "保存一份本地备份（JSON）",
         chevronColor = colors.inkMuted,
-        onClick = onDismiss,
+        onClick = onExport,
     )
     Spacer(Modifier.height(8.dp))
     PrivacyActionRow(
@@ -525,7 +573,7 @@ private fun PrivacySheetContent(onDismiss: () -> Unit) {
         titleColor = PrivacyDeleteText,
         subtitle = "删除后不可恢复",
         chevronColor = PrivacyDeleteText,
-        onClick = onDismiss,
+        onClick = onDelete,
     )
     Spacer(Modifier.height(32.dp))
 }

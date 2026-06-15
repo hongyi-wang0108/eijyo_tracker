@@ -44,4 +44,9 @@ class AppPreferences @Inject constructor(
     suspend fun clearOnboardingDraft() {
         context.dataStore.edit { it.remove(Keys.ONBOARDING_DRAFT) }
     }
+
+    /** Wipes all preferences (used by 删除申请档案 to return the app to first-run). */
+    suspend fun clearAll() {
+        context.dataStore.edit { it.clear() }
+    }
 }

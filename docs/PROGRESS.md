@@ -41,6 +41,25 @@ Debug 包名：`com.eijyo.tracker.debug` · 远端：https://github.com/hongyi-w
 - **风险自检页**：UI 完成 — 2026-06-11
   - [ ] 关掉 `MOCK_PREVIEW`，接 ViewModel 真实数据
 
+## 上架前 TODO（1-7，2026-06-15 起逐项推进）
+
+> 大方案（预测+数据管线）已全部完成、MOCK 全清。以下是上架前剩余清单，分三档。
+
+🔴 上架必须（阻塞）
+- [x] **1. 数据仓库上线** — 2026-06-15：scripts/raw/public-data.json + README(SOP) 推送 `eijyo_tracker_data@main`；raw & jsDelivr 均 200，16 断言绿
+- [x] **2. 隐私与数据 Sheet 真逻辑** — 2026-06-15：导出走系统保存文件选择器写 JSON 备份；删除有确认弹窗，清 Room(clearAllTables)+偏好(clearAll)后 recreate 回首启
+- [x] **3. release 签名** — 2026-06-15：signingConfigs 读 keystore.properties(gitignored)，`assembleRelease` 出已签名 APK（apksigner 验证通过）；详见 `docs/RELEASE_SIGNING.md`
+
+🟡 体验完整性
+- [ ] **4. 首页「准备中」「已结束」两态**（现仅审查中态）
+- [ ] **5. 其他局校准系数**：仅东京=1.65 有 ground truth，其余暂 1.0（无实测，保持 1.0 是正确做法，待实测再调）
+
+🟢 锦上添花
+- [ ] **6. 全 App 本地化**：抽 strings.xml + 日英翻译 → 打开语言入口（大工程）
+- [ ] **7. 上架准备**：Inter 字体、暗色模式
+
+---
+
 ## 下一步（按优先级）
 
 1. **预测算法 + 公开数据管线**（大方案，方案已定稿见 `docs/PREDICTION_AND_DATA.md`）：

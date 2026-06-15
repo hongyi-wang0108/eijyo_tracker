@@ -13,3 +13,6 @@ local.properties
 /app/release
 *.keystore
 !debug.keystore
+# Release signing secrets — never commit. Back up separately!
+*.jks
+keystore.properties
