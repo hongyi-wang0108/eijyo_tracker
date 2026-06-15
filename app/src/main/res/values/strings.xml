@@ -1,3 +1,57 @@
 <resources>
     <string name="app_name">永住 Tracker</string>
+
+    <!-- 通用（跨批复用） -->
+    <string name="common_confirm">确认</string>
+    <string name="common_cancel">取消</string>
+    <string name="common_delete">删除</string>
+    <string name="common_understood">我知道了</string>
+    <string name="common_got_it">知道了</string>
+
+    <!-- 设置 / 我的页（批1） -->
+    <string name="settings_title">我的</string>
+    <string name="settings_subtitle">偏好、隐私和 App 信息</string>
+    <string name="settings_profile_default_name">用户</string>
+    <string name="settings_profile_file">永住申请档案</string>
+    <string name="settings_section_title">设置</string>
+    <string name="settings_coming_soon">即将支持</string>
+
+    <string name="settings_row_language_title">语言设置</string>
+    <string name="settings_row_language_subtitle">选择显示语言</string>
+    <string name="settings_row_privacy_title">隐私与数据</string>
+    <string name="settings_row_privacy_subtitle">导出数据 / 删除档案</string>
+    <string name="settings_row_disclaimer_title">免责声明</string>
+    <string name="settings_row_disclaimer_subtitle">预测仅供参考</string>
+    <string name="settings_row_about_title">关于 App</string>
+    <string name="settings_row_about_subtitle">版本、数据来源、联系</string>
+
+    <!-- 语言 Sheet -->
+    <string name="settings_lang_title">语言设置</string>
+    <string name="settings_lang_subtitle">选择 App 显示语言</string>
+
+    <!-- 隐私 Sheet -->
+    <string name="settings_privacy_title">隐私与数据</string>
+    <string name="settings_privacy_subtitle">管理本机申请档案数据</string>
+    <string name="settings_privacy_export_title">导出数据</string>
+    <string name="settings_privacy_export_subtitle">保存一份本地备份（JSON）</string>
+    <string name="settings_privacy_delete_title">删除申请档案</string>
+    <string name="settings_privacy_delete_subtitle">删除后不可恢复</string>
+    <string name="settings_export_success">已导出本地备份</string>
+    <string name="settings_export_fail">导出失败，请重试</string>
+    <string name="settings_delete_dialog_title">删除申请档案？</string>
+    <string name="settings_delete_dialog_message">将清除本机所有申请数据（档案、材料、补资料、预测）。删除后不可恢复。</string>
+
+    <!-- 免责 Sheet -->
+    <string name="settings_disclaimer_title">免责声明</string>
+    <string name="settings_disclaimer_subtitle">请在使用预测结果前确认</string>
+    <string name="settings_disclaimer_body">预测结果仅供参考，不构成法律意见，也不保证永住许可结果。实际审查会受到申请材料、入管判断和个别情况影响。</string>
+
+    <!-- 关于 Sheet -->
+    <string name="settings_about_title">关于 App</string>
+    <string name="settings_about_subtitle">版本与数据来源信息</string>
+    <string name="settings_about_version_label">版本</string>
+    <string name="settings_about_source_label">数据来源</string>
+    <string name="settings_about_source_value">日本出入国在留管理厅官方公开数据</string>
+    <string name="settings_about_method_label">预测方法</string>
+    <string name="settings_about_method_value">基于公开审查期间统计，不代表官方判断</string>
 </resources>

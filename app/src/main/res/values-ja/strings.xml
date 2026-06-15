@@ -1,0 +1,57 @@
+<resources>
+    <string name="app_name">永住トラッカー</string>
+
+    <!-- 共通 -->
+    <string name="common_confirm">確認</string>
+    <string name="common_cancel">キャンセル</string>
+    <string name="common_delete">削除</string>
+    <string name="common_understood">了解しました</string>
+    <string name="common_got_it">了解</string>
+
+    <!-- 設定 / マイページ -->
+    <string name="settings_title">マイページ</string>
+    <string name="settings_subtitle">設定・プライバシー・アプリ情報</string>
+    <string name="settings_profile_default_name">ユーザー</string>
+    <string name="settings_profile_file">永住申請ファイル</string>
+    <string name="settings_section_title">設定</string>
+    <string name="settings_coming_soon">近日対応</string>
+
+    <string name="settings_row_language_title">言語設定</string>
+    <string name="settings_row_language_subtitle">表示言語を選択</string>
+    <string name="settings_row_privacy_title">プライバシーとデータ</string>
+    <string name="settings_row_privacy_subtitle">データのエクスポート / ファイル削除</string>
+    <string name="settings_row_disclaimer_title">免責事項</string>
+    <string name="settings_row_disclaimer_subtitle">予測は参考目安です</string>
+    <string name="settings_row_about_title">アプリについて</string>
+    <string name="settings_row_about_subtitle">バージョン・データ出典・連絡先</string>
+
+    <!-- 言語シート -->
+    <string name="settings_lang_title">言語設定</string>
+    <string name="settings_lang_subtitle">アプリの表示言語を選択</string>
+
+    <!-- プライバシーシート -->
+    <string name="settings_privacy_title">プライバシーとデータ</string>
+    <string name="settings_privacy_subtitle">端末内の申請データを管理</string>
+    <string name="settings_privacy_export_title">データをエクスポート</string>
+    <string name="settings_privacy_export_subtitle">ローカルバックアップを保存（JSON）</string>
+    <string name="settings_privacy_delete_title">申請ファイルを削除</string>
+    <string name="settings_privacy_delete_subtitle">削除後は復元できません</string>
+    <string name="settings_export_success">バックアップを保存しました</string>
+    <string name="settings_export_fail">エクスポートに失敗しました。再試行してください</string>
+    <string name="settings_delete_dialog_title">申請ファイルを削除しますか？</string>
+    <string name="settings_delete_dialog_message">端末内のすべての申請データ（ファイル・書類・追加資料・予測）を削除します。元に戻せません。</string>
+
+    <!-- 免責シート -->
+    <string name="settings_disclaimer_title">免責事項</string>
+    <string name="settings_disclaimer_subtitle">予測結果を利用する前にご確認ください</string>
+    <string name="settings_disclaimer_body">予測結果は参考目安であり、法的助言ではなく、永住許可を保証するものでもありません。実際の審査は申請書類・入管の判断・個別事情により異なります。</string>
+
+    <!-- アプリについてシート -->
+    <string name="settings_about_title">アプリについて</string>
+    <string name="settings_about_subtitle">バージョンとデータ出典</string>
+    <string name="settings_about_version_label">バージョン</string>
+    <string name="settings_about_source_label">データ出典</string>
+    <string name="settings_about_source_value">出入国在留管理庁の公開データ</string>
+    <string name="settings_about_method_label">予測方法</string>
+    <string name="settings_about_method_value">公開の処理期間統計に基づく推計（公式判断ではありません）</string>
+</resources>

@@ -45,6 +45,7 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -52,6 +53,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.eijyo.tracker.BuildConfig
+import com.eijyo.tracker.R
 import com.eijyo.tracker.core.ui.component.DogFace
 import com.eijyo.tracker.core.ui.component.DogProfile
 import com.eijyo.tracker.core.ui.component.PawPrint
@@ -95,7 +97,7 @@ fun SettingsScreen(viewModel: SettingsViewModel = hiltViewModel()) {
             viewModel.exportTo(uri) { ok ->
                 Toast.makeText(
                     context,
-                    if (ok) "已导出本地备份" else "导出失败，请重试",
+                    context.getString(if (ok) R.string.settings_export_success else R.string.settings_export_fail),
                     Toast.LENGTH_SHORT,
                 ).show()
             }
@@ -158,18 +160,18 @@ fun SettingsScreen(viewModel: SettingsViewModel = hiltViewModel()) {
     if (showDeleteConfirm) {
         AlertDialog(
             onDismissRequest = { showDeleteConfirm = false },
-            title = { Text("删除申请档案？") },
-            text = { Text("将清除本机所有申请数据（档案、材料、补资料、预测）。删除后不可恢复。") },
+            title = { Text(stringResource(R.string.settings_delete_dialog_title)) },
+            text = { Text(stringResource(R.string.settings_delete_dialog_message)) },
             confirmButton = {
                 TextButton(onClick = {
                     showDeleteConfirm = false
                     viewModel.deleteAll { context.findActivity()?.recreate() }
                 }) {
-                    Text("删除", color = PrivacyDeleteText)
+                    Text(stringResource(R.string.common_delete), color = PrivacyDeleteText)
                 }
             },
             dismissButton = {
-                TextButton(onClick = { showDeleteConfirm = false }) { Text("取消") }
+                TextButton(onClick = { showDeleteConfirm = false }) { Text(stringResource(R.string.common_cancel)) }
             },
         )
     }
@@ -186,12 +188,12 @@ private fun Header() {
             .padding(top = 12.dp, bottom = 4.dp),
     ) {
         Text(
-            "我的",
+            stringResource(R.string.settings_title),
             style = EijyoTheme.typography.headlineMedium.copy(fontSize = 28.sp),
             color = colors.ink,
         )
         Text(
-            "偏好、隐私和 App 信息",
+            stringResource(R.string.settings_subtitle),
             style = EijyoTheme.typography.labelMedium.copy(fontSize = 14.sp),
             color = colors.inkMuted,
         )
@@ -287,13 +289,14 @@ private fun ProfileCard(state: SettingsUiState) {
             Spacer(Modifier.width(14.dp))
             Column(modifier = Modifier.weight(1f)) {
                 Text(
-                    state.displayName.ifEmpty { "用户" },
+                    state.displayName.ifEmpty { stringResource(R.string.settings_profile_default_name) },
                     style = EijyoTheme.typography.headlineMedium.copy(fontSize = 22.sp),
                     color = colors.ink,
                 )
                 Spacer(Modifier.height(2.dp))
+                val fileLabel = stringResource(R.string.settings_profile_file)
                 val sub = buildString {
-                    append("永住申请档案")
+                    append(fileLabel)
                     if (state.statusLabel.isNotEmpty()) append(" · ${state.statusLabel}")
                 }
                 Text(
@@ -337,15 +340,14 @@ private data class SettingsRowData(
 private fun SettingsListCard(onRowClick: (SettingsSheet) -> Unit) {
     val colors = EijyoTheme.colors
     val rows = listOf(
-        // 语言设置暂缓：本地化（strings.xml + 日英翻译）是独立工程，先灰掉入口。
-        SettingsRowData(MacaronPalette.MintWash, "文", MacaronPalette.Mint, "语言设置", "多语言即将支持", SettingsSheet.LANGUAGE, enabled = false),
-        SettingsRowData(MacaronPalette.SkySoft, "锁", MacaronPalette.SkyAccent, "隐私与数据", "导出数据 / 删除档案", SettingsSheet.PRIVACY),
-        SettingsRowData(MacaronPalette.LemonSoft, "!", MacaronPalette.LemonAccent, "免责声明", "预测仅供参考", SettingsSheet.DISCLAIMER),
-        SettingsRowData(MacaronPalette.LavenderSoft, "i", MacaronPalette.LavenderAccent, "关于 App", "版本、数据来源、联系", SettingsSheet.ABOUT),
+        SettingsRowData(MacaronPalette.MintWash, "文", MacaronPalette.Mint, stringResource(R.string.settings_row_language_title), stringResource(R.string.settings_row_language_subtitle), SettingsSheet.LANGUAGE),
+        SettingsRowData(MacaronPalette.SkySoft, "锁", MacaronPalette.SkyAccent, stringResource(R.string.settings_row_privacy_title), stringResource(R.string.settings_row_privacy_subtitle), SettingsSheet.PRIVACY),
+        SettingsRowData(MacaronPalette.LemonSoft, "!", MacaronPalette.LemonAccent, stringResource(R.string.settings_row_disclaimer_title), stringResource(R.string.settings_row_disclaimer_subtitle), SettingsSheet.DISCLAIMER),
+        SettingsRowData(MacaronPalette.LavenderSoft, "i", MacaronPalette.LavenderAccent, stringResource(R.string.settings_row_about_title), stringResource(R.string.settings_row_about_subtitle), SettingsSheet.ABOUT),
     )
     SettingsCardContainer(radius = 28.dp) {
         Text(
-            "设置",
+            stringResource(R.string.settings_section_title),
             style = EijyoTheme.typography.labelLarge.copy(fontSize = 16.sp),
             color = colors.ink,
         )
@@ -419,7 +421,7 @@ private fun SettingsListRow(row: SettingsRowData, onClick: () -> Unit) {
                     .padding(horizontal = 8.dp),
             ) {
                 Text(
-                    "即将支持",
+                    stringResource(R.string.settings_coming_soon),
                     style = EijyoTheme.typography.labelSmall.copy(fontSize = 9.sp),
                     color = colors.inkMuted,
                 )
@@ -512,7 +514,7 @@ private fun LanguageSheetContent(currentLanguage: String, onConfirm: (String) ->
     var selected by rememberSaveable { mutableStateOf(currentLanguage) }
     val colors = EijyoTheme.colors
 
-    SheetHeader("语言设置", "选择 App 显示语言")
+    SheetHeader(stringResource(R.string.settings_lang_title), stringResource(R.string.settings_lang_subtitle))
     Spacer(Modifier.height(10.dp))
     langs.forEach { (label, code) ->
         val isSelected = selected == code
@@ -547,7 +549,7 @@ private fun LanguageSheetContent(currentLanguage: String, onConfirm: (String) ->
         }
     }
     Spacer(Modifier.height(18.dp))
-    SheetConfirmButton("确认") { onConfirm(selected) }
+    SheetConfirmButton(stringResource(R.string.common_confirm)) { onConfirm(selected) }
     Spacer(Modifier.height(32.dp))
 }
 
@@ -556,22 +558,22 @@ private fun LanguageSheetContent(currentLanguage: String, onConfirm: (String) ->
 @Composable
 private fun PrivacySheetContent(onExport: () -> Unit, onDelete: () -> Unit) {
     val colors = EijyoTheme.colors
-    SheetHeader("隐私与数据", "管理本机申请档案数据")
+    SheetHeader(stringResource(R.string.settings_privacy_title), stringResource(R.string.settings_privacy_subtitle))
     Spacer(Modifier.height(14.dp))
     PrivacyActionRow(
         bg = colors.skySoft,
-        title = "导出数据",
+        title = stringResource(R.string.settings_privacy_export_title),
         titleColor = colors.ink,
-        subtitle = "保存一份本地备份（JSON）",
+        subtitle = stringResource(R.string.settings_privacy_export_subtitle),
         chevronColor = colors.inkMuted,
         onClick = onExport,
     )
     Spacer(Modifier.height(8.dp))
     PrivacyActionRow(
         bg = PrivacyDeleteBg,
-        title = "删除申请档案",
+        title = stringResource(R.string.settings_privacy_delete_title),
         titleColor = PrivacyDeleteText,
-        subtitle = "删除后不可恢复",
+        subtitle = stringResource(R.string.settings_privacy_delete_subtitle),
         chevronColor = PrivacyDeleteText,
         onClick = onDelete,
     )
@@ -612,7 +614,7 @@ private fun PrivacyActionRow(
 @Composable
 private fun DisclaimerSheetContent(onDismiss: () -> Unit) {
     val colors = EijyoTheme.colors
-    SheetHeader("免责声明", "请在使用预测结果前确认")
+    SheetHeader(stringResource(R.string.settings_disclaimer_title), stringResource(R.string.settings_disclaimer_subtitle))
     Spacer(Modifier.height(14.dp))
     Box(
         modifier = Modifier
@@ -623,13 +625,13 @@ private fun DisclaimerSheetContent(onDismiss: () -> Unit) {
             .padding(horizontal = 18.dp, vertical = 18.dp),
     ) {
         Text(
-            "预测结果仅供参考，不构成法律意见，也不保证永住许可结果。实际审查会受到申请材料、入管判断和个别情况影响。",
+            stringResource(R.string.settings_disclaimer_body),
             style = EijyoTheme.typography.labelMedium.copy(fontSize = 14.sp, lineHeight = 22.sp),
             color = colors.ink,
         )
     }
     Spacer(Modifier.height(18.dp))
-    SheetConfirmButton("我知道了", onClick = onDismiss)
+    SheetConfirmButton(stringResource(R.string.common_understood), onClick = onDismiss)
     Spacer(Modifier.height(32.dp))
 }
 
@@ -639,7 +641,7 @@ private fun DisclaimerSheetContent(onDismiss: () -> Unit) {
 private fun AboutSheetContent(onDismiss: () -> Unit) {
     val colors = EijyoTheme.colors
     val version = "${BuildConfig.VERSION_NAME} (${BuildConfig.VERSION_CODE})"
-    SheetHeader("关于 App", "版本与数据来源信息")
+    SheetHeader(stringResource(R.string.settings_about_title), stringResource(R.string.settings_about_subtitle))
     Spacer(Modifier.height(14.dp))
     Box(
         modifier = Modifier
@@ -650,13 +652,13 @@ private fun AboutSheetContent(onDismiss: () -> Unit) {
             .padding(horizontal = 18.dp, vertical = 18.dp),
     ) {
         Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
-            AboutRow("版本", version)
-            AboutRow("数据来源", "日本出入国在留管理厅官方公开数据")
-            AboutRow("预测方法", "基于公开审查期间统计，不代表官方判断")
+            AboutRow(stringResource(R.string.settings_about_version_label), version)
+            AboutRow(stringResource(R.string.settings_about_source_label), stringResource(R.string.settings_about_source_value))
+            AboutRow(stringResource(R.string.settings_about_method_label), stringResource(R.string.settings_about_method_value))
         }
     }
     Spacer(Modifier.height(18.dp))
-    SheetConfirmButton("知道了", onClick = onDismiss)
+    SheetConfirmButton(stringResource(R.string.common_got_it), onClick = onDismiss)
     Spacer(Modifier.height(32.dp))
 }
 

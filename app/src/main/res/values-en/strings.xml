@@ -1,0 +1,57 @@
+<resources>
+    <string name="app_name">Eijyo Tracker</string>
+
+    <!-- Common -->
+    <string name="common_confirm">Confirm</string>
+    <string name="common_cancel">Cancel</string>
+    <string name="common_delete">Delete</string>
+    <string name="common_understood">Got it</string>
+    <string name="common_got_it">OK</string>
+
+    <!-- Settings / Profile tab -->
+    <string name="settings_title">Profile</string>
+    <string name="settings_subtitle">Preferences, privacy &amp; app info</string>
+    <string name="settings_profile_default_name">User</string>
+    <string name="settings_profile_file">PR application profile</string>
+    <string name="settings_section_title">Settings</string>
+    <string name="settings_coming_soon">Coming soon</string>
+
+    <string name="settings_row_language_title">Language</string>
+    <string name="settings_row_language_subtitle">Choose display language</string>
+    <string name="settings_row_privacy_title">Privacy &amp; data</string>
+    <string name="settings_row_privacy_subtitle">Export data / delete profile</string>
+    <string name="settings_row_disclaimer_title">Disclaimer</string>
+    <string name="settings_row_disclaimer_subtitle">Predictions are estimates only</string>
+    <string name="settings_row_about_title">About</string>
+    <string name="settings_row_about_subtitle">Version, data sources, contact</string>
+
+    <!-- Language sheet -->
+    <string name="settings_lang_title">Language</string>
+    <string name="settings_lang_subtitle">Choose the app\'s display language</string>
+
+    <!-- Privacy sheet -->
+    <string name="settings_privacy_title">Privacy &amp; data</string>
+    <string name="settings_privacy_subtitle">Manage your local application data</string>
+    <string name="settings_privacy_export_title">Export data</string>
+    <string name="settings_privacy_export_subtitle">Save a local backup (JSON)</string>
+    <string name="settings_privacy_delete_title">Delete application profile</string>
+    <string name="settings_privacy_delete_subtitle">Cannot be undone</string>
+    <string name="settings_export_success">Backup saved</string>
+    <string name="settings_export_fail">Export failed, please try again</string>
+    <string name="settings_delete_dialog_title">Delete application profile?</string>
+    <string name="settings_delete_dialog_message">This will erase all local application data (profile, documents, supplements, predictions). This cannot be undone.</string>
+
+    <!-- Disclaimer sheet -->
+    <string name="settings_disclaimer_title">Disclaimer</string>
+    <string name="settings_disclaimer_subtitle">Please read before using predictions</string>
+    <string name="settings_disclaimer_body">Predictions are for reference only, are not legal advice, and do not guarantee a permanent residence result. The actual review depends on your documents, the immigration office\'s judgment, and individual circumstances.</string>
+
+    <!-- About sheet -->
+    <string name="settings_about_title">About</string>
+    <string name="settings_about_subtitle">Version &amp; data sources</string>
+    <string name="settings_about_version_label">Version</string>
+    <string name="settings_about_source_label">Data source</string>
+    <string name="settings_about_source_value">Official open data from Japan\'s Immigration Services Agency</string>
+    <string name="settings_about_method_label">Prediction method</string>
+    <string name="settings_about_method_value">Based on public processing statistics; not an official judgment</string>
+</resources>
