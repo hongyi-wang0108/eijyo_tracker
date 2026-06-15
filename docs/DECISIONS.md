@@ -7,6 +7,13 @@
 
 ---
 
+### 2026-06-15 — Inter 字体打包 + 暗色模式刻意 light-only
+
+**决定**：(1) Inter 作为**可变字体**打包 `res/font/inter_variable.ttf`（OFL，可商用），各字重经 wght 轴实例化（`FontVariation`，minSdk 26 支持）。Inter 不含中文 → 中文走系统回退（Noto CJK），数字/拉丁用 Inter，符合设计混排。(2) **暗色模式不做**，App 锁定 light-only。
+**理由**：奶油+马卡龙是浅色品牌；全 App 几十处硬编码 `Color(0x..)` + Canvas 手绘浅色背景，做真暗色 = 全套 dark 调色板 + 逐文件审计 + 重绘背景，工作量与本地化同级且与品牌冲突，收益低。
+**如何锁定**：`Theme.kt` 用 `lightColorScheme`、不读 `isSystemInDarkTheme`；`themes.xml` 父主题 `Material.Light`、无 `values-night`、`forceDarkAllowed=false`。系统切暗色时 App 完整保持浅色、不闪黑不错乱。
+**影响**：`Type.kt`（Inter）、`themes.xml`（forceDark）。未来真要暗色，单独立项。
+
 ### 2026-06-14 — FIFO 预测加 per-office 校准系数 + 修两处显示/模型缺陷
 
 **背景**：FIFO 上线后用户反馈「预计时间有点奇怪」。排查出三个问题。

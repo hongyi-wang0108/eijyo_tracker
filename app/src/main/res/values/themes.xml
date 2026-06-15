@@ -7,5 +7,8 @@
         <item name="android:windowLightStatusBar">true</item>
         <item name="android:navigationBarColor">@color/cream</item>
         <item name="android:windowLightNavigationBar" tools:targetApi="o_mr1">true</item>
+        <!-- Intentionally light-only (cream/pastel brand). Keep the system from auto-inverting
+             to dark; full dark mode is deferred (see docs/DECISIONS). -->
+        <item name="android:forceDarkAllowed" tools:targetApi="q">false</item>
     </style>
 </resources>

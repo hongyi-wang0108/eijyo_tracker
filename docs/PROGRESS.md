@@ -55,8 +55,8 @@ Debug 包名：`com.eijyo.tracker.debug` · 远端：https://github.com/hongyi-w
 - [x] **5. 其他局校准系数** — 2026-06-15：确认现状即正解，仅东京=1.65 有 ground truth，其余局无实测保持 1.0（在数据脚本 CALIBRATION dict，有实测随时加）
 
 🟢 锦上添花
-- [ ] **6. 全 App 本地化**：抽 strings.xml + 日英翻译 → 打开语言入口（大工程）
-- [ ] **7. 上架准备**：Inter 字体、暗色模式
+- [ ] **6. 全 App 本地化**：抽 strings.xml + 日英翻译 → 打开语言入口（大工程，进行中）
+- [x] **7. 上架准备** — 2026-06-15：Inter 可变字体打包+wght 实例化（中文系统回退）；暗色模式刻意 light-only（已锁定 forceDarkAllowed=false，详见 DECISIONS）
 
 ---
 
