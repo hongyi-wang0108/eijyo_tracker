@@ -30,6 +30,7 @@ Debug 包名：`com.eijyo.tracker.debug` · 远端：https://github.com/hongyi-w
 | 材料 Tab / 材料清单 | §9(材料) | ✅ 完成 | 真实数据；内联状态更新；四档筛选 |
 | 数据页 | §11 | ✅ 完成 | 真实数据；趋势图；地区/路径/来源卡；详情页待做 |
 | 我的 / 设置 | — | ✅ 完成 | 真实数据；语言入口暂灰；免责/关于 Sheet 可用；隐私 Sheet UI 占位 |
+| CI/CD | — | ✅ 完成 | GitHub Actions（`.github/workflows/ci.yml`）：push/PR 触发 → 单元测试 + assembleDebug + 上传 debug APK 产物；测试用 mockk 提供 mock Context |
 
 ---
 
