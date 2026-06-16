@@ -11,6 +11,16 @@ Eijyo Tracker は、Kotlin と Jetpack Compose で作成した日本の永住申
   <img src="docs/media/app-store-promo-03.png" width="31%" alt="公式データとリスク評価のプロモーション画像" />
 </p>
 
+## デモ動画
+
+エミュレータでの操作デモ（ダイジェスト）：
+
+https://github.com/user-attachments/assets/1f749eed-3e97-4a16-921b-feac7773424b
+
+フルバージョン（YouTube）：
+
+[![Eijyo Tracker デモ](https://img.youtube.com/vi/TgmaKKPnQ48/hqdefault.jpg)](https://www.youtube.com/shorts/TgmaKKPnQ48)
+
 ## デザイン
 
 UI デザインは Figma で作成しています：
