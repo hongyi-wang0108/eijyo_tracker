@@ -13,11 +13,7 @@ Eijyo Tracker は、Kotlin と Jetpack Compose で作成した日本の永住申
 
 ## デモ動画
 
-エミュレータでの操作デモ（ダイジェスト）：
-
-https://github.com/user-attachments/assets/1f749eed-3e97-4a16-921b-feac7773424b
-
-フルバージョン（YouTube）：
+エミュレータでの操作デモ（YouTube）：
 
 [![Eijyo Tracker デモ](https://img.youtube.com/vi/TgmaKKPnQ48/hqdefault.jpg)](https://www.youtube.com/shorts/TgmaKKPnQ48)
 
