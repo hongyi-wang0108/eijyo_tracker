@@ -3,6 +3,7 @@ package com.eijyo.tracker.feature.settings
 import android.app.Activity
 import android.content.Context
 import android.content.ContextWrapper
+import android.content.Intent
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -35,7 +36,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -76,6 +76,18 @@ private fun Context.findActivity(): Activity? {
         ctx = ctx.baseContext
     }
     return null
+}
+
+/**
+ * Relaunches the app from a fresh task so every ViewModel is rebuilt with the new locale.
+ * A config-only [android.app.Activity.recreate] keeps ViewModels alive (they survive config
+ * changes by design), leaving their StateFlow strings — and `currentLanguage` — stuck on the
+ * old language until re-subscribed. Clearing the task forces a clean ViewModelStore.
+ */
+private fun Context.restartApp() {
+    val intent = packageManager.getLaunchIntentForPackage(packageName) ?: return
+    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+    startActivity(intent)
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -136,7 +148,7 @@ fun SettingsScreen(viewModel: SettingsViewModel = hiltViewModel()) {
                     onConfirm = { code ->
                         viewModel.saveLanguage(code)
                         activeSheet = null
-                        context.findActivity()?.recreate()
+                        context.restartApp()
                     },
                 )
                 SettingsSheet.PRIVACY -> PrivacySheetContent(
@@ -509,7 +521,7 @@ private fun SheetConfirmButton(label: String, onClick: () -> Unit) {
 @Composable
 private fun LanguageSheetContent(currentLanguage: String, onConfirm: (String) -> Unit) {
     val langs = listOf("中文" to "zh", "日本語" to "ja", "English" to "en")
-    var selected by rememberSaveable { mutableStateOf(currentLanguage) }
+    var selected by remember(currentLanguage) { mutableStateOf(currentLanguage) }
     val colors = EijyoTheme.colors
 
     SheetHeader(stringResource(R.string.settings_lang_title), stringResource(R.string.settings_lang_subtitle))
