@@ -40,7 +40,7 @@ class JsDelivrPublicDataRemote @Inject constructor() : PublicDataRemote {
 
     companion object {
         const val URL =
-            "https://cdn.jsdelivr.net/gh/hongyi-wang0108/eijyo_tracker_data@main/public-data.json"
+            "https://cdn.jsdelivr.net/gh/hongyi-wang0108/immigration-data-jp@main/public-data.json"
         private const val TIMEOUT_MS = 8_000
     }
 }

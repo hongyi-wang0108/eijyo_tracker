@@ -33,10 +33,10 @@ App 三层降级：
 
 ### 1.1 托管（已定仓库，URL 待定 1 项）
 
-- **数据仓库（已建）**：`https://github.com/hongyi-wang0108/eijyo_tracker_data`
+- **数据仓库（已建）**：`https://github.com/hongyi-wang0108/immigration-data-jp`
   - 与 App 仓库分离：数据每月更新不污染代码历史、不触发 CI、权限可独立。
   - 计划目录：`/public-data.json`（成品）、`/raw/`（存原始 CSV 备查）、`/scripts/`（转换脚本）。
-- **拉取 URL（已定 jsDelivr）**：`https://cdn.jsdelivr.net/gh/hongyi-wang0108/eijyo_tracker_data@main/public-data.json`
+- **拉取 URL（已定 jsDelivr）**：`https://cdn.jsdelivr.net/gh/hongyi-wang0108/immigration-data-jp@main/public-data.json`
   - 选 CDN 而非 raw：数据月更，缓存延迟 ~12h 无所谓；国内可达性远好于 raw（raw 常超时/被限）。
 - ⚠️ jsDelivr 国内偶尔也不稳；**APK 内置兜底是必须，不是可选**。后续都不稳再换 OSS 静态文件（仍非后端）。
 
@@ -156,7 +156,7 @@ App 三层降级：
 
 ## 5. CSV → JSON 转换（每月重复，规划脚本）
 
-每月人工活儿的技术核心。计划 `eijyo_tracker_data/scripts/estat_to_json.py`（实现阶段写），逻辑：
+每月人工活儿的技术核心。计划 `immigration-data-jp/scripts/estat_to_json.py`（实现阶段写），逻辑：
 
 ```
 输入：主表 CSV(月度) + 趋势表 CSV(年度)
