@@ -259,7 +259,7 @@
     <string name="event_save">保存</string>
 
     <!-- ウェルカム画面（バッチ5） -->
-    <string name="welcome_headline">永住申請をあなたと一緒に</string>
+    <string name="welcome_headline">永住申請をあなたと一緒</string>
     <string name="welcome_body">申請の進捗記録、書類整理、審査結果の目安予測をサポートします。</string>
     <string name="welcome_start_cta">申請ファイルを作成する</string>
     <string name="welcome_disclaimer">予測は参考のみです。法律上のアドバイスではありません</string>
