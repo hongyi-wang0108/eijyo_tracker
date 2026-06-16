@@ -1,8 +1,6 @@
 package com.eijyo.tracker.feature.settings
 
-import android.app.Activity
 import android.content.Context
-import android.content.ContextWrapper
 import android.content.Intent
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -67,16 +65,6 @@ private val PrivacyDeleteBg = Color(0xFFFFE3E3)
 private val PrivacyDeleteText = Color(0xFFF08A8A)
 
 private enum class SettingsSheet { LANGUAGE, PRIVACY, DISCLAIMER, ABOUT }
-
-/** Unwrap a possibly-wrapped Compose context down to the host Activity. */
-private fun Context.findActivity(): Activity? {
-    var ctx: Context? = this
-    while (ctx is ContextWrapper) {
-        if (ctx is Activity) return ctx
-        ctx = ctx.baseContext
-    }
-    return null
-}
 
 /**
  * Relaunches the app from a fresh task so every ViewModel is rebuilt with the new locale.
@@ -175,7 +163,11 @@ fun SettingsScreen(viewModel: SettingsViewModel = hiltViewModel()) {
             confirmButton = {
                 TextButton(onClick = {
                     showDeleteConfirm = false
-                    viewModel.deleteAll { context.findActivity()?.recreate() }
+                    // Restart the task (not recreate) so the NavHost re-resolves its start
+                    // destination from scratch — the onboarding flag is now cleared, so it
+                    // lands back on Welcome → questionnaire. recreate() would restore the
+                    // rememberSaveable'd MAIN start and stay on the main screen.
+                    viewModel.deleteAll { context.restartApp() }
                 }) {
                     Text(stringResource(R.string.common_delete), color = PrivacyDeleteText)
                 }
