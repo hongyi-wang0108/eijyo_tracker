@@ -11,9 +11,12 @@ import com.eijyo.tracker.data.model.PublicDataDoc
 import com.eijyo.tracker.data.model.StandardProcessing
 import com.eijyo.tracker.data.model.DataSource
 import com.eijyo.tracker.data.model.TriState
+import android.content.Context
 import com.eijyo.tracker.domain.prediction.PredictionEngine
 import com.eijyo.tracker.domain.prediction.WaitState
 import com.eijyo.tracker.domain.prediction.computeWait
+import io.mockk.every
+import io.mockk.mockk
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNotNull
@@ -197,7 +200,13 @@ class PredictionEngineTest {
 
     // ── Cases E–G: PredictionEngine.predict(profile, PublicDataDoc, today) ───
 
-    private val engine = PredictionEngine()
+    // Context is only used to format office names into the reasons list; a relaxed mock
+    // returning a stub string is enough for the prediction-logic assertions below.
+    private val context = mockk<Context>(relaxed = true).also {
+        every { it.getString(any()) } returns "office"
+        every { it.getString(any(), *anyVararg()) } returns "office"
+    }
+    private val engine = PredictionEngine(context)
 
     private fun minimalDoc(vararg offices: OfficeData) = PublicDataDoc(
         schemaVersion = 1,
