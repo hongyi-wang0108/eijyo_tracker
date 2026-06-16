@@ -9,9 +9,11 @@ object LanguagePrefs {
     private const val PREFS = "eijyo_lang"
     private const val KEY = "code"
 
+    // Default to Japanese on first launch (target users are foreign residents in Japan);
+    // user can switch to zh/en in Settings, which persists.
     fun get(context: Context): String =
         context.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
-            .getString(KEY, "zh") ?: "zh"
+            .getString(KEY, "ja") ?: "ja"
 
     fun set(context: Context, code: String) {
         context.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
